@@ -7,7 +7,7 @@
       <a-menu-item>项目3</a-menu-item>
     </a-sub-menu>
     <a-menu-item>待办</a-menu-item>
-    <a-menu-item>日历</a-menu-item>
+    <a-menu-item>日历 mingtiangongzuo</a-menu-item>
   </a-menu>
 </template>
 <script>
