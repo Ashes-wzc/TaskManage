@@ -1,9 +1,8 @@
 import { createApp } from 'vue'
-import Antd from 'ant-design-vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/lib/theme-chalk/index.css'
 import App from './App.vue'
-import 'ant-design-vue/dist/antd.css'
 
 const app = createApp(App)
 app.mount('#app')
-app.use(Antd)
-app.config.productionTip = false
+app.use(ElementPlus)

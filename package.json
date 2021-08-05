@@ -8,8 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "ant-design-vue": "^2.2.2",
     "core-js": "^3.6.5",
+    "element-plus": "^1.0.2-beta.69",
     "vue": "^3.0.0"
   },
   "devDependencies": {

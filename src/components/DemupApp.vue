@@ -1,5 +1,5 @@
 <template>
-	<a-button type = "primary">test</a-button>
+	body
 </template>
 
 <script>
