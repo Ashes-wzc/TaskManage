@@ -1,18 +1,15 @@
 <template>
-  <div>
-    footer
-  </div>
+  <div>footer</div>
 </template>
 
 <script>
-  export default {
-    name: 'DemupFooter',
-    props: {
-      msg: String
-    }
-  }
+export default {
+  name: "DemupFooter",
+  props: {
+    msg: String,
+  },
+}
 </script>
 
 <style>
-  
 </style>
