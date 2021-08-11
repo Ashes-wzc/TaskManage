@@ -4,9 +4,9 @@
       <DemupSider />
     </el-aside>
     <el-container>
-      <el-header style="padding: 0px">
+      <!-- <el-header style="padding: 0px">
         <DemupHeader />
-      </el-header>
+      </el-header> -->
       <el-main>
         <DemupApp />
       </el-main>
@@ -18,15 +18,15 @@
 </template>
 
 <script>
-  import DemupSider from './DemupSider.vue'
-  import DemupHeader from './DemupHeader.vue'
-  import DemupApp from './DemupApp.vue'
-  // import DemupFooter from './DemupFooter.vue'
+  import DemupSider from './layout/DemupSider.vue'
+  // import DemupHeader from './layout/DemupHeader.vue'
+  import DemupApp from './layout/DemupApp.vue'
+  // import DemupFooter from './layout/DemupFooter.vue'
   export default {
     name: 'Demup',
     components: {
       DemupSider,
-      DemupHeader,
+      // DemupHeader,
       DemupApp,
       // DemupFooter
     },
