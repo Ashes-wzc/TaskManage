@@ -1,6 +1,33 @@
 <template>
-  <ProjectCard url="/b8l"></ProjectCard>
-  <ProjectCard url="/contact"></ProjectCard>
+  <el-row>
+    <el-col :span="6">
+      <ProjectCard url="/b8l"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+    <el-col :span="6">
+      <ProjectCard url="/contact"></ProjectCard>
+    </el-col>
+  </el-row>
 </template>
 
 <script>

@@ -1,5 +1,6 @@
 <template>
   <Demup msg="EvilGenius"/>
+  <router-link></router-link>
 </template>
 
 <script>
