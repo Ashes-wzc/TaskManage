@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router"
-import B8L from './components/views/B8L.vue'
-import Contact from './components/views/Contact.vue'
-import Home from './components/views/Home.vue'
 
 const routerHistory = createWebHistory()
 
@@ -10,15 +7,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: Home
+      name: 'Home',
+      component: () => import('./components/views/Home.vue')
     },
     {
       path: '/b8l',
-      component: B8L
+      name: 'B8L',
+      component: () => import('./components/views/B8L.vue')
     },
     {
       path: '/contact',
-      component: Contact
+      name: 'Contact',
+      component: () => import('./components/views/Contact.vue')
     }
   ]
 })
