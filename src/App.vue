@@ -1,18 +1,18 @@
 <template>
-  <!-- <Demup msg="EvilGenius"/> -->
-  <router-link to="/">Home</router-link>
+  <Demup msg="EvilGenius"/>
+  <!-- <router-link to="/">Home</router-link>
   <router-link to="/b8l">B8L</router-link>
   <router-link to="/contact">Contact</router-link>
-  <router-view></router-view>
+  <router-view></router-view> -->
 </template>
 
 <script>
-// import Demup from './components/Demup.vue'
+import Demup from './components/Demup.vue'
 
 export default {
   name: 'App',
   components: {
-    // Demup
+    Demup
   }
 }
 </script>
