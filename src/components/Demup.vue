@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 100vh">
-    <el-aside style="width: 200px">
+    <el-aside style="width: 150px">
       <DemupSider />
     </el-aside>
     <el-main>
