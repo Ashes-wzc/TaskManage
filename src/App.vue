@@ -1,9 +1,5 @@
 <template>
   <Demup msg="EvilGenius"/>
-  <!-- <router-link to="/">Home</router-link>
-  <router-link to="/b8l">B8L</router-link>
-  <router-link to="/contact">Contact</router-link>
-  <router-view></router-view> -->
 </template>
 
 <script>

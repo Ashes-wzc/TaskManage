@@ -1,6 +1,9 @@
 <template>
   <el-row align="middle" justify="center" style="height:60px;background-color: #f7f7f7;border-right: 1px solid #e6e6e6;">
     <div class="logo">DEMUP</div>
+    <delete style="width: 1em; height: 1em; margin-right: 8px;" />
+    <el-svg-icon><aim /></el-svg-icon>
+    <!-- <el-svg-icon style="width:20px;height:20px"><expand /></el-svg-icon> -->
   </el-row>
   <el-menu
       default-active="1"
@@ -38,6 +41,9 @@
         <template #title>导航四</template>
       </el-menu-item>
     </el-menu>
+    <!-- <router-link to="/">任务</router-link>
+    <router-link to="/user">我的</router-link>
+    <router-link to="/other">其他</router-link> -->
 </template>
 <script>
 	export default {
@@ -45,12 +51,12 @@
     props: {
       msg: String
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
-    }
+    // handleOpen(key, keyPath) {
+    //   console.log(key, keyPath);
+    // },
+    // handleClose(key, keyPath) {
+    //   console.log(key, keyPath);
+    // }
 	}
 </script>
 <style>

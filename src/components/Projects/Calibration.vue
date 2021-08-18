@@ -1,10 +1,10 @@
 <template>
-  <div>Home</div>
+  <div>Calibration</div>
 </template>
 
 <script>
 export default {
-  name: "Home",
+  name: "Calibration",
   props: {
     msg: String,
   },

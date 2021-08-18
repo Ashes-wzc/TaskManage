@@ -1,10 +1,10 @@
 <template>
-  <div>footer</div>
+  <div>Other</div>
 </template>
 
 <script>
 export default {
-  name: "DemupFooter",
+  name: "Other",
   props: {
     msg: String,
   },

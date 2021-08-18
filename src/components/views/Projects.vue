@@ -4,11 +4,10 @@
 
 <script>
 export default {
-  name: "DemupApp",
+  name: "Projects",
   props: {
     msg: String,
   },
-  components: { }
 }
 </script>
 
