@@ -27,7 +27,28 @@ const router = createRouter({
       children: [{
         path: 'b8l',
         name: 'B8L',
-        component: () => import('./components/Projects/B8L.vue')
+        component: () => import('./components/Projects/B8L.vue'),
+        children: [{
+          path: 'projectinfo',
+          name: 'projectinfo',
+          component: () => import('./components/ui-components/ProjectInfo.vue')
+        },{
+          path: 'task',
+          name: 'task',
+          component: () => import('./components/ui-components/Task.vue')
+        },{
+          path: 'filesystem',
+          name: 'filesystem',
+          component: () => import('./components/ui-components/FileSystem.vue')
+        },{
+          path: 'standard',
+          name: 'standard',
+          component: () => import('./components/ui-components/Standard.vue')
+        },{
+          path: 'test',
+          name: 'test',
+          component: () => import('./components/ui-components/Test.vue')
+        }]
       },{
         path: 'calibration',
         name: 'Calibration',

@@ -2,11 +2,11 @@
   <el-card class="box-card" shadow="hover">
     <template #header>
       <div class="card-header">
-        <span>卡片名称</span>
-        <el-button class="button" type="text" @click="JumpToUrl">操作按钮</el-button>
+        <span>{{ projectName }}</span>
+        <el-button class="button" type="text" @click="JumpToUrl">进入项目</el-button>
       </div>
     </template>
-    <div>智能灯项目</div>
+    <div>{{ projectName }}</div>
   </el-card>
 </template>
 
@@ -14,11 +14,12 @@
   export default {
     name: "ProjectCard",
     props: {
+      ProjectName: String,
       url: String
     },
     data() {
       return {
-        msg: ''
+        projectName: this.$props.ProjectName
       }
     },
     methods: {

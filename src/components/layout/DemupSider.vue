@@ -5,15 +5,15 @@
       </el-row>
       <el-menu :default-active="$route.path" class="el-menu-vertical" @select="handleSelect" router>
           <el-menu-item index="/">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-document"></i>
             <template #title>任务</template>
           </el-menu-item>
           <el-menu-item index="/user">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-user"></i>
             <template #title>我的</template>
           </el-menu-item>
           <el-menu-item index="/other">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-loading"></i>
             <template #title>其他</template>
           </el-menu-item>
         </el-menu>
@@ -42,9 +42,6 @@
     flex-direction: column;
     height: 100vh;
   }
-	.logo {
-    background: rgba(255, 255, 255, 0.2);
-	}
   .el-menu-vertical {
     flex: 1;
   }
