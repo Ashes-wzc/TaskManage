@@ -7,6 +7,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'Login',
+      components: () => import('./components/Login.vue')
+    },
+    {
+      path: '/task',
       name: 'Task',
       component: () => import('./components/views/Task.vue')
     },
