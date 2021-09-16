@@ -6,9 +6,9 @@ const router = createRouter({
   history: routerHistory,
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
-      components: () => import('./components/Login.vue')
+      components: () => import('./components/views/Login.vue')
     },
     {
       path: '/task',
