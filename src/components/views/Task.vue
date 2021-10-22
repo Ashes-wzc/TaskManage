@@ -7,12 +7,7 @@
       <el-row class="task-row">
         <el-col :span="6">
           <div class="card_container">
-            <ProjectCard url="/projects/b8l/projectinfo" ProjectName="B8L"></ProjectCard>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="card_container">
-            <ProjectCard url="/projects/calibration" ProjectName="标定机"></ProjectCard>
+            <ProjectCard url="/projects/b8l/test" ProjectName="B8L"></ProjectCard>
           </div>
         </el-col>
       </el-row>
