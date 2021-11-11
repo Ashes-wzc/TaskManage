@@ -1,36 +1,39 @@
 <template>
   <el-config-provider :locale="locale">
-    <Index :hasCookie="this.userHasCookie" />
+    <Index :hasCookie="this.userHasCookie"/>
   </el-config-provider>
 </template>
 
 <script>
-  import Index from './components/index.vue'
-  // 汉化
-  import { ElConfigProvider } from 'element-plus'
-  import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import Index from './components/index.vue'
 
-  export default {
-    name: 'App',
-    components: {
-      Index,
-      [ElConfigProvider.name]: ElConfigProvider,
-    },
-    data() {
-      return {
-        locale: zhCn,
-        userHasCookie: true,
-      }
+import { ElConfigProvider } from 'element-plus'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+
+export default {
+  name: 'App',
+  components: {
+    Index,
+    [ElConfigProvider.name]: ElConfigProvider
+  },
+  data() {
+    return {
+      locale: zhCn,
+      userHasCookie: false,
     }
   }
+}
 </script>
 
 <style>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
+body {
+  margin: 0;
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: center; */
+  color: #2c3e50;
+}
 </style>

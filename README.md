@@ -1,4 +1,4 @@
-# demup_io
+# demupoffice
 
 ## Project setup
 ```
@@ -22,18 +22,3 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-./
-./ Task
-	./ Project 1
-		./ TaskInfo
-		./ FileSystem
-		./ TaskAssign
-		./ Test
-		./ Standard
-	./ Project 2
-	./ Project 3
-	 ...
-	./ Project n
-./ User
-./ Other
