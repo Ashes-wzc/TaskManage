@@ -52,9 +52,12 @@
         }
       },
       testApi() {
-        axios.get(
-          'http://8.130.172.158/v2/api-docs/hello',
-        )
+        axios.post('/api/login', {
+          params: {
+            password: this.$data.form.password,
+            username: this.$data.form.name
+          }
+        })
         .then((response) => {
           console.log(response)
         })
