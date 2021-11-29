@@ -8,6 +8,7 @@
         <el-input v-model="form.password" show-password></el-input>
       </el-form-item>
       <el-button type="primary" @click="onSubmit" style="margin-right: 20px">登录</el-button>
+      <el-button type="primary" @click="testApi" style="margin-right: 20px">测试Api</el-button>
       <el-checkbox label="记住我" name="cache" v-model="form.isCache"></el-checkbox>
     </el-form>
   </div>
@@ -15,6 +16,7 @@
 
 <script>
   import { ElMessage } from 'element-plus'
+  import axios from 'axios'
   let userData = require('./../fakedata/userInfo.json')
   export default {
     name: "Login",
@@ -48,6 +50,17 @@
         else {
           ElMessage.error('用户名不存在！')
         }
+      },
+      testApi() {
+        axios.get(
+          'http://8.130.172.158/v2/api-docs/hello',
+        )
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
       }
     }
   }

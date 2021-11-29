@@ -1,0 +1,1333 @@
+/*---------GLOBAL DEFINITIONS-----------*/
+LIN_description_file;
+LIN_protocol_version             = "2.1";
+LIN_language_version             = "2.1";
+LIN_speed                        = 19.2 kbps;
+/* ----------NODE DEFINITIONS---------- */
+Nodes {
+   Master:
+      BCM,                                                   /* Master node name */
+      10.0 ms,                                               /* Time base */
+      0.9 ms;                                                /* Jitter */
+   Slaves:
+      AM_RGB_Slave_01,
+      AM_RGB_Slave_02,
+      AM_RGB_Slave_03,
+      AM_RGB_Slave_04,
+      AM_RGB_Slave_05,
+      AM_RGB_Slave_06,
+      AM_RGB_Slave_07,
+      AM_RGB_Slave_08,
+      AM_RGB_Slave_09,
+      AM_RGB_Slave_10;
+}
+/* ----------SIGNAL DEFINITIONS---------- */
+Signals {
+   /* Signal_name                : Size,       Init,            Publisher, Subscriber(s) */
+   BCM_RGB_Adressierungsart      :  1,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Bewertung_Dimmzeit    :  1,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Blau                  :  8,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Dimmrampe             :  4,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Gruen                 :  8,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Gueltigkeit           :  1,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Intensitaet           :  7,       0x7e,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Normierung_Intensitaet:  1,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Rot                   :  8,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Slave_Adresse         : 15,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   BCM_RGB_Sonderfunktion        :  3,        0x0,      BCM, AM_RGB_Slave_01,AM_RGB_Slave_02,AM_RGB_Slave_03,AM_RGB_Slave_04,AM_RGB_Slave_05,AM_RGB_Slave_06,AM_RGB_Slave_07,AM_RGB_Slave_08,AM_RGB_Slave_09,AM_RGB_Slave_10;
+   RGB_Slave_01_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedRotOl         :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_LedRotStg        :  2,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_ResponseError    :  1,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_01_TempState        :  3,        0x0,      AM_RGB_Slave_01, BCM;
+   RGB_Slave_02_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedRotOl         :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_LedRotStg        :  2,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_ResponseError    :  1,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_02_TempState        :  3,        0x0,      AM_RGB_Slave_02, BCM;
+   RGB_Slave_03_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedRotOl         :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_LedRotStg        :  2,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_ResponseError    :  1,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_03_TempState        :  3,        0x0,      AM_RGB_Slave_03, BCM;
+   RGB_Slave_04_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedRotOl         :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_LedRotStg        :  2,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_ResponseError    :  1,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_04_TempState        :  3,        0x0,      AM_RGB_Slave_04, BCM;
+   RGB_Slave_05_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedRotOl         :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_LedRotStg        :  2,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_ResponseError    :  1,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_05_TempState        :  3,        0x0,      AM_RGB_Slave_05, BCM;
+   RGB_Slave_06_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedRotOl         :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_LedRotStg        :  2,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_ResponseError    :  1,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_06_TempState        :  3,        0x0,      AM_RGB_Slave_06, BCM;
+   RGB_Slave_07_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedRotOl         :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_LedRotStg        :  2,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_ResponseError    :  1,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_07_TempState        :  3,        0x0,      AM_RGB_Slave_07, BCM;
+   RGB_Slave_08_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedRotOl         :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_LedRotStg        :  2,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_ResponseError    :  1,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_08_TempState        :  3,        0x0,      AM_RGB_Slave_08, BCM;
+   RGB_Slave_09_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedRotOl         :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_LedRotStg        :  2,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_ResponseError    :  1,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_09_TempState        :  3,        0x0,      AM_RGB_Slave_09, BCM;
+   RGB_Slave_10_IntErrorNvm      :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_IntErrorRam      :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_IntErrorRom      :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedBlauOl        :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedBlauStg       :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedGruenOl       :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedGruenStg      :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedRotOl         :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_LedRotStg        :  2,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_ResponseError    :  1,        0x0,      AM_RGB_Slave_10, BCM;
+   RGB_Slave_10_TempState        :  3,        0x0,      AM_RGB_Slave_10, BCM;
+}
+/* ----------DIAGNOSTIC SIGNAL DEFINITIONS---------- */
+Diagnostic_signals {
+   /* MasterReq Reserved Signals */
+   MasterReqB0         :    8,   0;
+   MasterReqB1         :    8,   0;
+   MasterReqB2         :    8,   0;
+   MasterReqB3         :    8,   0;
+   MasterReqB4         :    8,   0;
+   MasterReqB5         :    8,   0;
+   MasterReqB6         :    8,   0;
+   MasterReqB7         :    8,   0;
+   /* SlaveResp Reserved Signals */
+   SlaveRespB0         :    8,   0;
+   SlaveRespB1         :    8,   0;
+   SlaveRespB2         :    8,   0;
+   SlaveRespB3         :    8,   0;
+   SlaveRespB4         :    8,   0;
+   SlaveRespB5         :    8,   0;
+   SlaveRespB6         :    8,   0;
+   SlaveRespB7         :    8,   0;
+}
+/* ----------UNCONDITIONAL FRAME DEFINITIONS---------- */
+Frames {
+   RGBe_Slave : 0x15, BCM, 8 {
+      BCM_RGB_Slave_Adresse            , 0; 
+      BCM_RGB_Adressierungsart         , 15;
+      BCM_RGB_Rot                      , 16;
+      BCM_RGB_Gruen                    , 24;
+      BCM_RGB_Blau                     , 32;
+      BCM_RGB_Intensitaet              , 40;
+      BCM_RGB_Normierung_Intensitaet   , 47;
+      BCM_RGB_Dimmrampe                , 48;
+      BCM_RGB_Sonderfunktion           , 53;
+      BCM_RGB_Bewertung_Dimmzeit       , 56;
+      BCM_RGB_Gueltigkeit              , 57;
+   }
+   RGBs_Slave_01 : 0x1, AM_RGB_Slave_01, 8 {
+      RGB_Slave_01_ResponseError, 7;
+      RGB_Slave_01_LedRotStg, 8;
+      RGB_Slave_01_LedGruenStg, 10;
+      RGB_Slave_01_LedBlauStg, 12;
+      RGB_Slave_01_LedRotOl, 14;
+      RGB_Slave_01_LedGruenOl, 16;
+      RGB_Slave_01_LedBlauOl, 18;
+      RGB_Slave_01_TempState, 20;
+      RGB_Slave_01_IntErrorRam, 24;
+      RGB_Slave_01_IntErrorRom, 26;
+      RGB_Slave_01_IntErrorNvm, 28;
+   }
+   RGBs_Slave_02 : 0x2, AM_RGB_Slave_02, 8 {
+      RGB_Slave_02_ResponseError, 7;
+      RGB_Slave_02_LedRotStg, 8;
+      RGB_Slave_02_LedGruenStg, 10;
+      RGB_Slave_02_LedBlauStg, 12;
+      RGB_Slave_02_LedRotOl, 14;
+      RGB_Slave_02_LedGruenOl, 16;
+      RGB_Slave_02_LedBlauOl, 18;
+      RGB_Slave_02_TempState, 20;
+      RGB_Slave_02_IntErrorRam, 24;
+      RGB_Slave_02_IntErrorRom, 26;
+      RGB_Slave_02_IntErrorNvm, 28;
+   }
+   RGBs_Slave_03 : 0x3, AM_RGB_Slave_03, 8 {
+      RGB_Slave_03_ResponseError, 7;
+      RGB_Slave_03_LedRotStg, 8;
+      RGB_Slave_03_LedGruenStg, 10;
+      RGB_Slave_03_LedBlauStg, 12;
+      RGB_Slave_03_LedRotOl, 14;
+      RGB_Slave_03_LedGruenOl, 16;
+      RGB_Slave_03_LedBlauOl, 18;
+      RGB_Slave_03_TempState, 20;
+      RGB_Slave_03_IntErrorRam, 24;
+      RGB_Slave_03_IntErrorRom, 26;
+      RGB_Slave_03_IntErrorNvm, 28;
+   }
+   RGBs_Slave_04 : 0x4, AM_RGB_Slave_04, 8 {
+      RGB_Slave_04_ResponseError, 7;
+      RGB_Slave_04_LedRotStg, 8;
+      RGB_Slave_04_LedGruenStg, 10;
+      RGB_Slave_04_LedBlauStg, 12;
+      RGB_Slave_04_LedRotOl, 14;
+      RGB_Slave_04_LedGruenOl, 16;
+      RGB_Slave_04_LedBlauOl, 18;
+      RGB_Slave_04_TempState, 20;
+      RGB_Slave_04_IntErrorRam, 24;
+      RGB_Slave_04_IntErrorRom, 26;
+      RGB_Slave_04_IntErrorNvm, 28;
+   }
+   RGBs_Slave_05 : 0x5, AM_RGB_Slave_05, 8 {
+      RGB_Slave_05_ResponseError, 7;
+      RGB_Slave_05_LedRotStg, 8;
+      RGB_Slave_05_LedGruenStg, 10;
+      RGB_Slave_05_LedBlauStg, 12;
+      RGB_Slave_05_LedRotOl, 14;
+      RGB_Slave_05_LedGruenOl, 16;
+      RGB_Slave_05_LedBlauOl, 18;
+      RGB_Slave_05_TempState, 20;
+      RGB_Slave_05_IntErrorRam, 24;
+      RGB_Slave_05_IntErrorRom, 26;
+      RGB_Slave_05_IntErrorNvm, 28;
+   }
+   RGBs_Slave_06 : 0x6, AM_RGB_Slave_06, 8 {
+      RGB_Slave_06_ResponseError, 7;
+      RGB_Slave_06_LedRotStg, 8;
+      RGB_Slave_06_LedGruenStg, 10;
+      RGB_Slave_06_LedBlauStg, 12;
+      RGB_Slave_06_LedRotOl, 14;
+      RGB_Slave_06_LedGruenOl, 16;
+      RGB_Slave_06_LedBlauOl, 18;
+      RGB_Slave_06_TempState, 20;
+      RGB_Slave_06_IntErrorRam, 24;
+      RGB_Slave_06_IntErrorRom, 26;
+      RGB_Slave_06_IntErrorNvm, 28;
+   }
+   RGBs_Slave_07 : 0x7, AM_RGB_Slave_07, 8 {
+      RGB_Slave_07_ResponseError, 7;
+      RGB_Slave_07_LedRotStg, 8;
+      RGB_Slave_07_LedGruenStg, 10;
+      RGB_Slave_07_LedBlauStg, 12;
+      RGB_Slave_07_LedRotOl, 14;
+      RGB_Slave_07_LedGruenOl, 16;
+      RGB_Slave_07_LedBlauOl, 18;
+      RGB_Slave_07_TempState, 20;
+      RGB_Slave_07_IntErrorRam, 24;
+      RGB_Slave_07_IntErrorRom, 26;
+      RGB_Slave_07_IntErrorNvm, 28;
+   }
+   RGBs_Slave_08 : 0x8, AM_RGB_Slave_08, 8 {
+      RGB_Slave_08_ResponseError, 7;
+      RGB_Slave_08_LedRotStg, 8;
+      RGB_Slave_08_LedGruenStg, 10;
+      RGB_Slave_08_LedBlauStg, 12;
+      RGB_Slave_08_LedRotOl, 14;
+      RGB_Slave_08_LedGruenOl, 16;
+      RGB_Slave_08_LedBlauOl, 18;
+      RGB_Slave_08_TempState, 20;
+      RGB_Slave_08_IntErrorRam, 24;
+      RGB_Slave_08_IntErrorRom, 26;
+      RGB_Slave_08_IntErrorNvm, 28;
+   }
+   RGBs_Slave_09 : 0x9, AM_RGB_Slave_09, 8 {
+      RGB_Slave_09_ResponseError, 7;
+      RGB_Slave_09_LedRotStg, 8;
+      RGB_Slave_09_LedGruenStg, 10;
+      RGB_Slave_09_LedBlauStg, 12;
+      RGB_Slave_09_LedRotOl, 14;
+      RGB_Slave_09_LedGruenOl, 16;
+      RGB_Slave_09_LedBlauOl, 18;
+      RGB_Slave_09_TempState, 20;
+      RGB_Slave_09_IntErrorRam, 24;
+      RGB_Slave_09_IntErrorRom, 26;
+      RGB_Slave_09_IntErrorNvm, 28;
+   }
+   RGBs_Slave_10 : 0xa, AM_RGB_Slave_10, 8 {
+      RGB_Slave_10_ResponseError, 7;
+      RGB_Slave_10_LedRotStg, 8;
+      RGB_Slave_10_LedGruenStg, 10;
+      RGB_Slave_10_LedBlauStg, 12;
+      RGB_Slave_10_LedRotOl, 14;
+      RGB_Slave_10_LedGruenOl, 16;
+      RGB_Slave_10_LedBlauOl, 18;
+      RGB_Slave_10_TempState, 20;
+      RGB_Slave_10_IntErrorRam, 24;
+      RGB_Slave_10_IntErrorRom, 26;
+      RGB_Slave_10_IntErrorNvm, 28;
+   }
+}
+/* ----------DIAGNOSTIC FRAME DEFINITIONS---------- */
+Diagnostic_frames {
+   MasterReq           : 0x3c {
+      MasterReqB0         , 0;
+      MasterReqB1         , 8;
+      MasterReqB2         , 16;
+      MasterReqB3         , 24;
+      MasterReqB4         , 32;
+      MasterReqB5         , 40;
+      MasterReqB6         , 48;
+      MasterReqB7         , 56;
+   }
+   SlaveResp           : 0x3d {
+      SlaveRespB0         , 0;
+      SlaveRespB1         , 8;
+      SlaveRespB2         , 16;
+      SlaveRespB3         , 24;
+      SlaveRespB4         , 32;
+      SlaveRespB5         , 40;
+      SlaveRespB6         , 48;
+      SlaveRespB7         , 56;
+   }
+}
+/* ----------NODE ATTRIBUTE DEFINITIONS---------- */
+Node_attributes {
+   AM_RGB_Slave_01 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x1;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_01_ResponseError; /* Response error signal */
+      P2_min                     = 100 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_01;
+      }
+   }
+   AM_RGB_Slave_02 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x2;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_02_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_02;
+      }
+   }
+   AM_RGB_Slave_03 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x3;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_03_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_03;
+      }
+   }
+   AM_RGB_Slave_04 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x4;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_04_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_04;
+      }
+   }
+   AM_RGB_Slave_05 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x5;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_05_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_05;
+      }
+   }
+   AM_RGB_Slave_06 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x6;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_06_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_06;
+      }
+   }
+   AM_RGB_Slave_07 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x7;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_07_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_07;
+      }
+   }
+   AM_RGB_Slave_08 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x8;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_08_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_08;
+      }
+   }
+   AM_RGB_Slave_09 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0x9;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_09_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_09;
+      }
+   }
+   AM_RGB_Slave_10 {
+      LIN_protocol               = "2.1";                    /* Node protocol version */
+      configured_NAD             = 0xa;                      /* configured NAD of node (1-125) */
+      product_id                 =    0x0,    0x0,    0x0;   /* Product id */
+      response_error             = RGB_Slave_10_ResponseError; /* Response error signal */
+      P2_min                     = 10 ms;                    /* P2_min */
+      ST_min                     = 10 ms;                    /* ST_min */
+      configurable_frames {
+         RGBe_Slave;
+         RGBs_Slave_10;
+      }
+   }
+}
+/* ----------SCHEDULE TABLE DEFINITIONS---------- */
+Schedule_tables {
+   ST1 {
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_01                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_02                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_03                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_04                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_05                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_06                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_07                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_08                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_09                       delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBe_Slave                          delay 10.0 ms;
+      RGBs_Slave_10                       delay 10.0 ms;
+   }
+   DiagRequest {
+      MasterReq                           delay 10.0 ms;
+   }
+   DiagResponse {
+      SlaveResp                           delay 10.0 ms;
+   }
+}
+/* ----------SIGNAL ENCODDING DEFINITIONS---------- */
+Signal_encoding_types {
+   BCM_RGB_Adressierungsart_encoding {
+      logical_value,0,"Einzeladresse";
+      logical_value,1,"Gruppenadresse";
+   }
+   BCM_RGB_Bewertung_Dimmzeit_encoding {
+      logical_value,0,"Dimmzeit_absolut";
+      logical_value,1,"Dimmzeit_relativ";
+   }
+   BCM_RGB_Blau_encoding {
+      physical_value,0,255,1.0,0.0,"";
+   }
+   BCM_RGB_Dimmrampe_encoding {
+      physical_value,0,15,0.3,0.0,"Unit_Secon";
+   }
+   BCM_RGB_Gruen_encoding {
+      physical_value,0,255,1.0,0.0,"";
+   }
+   BCM_RGB_Intensitaet_encoding {
+      logical_value,126,"Init";
+      logical_value,127,"Fehler";
+      physical_value,0,100,1.0,0.0,"Unit_PerCent";
+   }
+   BCM_RGB_Normierung_Intensitaet_encoding {
+      logical_value,0,"ohne Normierung";
+      logical_value,1,"Normierung der Intensität";
+   }
+   BCM_RGB_Rot_encoding {
+      physical_value,0,255,1.0,0.0,"";
+   }
+   BCM_RGB_Slave_Adresse_encoding {
+      physical_value,0,32767,1.0,0.0,"Unit_None";
+   }
+   BCM_RGB_Sonderfunktion_encoding {
+      logical_value,0,"keine Sonderfunktion";
+      logical_value,1,"Crash";
+      logical_value,2,"Showroommodus";
+      logical_value,3,"Stellgliedtest";
+      logical_value,4,"Vorhalt (z.B. FAS-Warnung)";
+      logical_value,5,"Vorhalt";
+      logical_value,6,"Vorhalt";
+      logical_value,7,"Vorhalt";
+   }
+   RGB_Slave_01_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_01_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_02_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_02_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_03_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_03_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_04_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_04_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_05_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_05_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_06_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_06_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_07_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_07_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_08_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_08_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_09_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_09_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+   RGB_Slave_10_IntErrorNvm_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_IntErrorRam_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_IntErrorRom_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedBlauOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedBlauStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedGruenOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedGruenStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedRotOl_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_LedRotStg_encoding {
+      logical_value,0,"Init";
+      logical_value,1,"nicht_erlaubt";
+      logical_value,2,"kein_Fehler";
+      logical_value,3,"Fehler";
+   }
+   RGB_Slave_10_TempState_encoding {
+      logical_value,0,"keine_Temperaturregelung";
+      logical_value,1,"Regelstufe_1";
+      logical_value,2,"Regelstufe_2";
+      logical_value,3,"Regelstufe_3";
+      logical_value,4,"Regelstufe_4";
+      logical_value,5,"Regelstufe_5";
+      logical_value,6,"Regelstufe_6";
+      logical_value,7,"Regelstufe_7";
+   }
+
+   SC_normal_Fehler {
+      logical_value,0,"normal";
+      logical_value,1,"Fehler";
+   }
+   SC_ungueltig_gueltig {
+      logical_value,0,"ungueltig";
+      logical_value,1,"gueltig";
+   }
+}
+/* ----------SIGNAL REPRESENTATION DEFINITIONS---------- */
+Signal_representation {
+   BCM_RGB_Adressierungsart_encoding:BCM_RGB_Adressierungsart;
+   BCM_RGB_Bewertung_Dimmzeit_encoding:BCM_RGB_Bewertung_Dimmzeit;
+   BCM_RGB_Blau_encoding:BCM_RGB_Blau;
+   BCM_RGB_Dimmrampe_encoding:BCM_RGB_Dimmrampe;
+   BCM_RGB_Gruen_encoding:BCM_RGB_Gruen;
+   BCM_RGB_Intensitaet_encoding:BCM_RGB_Intensitaet;
+   BCM_RGB_Normierung_Intensitaet_encoding:BCM_RGB_Normierung_Intensitaet;
+   BCM_RGB_Rot_encoding:BCM_RGB_Rot;
+   BCM_RGB_Slave_Adresse_encoding:BCM_RGB_Slave_Adresse;
+   BCM_RGB_Sonderfunktion_encoding:BCM_RGB_Sonderfunktion;
+   RGB_Slave_01_IntErrorNvm_encoding:RGB_Slave_01_IntErrorNvm;
+   RGB_Slave_01_IntErrorRam_encoding:RGB_Slave_01_IntErrorRam;
+   RGB_Slave_01_IntErrorRom_encoding:RGB_Slave_01_IntErrorRom;
+   RGB_Slave_01_LedBlauOl_encoding:RGB_Slave_01_LedBlauOl;
+   RGB_Slave_01_LedBlauStg_encoding:RGB_Slave_01_LedBlauStg;
+   RGB_Slave_01_LedGruenOl_encoding:RGB_Slave_01_LedGruenOl;
+   RGB_Slave_01_LedGruenStg_encoding:RGB_Slave_01_LedGruenStg;
+   RGB_Slave_01_LedRotOl_encoding:RGB_Slave_01_LedRotOl;
+   RGB_Slave_01_LedRotStg_encoding:RGB_Slave_01_LedRotStg;
+   RGB_Slave_01_TempState_encoding:RGB_Slave_01_TempState;
+   RGB_Slave_02_IntErrorNvm_encoding:RGB_Slave_02_IntErrorNvm;
+   RGB_Slave_02_IntErrorRam_encoding:RGB_Slave_02_IntErrorRam;
+   RGB_Slave_02_IntErrorRom_encoding:RGB_Slave_02_IntErrorRom;
+   RGB_Slave_02_LedBlauOl_encoding:RGB_Slave_02_LedBlauOl;
+   RGB_Slave_02_LedBlauStg_encoding:RGB_Slave_02_LedBlauStg;
+   RGB_Slave_02_LedGruenOl_encoding:RGB_Slave_02_LedGruenOl;
+   RGB_Slave_02_LedGruenStg_encoding:RGB_Slave_02_LedGruenStg;
+   RGB_Slave_02_LedRotOl_encoding:RGB_Slave_02_LedRotOl;
+   RGB_Slave_02_LedRotStg_encoding:RGB_Slave_02_LedRotStg;
+   RGB_Slave_02_TempState_encoding:RGB_Slave_02_TempState;
+   RGB_Slave_03_IntErrorNvm_encoding:RGB_Slave_03_IntErrorNvm;
+   RGB_Slave_03_IntErrorRam_encoding:RGB_Slave_03_IntErrorRam;
+   RGB_Slave_03_IntErrorRom_encoding:RGB_Slave_03_IntErrorRom;
+   RGB_Slave_03_LedBlauOl_encoding:RGB_Slave_03_LedBlauOl;
+   RGB_Slave_03_LedBlauStg_encoding:RGB_Slave_03_LedBlauStg;
+   RGB_Slave_03_LedGruenOl_encoding:RGB_Slave_03_LedGruenOl;
+   RGB_Slave_03_LedGruenStg_encoding:RGB_Slave_03_LedGruenStg;
+   RGB_Slave_03_LedRotOl_encoding:RGB_Slave_03_LedRotOl;
+   RGB_Slave_03_LedRotStg_encoding:RGB_Slave_03_LedRotStg;
+   RGB_Slave_03_TempState_encoding:RGB_Slave_03_TempState;
+   RGB_Slave_04_IntErrorNvm_encoding:RGB_Slave_04_IntErrorNvm;
+   RGB_Slave_04_IntErrorRam_encoding:RGB_Slave_04_IntErrorRam;
+   RGB_Slave_04_IntErrorRom_encoding:RGB_Slave_04_IntErrorRom;
+   RGB_Slave_04_LedBlauOl_encoding:RGB_Slave_04_LedBlauOl;
+   RGB_Slave_04_LedBlauStg_encoding:RGB_Slave_04_LedBlauStg;
+   RGB_Slave_04_LedGruenOl_encoding:RGB_Slave_04_LedGruenOl;
+   RGB_Slave_04_LedGruenStg_encoding:RGB_Slave_04_LedGruenStg;
+   RGB_Slave_04_LedRotOl_encoding:RGB_Slave_04_LedRotOl;
+   RGB_Slave_04_LedRotStg_encoding:RGB_Slave_04_LedRotStg;
+   RGB_Slave_04_TempState_encoding:RGB_Slave_04_TempState;
+   RGB_Slave_05_IntErrorNvm_encoding:RGB_Slave_05_IntErrorNvm;
+   RGB_Slave_05_IntErrorRam_encoding:RGB_Slave_05_IntErrorRam;
+   RGB_Slave_05_IntErrorRom_encoding:RGB_Slave_05_IntErrorRom;
+   RGB_Slave_05_LedBlauOl_encoding:RGB_Slave_05_LedBlauOl;
+   RGB_Slave_05_LedBlauStg_encoding:RGB_Slave_05_LedBlauStg;
+   RGB_Slave_05_LedGruenOl_encoding:RGB_Slave_05_LedGruenOl;
+   RGB_Slave_05_LedGruenStg_encoding:RGB_Slave_05_LedGruenStg;
+   RGB_Slave_05_LedRotOl_encoding:RGB_Slave_05_LedRotOl;
+   RGB_Slave_05_LedRotStg_encoding:RGB_Slave_05_LedRotStg;
+   RGB_Slave_05_TempState_encoding:RGB_Slave_05_TempState;
+   RGB_Slave_06_IntErrorNvm_encoding:RGB_Slave_06_IntErrorNvm;
+   RGB_Slave_06_IntErrorRam_encoding:RGB_Slave_06_IntErrorRam;
+   RGB_Slave_06_IntErrorRom_encoding:RGB_Slave_06_IntErrorRom;
+   RGB_Slave_06_LedBlauOl_encoding:RGB_Slave_06_LedBlauOl;
+   RGB_Slave_06_LedBlauStg_encoding:RGB_Slave_06_LedBlauStg;
+   RGB_Slave_06_LedGruenOl_encoding:RGB_Slave_06_LedGruenOl;
+   RGB_Slave_06_LedGruenStg_encoding:RGB_Slave_06_LedGruenStg;
+   RGB_Slave_06_LedRotOl_encoding:RGB_Slave_06_LedRotOl;
+   RGB_Slave_06_LedRotStg_encoding:RGB_Slave_06_LedRotStg;
+   RGB_Slave_06_TempState_encoding:RGB_Slave_06_TempState;
+   RGB_Slave_07_IntErrorNvm_encoding:RGB_Slave_07_IntErrorNvm;
+   RGB_Slave_07_IntErrorRam_encoding:RGB_Slave_07_IntErrorRam;
+   RGB_Slave_07_IntErrorRom_encoding:RGB_Slave_07_IntErrorRom;
+   RGB_Slave_07_LedBlauOl_encoding:RGB_Slave_07_LedBlauOl;
+   RGB_Slave_07_LedBlauStg_encoding:RGB_Slave_07_LedBlauStg;
+   RGB_Slave_07_LedGruenOl_encoding:RGB_Slave_07_LedGruenOl;
+   RGB_Slave_07_LedGruenStg_encoding:RGB_Slave_07_LedGruenStg;
+   RGB_Slave_07_LedRotOl_encoding:RGB_Slave_07_LedRotOl;
+   RGB_Slave_07_LedRotStg_encoding:RGB_Slave_07_LedRotStg;
+   RGB_Slave_07_TempState_encoding:RGB_Slave_07_TempState;
+   RGB_Slave_08_IntErrorNvm_encoding:RGB_Slave_08_IntErrorNvm;
+   RGB_Slave_08_IntErrorRam_encoding:RGB_Slave_08_IntErrorRam;
+   RGB_Slave_08_IntErrorRom_encoding:RGB_Slave_08_IntErrorRom;
+   RGB_Slave_08_LedBlauOl_encoding:RGB_Slave_08_LedBlauOl;
+   RGB_Slave_08_LedBlauStg_encoding:RGB_Slave_08_LedBlauStg;
+   RGB_Slave_08_LedGruenOl_encoding:RGB_Slave_08_LedGruenOl;
+   RGB_Slave_08_LedGruenStg_encoding:RGB_Slave_08_LedGruenStg;
+   RGB_Slave_08_LedRotOl_encoding:RGB_Slave_08_LedRotOl;
+   RGB_Slave_08_LedRotStg_encoding:RGB_Slave_08_LedRotStg;
+   RGB_Slave_08_TempState_encoding:RGB_Slave_08_TempState;
+   RGB_Slave_09_IntErrorNvm_encoding:RGB_Slave_09_IntErrorNvm;
+   RGB_Slave_09_IntErrorRam_encoding:RGB_Slave_09_IntErrorRam;
+   RGB_Slave_09_IntErrorRom_encoding:RGB_Slave_09_IntErrorRom;
+   RGB_Slave_09_LedBlauOl_encoding:RGB_Slave_09_LedBlauOl;
+   RGB_Slave_09_LedBlauStg_encoding:RGB_Slave_09_LedBlauStg;
+   RGB_Slave_09_LedGruenOl_encoding:RGB_Slave_09_LedGruenOl;
+   RGB_Slave_09_LedGruenStg_encoding:RGB_Slave_09_LedGruenStg;
+   RGB_Slave_09_LedRotOl_encoding:RGB_Slave_09_LedRotOl;
+   RGB_Slave_09_LedRotStg_encoding:RGB_Slave_09_LedRotStg;
+   RGB_Slave_09_TempState_encoding:RGB_Slave_09_TempState;
+   RGB_Slave_10_IntErrorNvm_encoding:RGB_Slave_10_IntErrorNvm;
+   RGB_Slave_10_IntErrorRam_encoding:RGB_Slave_10_IntErrorRam;
+   RGB_Slave_10_IntErrorRom_encoding:RGB_Slave_10_IntErrorRom;
+   RGB_Slave_10_LedBlauOl_encoding:RGB_Slave_10_LedBlauOl;
+   RGB_Slave_10_LedBlauStg_encoding:RGB_Slave_10_LedBlauStg;
+   RGB_Slave_10_LedGruenOl_encoding:RGB_Slave_10_LedGruenOl;
+   RGB_Slave_10_LedGruenStg_encoding:RGB_Slave_10_LedGruenStg;
+   RGB_Slave_10_LedRotOl_encoding:RGB_Slave_10_LedRotOl;
+   RGB_Slave_10_LedRotStg_encoding:RGB_Slave_10_LedRotStg;
+   RGB_Slave_10_TempState_encoding:RGB_Slave_10_TempState;
+
+   SC_normal_Fehler    :RGB_Slave_01_ResponseError, RGB_Slave_02_ResponseError, RGB_Slave_03_ResponseError, RGB_Slave_04_ResponseError, RGB_Slave_05_ResponseError, RGB_Slave_06_ResponseError, RGB_Slave_07_ResponseError, RGB_Slave_08_ResponseError, RGB_Slave_09_ResponseError, RGB_Slave_10_ResponseError;
+   SC_ungueltig_gueltig:BCM_RGB_Gueltigkeit;
+}
+

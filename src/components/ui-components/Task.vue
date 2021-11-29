@@ -120,7 +120,6 @@
     width: 100%;
     height: 5px;
     margin-bottom: 5px;
-    /* background-color: #1989FA; */
   }
   .el-calendar-table .el-calendar-day {
     padding: 0;

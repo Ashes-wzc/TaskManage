@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       locale: zhCn,
-      userHasCookie: false,
+      userHasCookie: true,
     }
   }
 }
