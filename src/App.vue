@@ -1,25 +1,28 @@
 <template>
   <el-config-provider :locale="locale">
-    <Index :hasCookie="this.userHasCookie"/>
+    <router-view></router-view>
   </el-config-provider>
 </template>
 
 <script>
-import Index from './components/index.vue'
-
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
 export default {
   name: 'App',
   components: {
-    Index,
     [ElConfigProvider.name]: ElConfigProvider
+  },
+  mounted() {
+    if (localStorage.getItem('Bearer') != null || sessionStorage.getItem('Bearer') != null) {
+      this.$router.push('/demup/task')
+    } else {
+      this.$router.push('/login')
+    }
   },
   data() {
     return {
       locale: zhCn,
-      userHasCookie: true,
     }
   }
 }
@@ -33,7 +36,6 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
 }
 </style>

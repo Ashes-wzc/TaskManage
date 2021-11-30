@@ -19,7 +19,9 @@
       <el-input placeholder="请输入密码" v-model="passwordinput" show-password></el-input>
     </el-col>
   </el-row>
-  <el-button type="primary" class="margintop">提交</el-button>
+  <el-row justify="center" class="margintop">
+    <el-button type="primary" class="margintop">提交</el-button>
+  </el-row>
 </template>
 
 <script>

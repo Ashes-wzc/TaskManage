@@ -25,7 +25,6 @@
       <router-view></router-view>
     </el-main>
   </el-container>
-  
 </template>
 <script>
   // import { Aim } from '@element-plus/icons'
