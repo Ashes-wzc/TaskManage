@@ -15,7 +15,7 @@ export default {
   },
   mounted() {
     if (localStorage.getItem('Bearer') != null || sessionStorage.getItem('Bearer') != null) {
-      this.$router.push('/demup/task')
+      this.$router.push('/projects')
     } else {
       this.$router.push('/login')
     }

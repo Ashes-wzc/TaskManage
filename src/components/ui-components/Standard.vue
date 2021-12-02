@@ -15,7 +15,7 @@
     <el-table-column prop="describe" label="描述" width="800"></el-table-column>
     <el-table-column align="right" fixed="right" width="150">
       <template #header>
-        <el-button size="mini" type="primary" @click="this.$data.dialog = true">添加</el-button>
+        <el-button size="mini" type="primary" @click="dialog = true">添加</el-button>
       </template>
       <template #default>
         <el-button size="mini" @click="modifyTask">查看</el-button>

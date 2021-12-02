@@ -54,14 +54,14 @@
             else {
               sessionStorage.setItem('Bearer', response.data.obj.token)
             }
-            this.$router.push('/demup/task')
+            this.$router.push('/projects')
           }
           else if (response.data.code == 500) {
             ElMessage.error(response.data.message)
           }
         })
         .catch((error) => {
-          console.log(error)
+          // console.log(error)
           ElMessage.error(error.toString())
         })
         this.loading = false

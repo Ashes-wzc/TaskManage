@@ -6,17 +6,17 @@
           <div class="logo">DEMUP</div>
         </el-row>
         <el-menu :default-active="$route.path" class="el-menu-vertical" @select="handleSelect" router>
-          <el-menu-item index="/demup/task">
+          <el-menu-item index="/projects" disabled>
             <i class="el-icon-document"></i>
-            <template #title>任务</template>
+            <template #title>项目信息</template>
           </el-menu-item>
-          <el-menu-item index="/demup/user">
+          <el-menu-item index="/userinfo">
             <i class="el-icon-user"></i>
-            <template #title>我的</template>
+            <template #title>个人信息</template>
           </el-menu-item>
-          <el-menu-item index="/demup/other">
+          <el-menu-item index="/usermanage">
             <i class="el-icon-loading"></i>
-            <template #title>其他</template>
+            <template #title>用户管理</template>
           </el-menu-item>
         </el-menu>
       </div>
@@ -38,7 +38,7 @@
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key, keyPath)
       }
     }
 	}

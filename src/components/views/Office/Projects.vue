@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import ProjectCard from './../ui-components/ProjectCard.vue'
+  import ProjectCard from '../../ui-components/ProjectCard.vue'
   export default {
     name: "Task",
     props: {

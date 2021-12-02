@@ -16,14 +16,19 @@ const router = createRouter({
       component: () => import('./components/views/Office.vue'),
       children: [
         {
-          path: 'task',
-          name: 'Task',
-          component: () => import('./components/views/Task.vue')
-        },
-        {
           path: '/projects',
           name: 'Projects',
-          component: () => import('./components/views/Projects.vue')
+          component: () => import('./components/views/Office/Projects.vue')
+        },
+        {
+          path: '/userinfo',
+          name: 'UserInfo',
+          component: () => import('./components/views/Office/UserInfo.vue')
+        },
+        {
+          path: '/usermanage',
+          name: 'UserManage',
+          component: () => import('./components/views/Office/UserManage.vue')
         }
       ]
     }
