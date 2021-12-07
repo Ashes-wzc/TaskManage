@@ -34,7 +34,15 @@
         <el-input v-model="addForm.user.username"></el-input>
       </el-form-item>
       <el-form-item label="职位:">
-        <el-input v-model="addForm.user.userType"></el-input>
+        <el-select v-model="addForm.user.userType" placeholder="请选择职位">
+          <el-option
+            v-for="(item, index) in jobs"
+            :key=index
+            :label="item.userType"
+            :value="item.userType"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="密码:">
         <el-input v-model="addForm.user.password"></el-input>
@@ -55,11 +63,16 @@
       <el-form-item label="姓名:">
         <el-input v-model="editForm.user.name"></el-input>
       </el-form-item>
-      <el-form-item label="工号:">
-        <el-input v-model="editForm.user.username"></el-input>
-      </el-form-item>
       <el-form-item label="职位:">
-        <el-input v-model="editForm.user.userType"></el-input>
+        <el-select v-model="editForm.user.userType" placeholder="请选择职位">
+          <el-option
+            v-for="(item, index) in jobs"
+            :key=index
+            :label="item.nameZh"
+            :value="item.nameZh"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="密码:">
         <el-input v-model="editForm.user.password"></el-input>
@@ -84,38 +97,55 @@ export default {
       userList: [],
       dialog: false,
       editDialog: false,
+      job: '',
+      jobs: [],
       addForm: {
+        'rid': 4,
         'user': {
           'name': '',
           'username': '',
           'password': '123456',
-          'userType': ''
+          'userType': '',
+          'enabled': true,
+          'isAdmin': false,
+          'updateTime': '2021-07-10 12:00:00'
         }
       },
       editForm: {
+        'rid': 3,
         'user': {
           'name': '',
           'username': '',
           'password': '',
-          'userType': ''
+          'userType': '',
+          'enabled': true,
+          'isAdmin': false,
+          'updateTime': '2021-07-10 12:00:00'
         }
+      },
+      deleteJson: {
+        'username': ''
       }
     }
   },
   mounted() {
+    this.addAxiosHeader()
     this.getAllUserInfo()
+    this.getAllJobs()
   },
   methods: {
-    // 获取全部人员账号信息
-    getAllUserInfo() {
-      // 添加请求头，后续改为统一封装
+    // 添加请求头，后续改为统一封装
+    addAxiosHeader() {
       axios.interceptors.request.use(config => {
         config.headers = {
           'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
         }
         return config
       })
-      axios.get('api/user/')
+    },
+    // 获取全部人员账号信息
+    getAllUserInfo() {
+      axios.get('api/user/getAllUserInfo')
       .then((res) => {
         console.log(res)
         let userData = res.data
@@ -126,6 +156,17 @@ export default {
         ElMessage.error(error.toString())
       })
     },
+    // 获取全部工种
+    getAllJobs() {
+      axios.get('api/user/getAllRoles')
+      .then((res) => {
+        // console.log(res.data)
+        this.jobs = res.data
+      })
+      .catch((error) => {
+        console.log(error.toString())
+      })
+    },
     // 添加账号
     addAccount() {
       const name = this.addForm.user.name
@@ -133,17 +174,14 @@ export default {
       const password = this.addForm.user.password
       const userType = this.addForm.user.userType
       if (name != null & username != null & password != null & userType != null) {
-        // 添加请求头，后续改为统一封装
-        axios.interceptors.request.use(config => {
-          config.headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
-          }
-          return config
-        })
-        axios.post('api/user/', this.addForm.user)
+        axios.post('api/user/addUser', this.addForm)
         .then((res) => {
-          console.log(res)
+          ElMessage({
+            message: res.data.message,
+            type: 'success'
+          })
           this.dialog = false
+          this.getAllUserInfo()
         })
         .catch((error) => {
           ElMessage.error(error.toString())
@@ -156,6 +194,8 @@ export default {
     // 删除账号
     deleteAccount(index, row) {
       console.log(index, row.username)
+      this.deleteJson.username = row.username
+      console.log(this.deleteJson)
       ElMessageBox.confirm(
         '确定删除该账号吗？',
         '请确认！',
@@ -166,20 +206,14 @@ export default {
         }
       )
       .then(() => {
-        // 添加请求头，后续改为统一封装
-        axios.interceptors.request.use(config => {
-          config.headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
-          }
-          return config
-        })
-        axios.delete('api/user/' + row.username)
+        axios.post('api/user/deleteUser', this.deleteJson)
         .then((res) => {
           console.log(res)
           ElMessage({
             message: '删除用户成功',
             type: 'success'
           })
+          this.getAllUserInfo()
         })
         .catch((error) => {
           ElMessage.error(error.toString())
@@ -193,25 +227,21 @@ export default {
     },
     // 修改账户信息
     modifyAccount() {
-      // 添加请求头，后续改为统一封装
-      axios.interceptors.request.use(config => {
-        config.headers = {
-          'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
-        }
-        return config
-      })
-      axios.put('api/user/', this.editForm.user)
+      axios.post('api/user/updateUser', this.editForm)
       .then((res) => {
         console.log('修改账户：' + res)
         ElMessage({
           message: '修改账号成功',
           type: 'success'
         })
+        this.editDialog = false
+        this.getAllUserInfo()
       })
       .catch((error) => {
         ElMessage.error(error.toString())
       })
     },
+    // 添加账号Dialog关闭函数
     dialogClose(){
       ElMessageBox.confirm(
         '确定放弃添加账号吗？',
@@ -235,6 +265,7 @@ export default {
         this.$data.dialog = true
       })
     },
+    // 修改账号Dialog打开函数
     editDialogOpen(index, row){
       console.log('editDialogOpen()' + index)
       this.editDialog = true
@@ -243,6 +274,7 @@ export default {
       this.editForm.user.password = '123456'
       this.editForm.user.userType = row.userType
     },
+    // 修改账号Dialog关闭函数
     editDialogClose() {
       ElMessageBox.confirm(
         '确定放弃修改账号吗？',
