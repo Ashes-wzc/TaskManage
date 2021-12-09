@@ -36,10 +36,10 @@
       <el-form-item label="职位:">
         <el-select v-model="addForm.user.userType" placeholder="请选择职位">
           <el-option
-            v-for="(item, index) in jobs"
+            v-for="(item, index) in this.jobs"
             :key=index
-            :label="item.userType"
-            :value="item.userType"
+            :label="item.nameZh"
+            :value="item.nameZh"
           >
           </el-option>
         </el-select>
@@ -147,7 +147,7 @@ export default {
     getAllUserInfo() {
       axios.get('api/user/getAllUserInfo')
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         let userData = res.data
         userData.shift()
         this.userList = userData
@@ -160,7 +160,6 @@ export default {
     getAllJobs() {
       axios.get('api/user/getAllRoles')
       .then((res) => {
-        // console.log(res.data)
         this.jobs = res.data
       })
       .catch((error) => {
@@ -193,9 +192,8 @@ export default {
     },
     // 删除账号
     deleteAccount(index, row) {
-      console.log(index, row.username)
+      console.log(index, row)
       this.deleteJson.username = row.username
-      console.log(this.deleteJson)
       ElMessageBox.confirm(
         '确定删除该账号吗？',
         '请确认！',
@@ -208,11 +206,19 @@ export default {
       .then(() => {
         axios.post('api/user/deleteUser', this.deleteJson)
         .then((res) => {
-          console.log(res)
-          ElMessage({
-            message: '删除用户成功',
-            type: 'success'
-          })
+          switch (res.data.code) {
+            case 200:
+              ElMessage({
+                message: res.data.message,
+                type: 'success'
+              })
+              break
+            case 406:
+              ElMessage.error(res.data.message)
+              break
+            default:
+              break
+          }
           this.getAllUserInfo()
         })
         .catch((error) => {
@@ -229,9 +235,8 @@ export default {
     modifyAccount() {
       axios.post('api/user/updateUser', this.editForm)
       .then((res) => {
-        console.log('修改账户：' + res)
         ElMessage({
-          message: '修改账号成功',
+          message: '修改账号成功' + res.data.code,
           type: 'success'
         })
         this.editDialog = false
