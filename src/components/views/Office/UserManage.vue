@@ -138,7 +138,7 @@ export default {
     addAxiosHeader() {
       axios.interceptors.request.use(config => {
         config.headers = {
-          'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
+          'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
         }
         return config
       })

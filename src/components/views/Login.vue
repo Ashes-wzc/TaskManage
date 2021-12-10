@@ -48,11 +48,9 @@
               message: response.data.message,
               type: 'success',
             })
+            sessionStorage.setItem('Bearer', response.data.obj.token)
             if (this.isCache == true) {
               localStorage.setItem('Bearer', response.data.obj.token)
-            }
-            else {
-              sessionStorage.setItem('Bearer', response.data.obj.token)
             }
             this.$router.push('/projects')
           }
@@ -61,7 +59,6 @@
           }
         })
         .catch((error) => {
-          // console.log(error)
           ElMessage.error(error.toString())
         })
         this.loading = false

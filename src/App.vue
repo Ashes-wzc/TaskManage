@@ -15,6 +15,7 @@ export default {
   },
   mounted() {
     if (localStorage.getItem('Bearer') != null || sessionStorage.getItem('Bearer') != null) {
+      sessionStorage.setItem('Bearer', localStorage.getItem('Bearer'))
       this.$router.push('/projects')
     } else {
       this.$router.push('/login')

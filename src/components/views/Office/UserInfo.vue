@@ -56,7 +56,7 @@
       addAxiosHeader() {
         axios.interceptors.request.use(config => {
           config.headers = {
-            'Authorization': 'Bearer ' + localStorage.getItem('Bearer')
+            'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
           }
           return config
         })
@@ -73,10 +73,25 @@
         })
       },
       renewInfo() {
-        console.log('renew info')
+        axios.post('api/admin/pass')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
       },
       userLogOut() {
-        console.log('user log out')
+        axios.post('api/logout')
+        .then((res) => {
+          console.log(res)
+          localStorage.clear()
+          sessionStorage.clear()
+          this.$router.push('/login')
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
       }
     }
   }
