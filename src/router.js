@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 
-const routerHistory = createWebHistory()
-
 const router = createRouter({
-  history: routerHistory,
+  history: createWebHistory(),
   routes: [
     {
       path: '/login',
@@ -11,24 +9,43 @@ const router = createRouter({
       component: () => import('./components/views/Login.vue')
     },
     {
-      path: '/office',
-      name: 'Office',
+      path: '/',
       component: () => import('./components/views/Office.vue'),
       children: [
         {
-          path: '/projects',
+          path: 'projects',
           name: 'Projects',
-          component: () => import('./components/views/Office/Projects.vue')
+          component: () => import('./components/views/Office/Projects.vue'),
+          children: [
+            {
+              path: 'detail',
+              name: 'Detail',
+              component: () => import('./components/views/Office/projects/Detail.vue')
+            },
+            {
+              path: 'schedule',
+              name: 'Schedule',
+              component: () => import('./components/views/Office/projects/Schedule.vue')
+            },
+            {
+              path: 'process',
+              name: 'Process',
+              component: () => import('./components/views/Office/projects/Process.vue')
+            }
+          ]
         },
         {
-          path: '/userinfo',
+          path: 'userinfo',
           name: 'UserInfo',
           component: () => import('./components/views/Office/UserInfo.vue')
         },
         {
-          path: '/usermanage',
+          path: 'usermanage',
           name: 'UserManage',
-          component: () => import('./components/views/Office/UserManage.vue')
+          component: () => import('./components/views/Office/UserManage.vue'),
+          // meta: {
+          //   requireAuth: true
+          // }
         }
       ]
     }

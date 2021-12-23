@@ -1,5 +1,6 @@
 <template>
-  <el-table 
+  Process
+  <!-- <el-table 
     :data="taskList"
     style="width: 100%"
     :row-class-name="tableRowClassName"
@@ -65,40 +66,40 @@
         <el-button type="primary" @click="dialog=false">提交</el-button>
       </span>
     </template>
-  </el-dialog>
+  </el-dialog> -->
 </template>
 
 <script>
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import TaskModifyDrawer from './TaskModifyDrawer.vue'
-  let tasklist = require('./../fakedata/taskInfo.json')
-  let modifyData = tasklist.taskList
-  for (let i = 0; i < modifyData.length; i++) {
-    switch (modifyData[i].status) {
-      case 0:
-        modifyData[i].status = '已超时'
-        break;
-      case 1:
-        modifyData[i].status = '已完成'
-        break;
-      case 2:
-        modifyData[i].status = '进行中'
-        break;
-      default:
-        break;
-    }
-  }
+  // import { ElMessage, ElMessageBox } from 'element-plus'
+  // import TaskModifyDrawer from '../../../ui-components/TaskModifyDrawer.vue'
+  // let tasklist = require('./../fakedata/taskInfo.json')
+  // let modifyData = tasklist.taskList
+  // for (let i = 0; i < modifyData.length; i++) {
+  //   switch (modifyData[i].status) {
+  //     case 0:
+  //       modifyData[i].status = '已超时'
+  //       break;
+  //     case 1:
+  //       modifyData[i].status = '已完成'
+  //       break;
+  //     case 2:
+  //       modifyData[i].status = '进行中'
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
   export default {
-    name: "Standard",
+    name: "Process",
     props: {
       msg: String,
     },
     components: {
-      TaskModifyDrawer,
+      // TaskModifyDrawer,
     },
     data() {
       return {
-        taskList: modifyData,
+        // taskList: modifyData,
         drawer: false,
         dialog: false,
         tableHeight: 300,
@@ -111,97 +112,97 @@
         }
       };
     },
-    methods: {
-      tableRowClassName({ row }) {
-        if (row.status === '已超时') {
-          return 'warning-row'
-        } else if (row.status === '已完成') {
-          return 'success-row'
-        } else if (row.status === '进行中') {
-          return 'doing-row'
-        }
-        return ''
-      },
-      deleteTask() {
-        ElMessageBox.confirm(
-          '确定删除此任务吗？',
-          '请确认！',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        )
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '删除任务成功！'
-          })
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '取消删除任务。'
-          })
-        })
-      },
-      modifyTask() {
-        this.$data.drawer = true
-      },
-      drawerClose() {
-        ElMessageBox.confirm(
-          '确定放弃修改任务吗？',
-          '请确认！',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        )
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '放弃修改任务！'
-          })
-          this.$data.drawer = false
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '继续修改任务。'
-          })
-          this.$data.drawer = true
-        })
-      },
-      drawerVisible(visibleParams) {
-        this.$data.drawer = visibleParams
-      },
-      dialogClose(){
-        ElMessageBox.confirm(
-          '确定放弃添加任务吗？',
-          '请确认！',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        )
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '放弃添加任务！'
-          })
-          this.$data.dialog = false
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '继续添加任务。'
-          })
-          this.$data.dialog = true
-        })
-      }
-    },
+    // methods: {
+    //   tableRowClassName({ row }) {
+    //     if (row.status === '已超时') {
+    //       return 'warning-row'
+    //     } else if (row.status === '已完成') {
+    //       return 'success-row'
+    //     } else if (row.status === '进行中') {
+    //       return 'doing-row'
+    //     }
+    //     return ''
+    //   },
+    //   deleteTask() {
+    //     ElMessageBox.confirm(
+    //       '确定删除此任务吗？',
+    //       '请确认!',
+    //       {
+    //         confirmButtonText: '确定',
+    //         cancelButtonText: '取消',
+    //         type: 'warning',
+    //       }
+    //     )
+    //     .then(() => {
+    //       ElMessage({
+    //         type: 'success',
+    //         message: '删除任务成功!'
+    //       })
+    //     })
+    //     .catch(() => {
+    //       ElMessage({
+    //         type: 'info',
+    //         message: '取消删除任务。'
+    //       })
+    //     })
+    //   },
+    //   modifyTask() {
+    //     this.$data.drawer = true
+    //   },
+    //   drawerClose() {
+    //     ElMessageBox.confirm(
+    //       '确定放弃修改任务吗？',
+    //       '请确认!',
+    //       {
+    //         confirmButtonText: '确定',
+    //         cancelButtonText: '取消',
+    //         type: 'warning',
+    //       }
+    //     )
+    //     .then(() => {
+    //       ElMessage({
+    //         type: 'success',
+    //         message: '放弃修改任务!'
+    //       })
+    //       this.$data.drawer = false
+    //     })
+    //     .catch(() => {
+    //       ElMessage({
+    //         type: 'info',
+    //         message: '继续修改任务。'
+    //       })
+    //       this.$data.drawer = true
+    //     })
+    //   },
+    //   drawerVisible(visibleParams) {
+    //     this.$data.drawer = visibleParams
+    //   },
+    //   dialogClose(){
+    //     ElMessageBox.confirm(
+    //       '确定放弃添加任务吗？',
+    //       '请确认!',
+    //       {
+    //         confirmButtonText: '确定',
+    //         cancelButtonText: '取消',
+    //         type: 'warning',
+    //       }
+    //     )
+    //     .then(() => {
+    //       ElMessage({
+    //         type: 'success',
+    //         message: '放弃添加任务!'
+    //       })
+    //       this.$data.dialog = false
+    //     })
+    //     .catch(() => {
+    //       ElMessage({
+    //         type: 'info',
+    //         message: '继续添加任务。'
+    //       })
+    //       this.$data.dialog = true
+    //     })
+    //   }
+    // },
   }
 </script>
 

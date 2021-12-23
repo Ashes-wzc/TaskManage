@@ -1,52 +1,106 @@
 <template>
-  <el-container class="task-container">
-    <el-header height="60px" class="task-header">
-      <h1>项目列表</h1>
+  <el-container class="project-container">
+    <el-header height="60px" class="project-header">
+      <el-menu :default-active="$route.path" class="project-menu" mode="horizontal" @select="handleSelect" router>
+        <el-menu-item index="/projects/detail">详情</el-menu-item>
+        <el-menu-item index="/projects/schedule">日程</el-menu-item>
+        <el-menu-item index="/projects/process">进度</el-menu-item>
+      </el-menu>
+      <el-button @click="projectSelect">
+        项目选择
+      </el-button>
     </el-header>
-    <el-main class="task-main">
-      <el-row class="task-row">
-        <el-col :span="6">
-          <div class="card_container">
-            <ProjectCard url="/projects/b8l/test" ProjectName="B8L"></ProjectCard>
-          </div>
-        </el-col>
-      </el-row>
+    <el-main class="project-main">
+      <router-view></router-view>
     </el-main>
   </el-container>
+  <el-drawer
+    v-model="projectSelectDrawer"
+    size="20%"
+    :with-header="false"
+  >
+    <h1 style="margin-top:0;">项目选择</h1>
+    <el-menu>
+      <el-menu-item style="padding:0;">B8L</el-menu-item>
+      <el-menu-item style="padding:0;">标定机</el-menu-item>
+    </el-menu>
+  </el-drawer>
 </template>
 
 <script>
-  import ProjectCard from '../../ui-components/ProjectCard.vue'
+  // import axios from 'axios'
+  // import { ElMessage } from 'element-plus'
+  import { getAllProjectsAPI } from './../../../utils/api'
   export default {
-    name: "Task",
-    props: {
-      msg: String,
+    name: "Projects",
+    data() {
+      return {
+        projectList: [],
+        projectSelectDrawer: false
+      }
     },
-    components: {
-      ProjectCard
+    mounted() {
+      // this.addAxiosHeader()
+      // this.getProjectList()
+      this.testAxios()
+      this.$router.push('/projects/schedule')
+      // this.$test()
+    },
+    methods: {
+      testAxios() {
+        getAllProjectsAPI()
+        .then(res => {
+          console.log(res.data)
+          this.$data.projectList = res.data
+        })
+      },
+      // 添加请求头，后续改为统一封装
+      // addAxiosHeader() {
+      //   axios.interceptors.request.use(config => {
+      //     config.headers = {
+      //       'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
+      //     }
+      //     return config
+      //   })
+      // },
+      // getProjectList() {
+      //   axios.get('apis' + '/project/getAllProjects')
+      //   .then((res) => {
+      //     console.log(res.data)
+      //     this.$data.projectList = res.data
+      //   })
+      //   .catch((error) => {
+      //     ElMessage.error(error.toString())
+      //   })
+      // },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      projectSelect(){
+        console.log('projectSelect')
+        this.projectSelectDrawer = true
+      }
     }
   }
 </script>
 
 <style>
-  .task-container {
+  .project-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
   }
-  .task-header {
-    background-color: #f7f7f7;
-  }
-  .task-main {
-    flex: 1;
-  }
-  .task-row {
-    margin-top: 10px;
-  }
-  .card_container {
+  .project-header {
     display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
+    flex-direction: row;
+    background-color: #f7f7f7;
+    padding: 0;
+  }
+  .project-menu {
+    flex: 1
+  }
+  .project-main {
+    flex: 1;
+    background-color: #f7f7f7;
   }
 </style>

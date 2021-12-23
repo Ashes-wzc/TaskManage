@@ -41,7 +41,7 @@
     methods: {
       onSubmit(url) {
         this.loading = true
-        axios.post('api'+url, this.form)
+        axios.post('apis' + url, this.form)
         .then((response) => {
           if (response.data.code == 200) {
             ElMessage.success({

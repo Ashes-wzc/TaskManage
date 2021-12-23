@@ -88,7 +88,7 @@ export default {
     onSubmit() {
       ElMessageBox.confirm(
           '确认提交？',
-          '请确认！',
+          '请确认!',
           {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -99,7 +99,7 @@ export default {
           this.$emit("changeDrawerVisible", false)
           ElMessage({
             type: 'success',
-            message: '修改提交成功！'
+            message: '修改提交成功!'
           })
         })
         .catch(() => {

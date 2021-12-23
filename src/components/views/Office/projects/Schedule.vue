@@ -1,7 +1,8 @@
 <template>
-  <el-calendar>
+  Schedule
+  <!-- <p>{{ data.isSelected ? 'yes' : 'no' }}</p> -->
+  <!-- <el-calendar>
     <template #dateCell="{data}">
-      <!-- <p>{{ data.isSelected ? 'yes' : 'no' }}</p> -->
       <p style="margin:0px">{{ data.day.split('-').slice(1).join('-') }}</p>
       <template v-for="(project, index) in projects" :key="index">
         <el-tooltip
@@ -20,53 +21,53 @@
         </el-tooltip>
       </template>
     </template>
-  </el-calendar>
+  </el-calendar> -->
 </template>
 
 <script>
-  let projectrawList = require('./../fakedata/projectInfo.json')
-  let projectList = projectrawList.projects
-  for (let i = 0; i < projectList.length; i++) {
-    let originEndDate = projectList[i].endDate
-    let dayCount
-    switch (new Date(originEndDate).getDay()) {
-      case 0:
-        dayCount = 0
-        break;
-      case 1:
-        dayCount = 6
-        break;
-      case 2:
-        dayCount = 5
-        break;
-      case 3:
-        dayCount = 4
-        break;
-      case 4:
-        dayCount = 3
-        break;
-      case 5:
-        dayCount = 2
-        break;
-      case 6:
-        dayCount = 1
-        break;
-      default:
-        break;
-    }
-    let tempDate = new Date(originEndDate.replace(/-/g,"/"))
-    let resultDate = new Date((tempDate/1000+(86400*dayCount))*1000)
-    let resultDateStr = resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate())
-    projectList[i].addDay = resultDateStr
-  }
+  // let projectrawList = require('./../fakedata/projectInfo.json')
+  // let projectList = projectrawList.projects
+  // for (let i = 0; i < projectList.length; i++) {
+  //   let originEndDate = projectList[i].endDate
+  //   let dayCount
+  //   switch (new Date(originEndDate).getDay()) {
+  //     case 0:
+  //       dayCount = 0
+  //       break;
+  //     case 1:
+  //       dayCount = 6
+  //       break;
+  //     case 2:
+  //       dayCount = 5
+  //       break;
+  //     case 3:
+  //       dayCount = 4
+  //       break;
+  //     case 4:
+  //       dayCount = 3
+  //       break;
+  //     case 5:
+  //       dayCount = 2
+  //       break;
+  //     case 6:
+  //       dayCount = 1
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   let tempDate = new Date(originEndDate.replace(/-/g,"/"))
+  //   let resultDate = new Date((tempDate/1000+(86400*dayCount))*1000)
+  //   let resultDateStr = resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate())
+  //   projectList[i].addDay = resultDateStr
+  // }
   export default {
-    name: "Task",
+    name: "Schedule",
     props: {
       msg: String,
     },
     data() {
       return {
-        projects: projectList
+        // projects: projectList
       }
     },
     methods: {

@@ -32,9 +32,9 @@
 </template>
 
 <script>
-  import TaskCard from './../ui-components/TaskCard.vue'
+  import TaskCard from '../../../ui-components/TaskCard.vue'
   export default {
-    name: "Test",
+    name: "Detail",
     props: {
       msg: String,
     },
@@ -219,9 +219,6 @@
     },
     methods: {
       changeStatusFromChild(id1, id2 , event) {
-        // console.log("id1:" + id1)
-        // console.log("id2:" + id2)
-        // console.log("event:" + event)
         this.$data.TaskDatas[id1].TaskList[id2].TaskStatus = event
       }
     }

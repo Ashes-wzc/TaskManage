@@ -145,7 +145,7 @@ export default {
     },
     // 获取全部人员账号信息
     getAllUserInfo() {
-      axios.get('api/user/getAllUserInfo')
+      axios.get('apis/user/getAllUserInfo')
       .then((res) => {
         // console.log(res)
         let userData = res.data
@@ -158,7 +158,7 @@ export default {
     },
     // 获取全部工种
     getAllJobs() {
-      axios.get('api/user/getAllRoles')
+      axios.get('apis/user/getAllRoles')
       .then((res) => {
         this.jobs = res.data
       })
@@ -173,7 +173,7 @@ export default {
       const password = this.addForm.user.password
       const userType = this.addForm.user.userType
       if (name != null & username != null & password != null & userType != null) {
-        axios.post('api/user/addUser', this.addForm)
+        axios.post('apis/user/addUser', this.addForm)
         .then((res) => {
           ElMessage({
             message: res.data.message,
@@ -204,7 +204,7 @@ export default {
         }
       )
       .then(() => {
-        axios.post('api/user/deleteUser', this.deleteJson)
+        axios.post('apis/user/deleteUser', this.deleteJson)
         .then((res) => {
           switch (res.data.code) {
             case 200:
@@ -233,7 +233,7 @@ export default {
     },
     // 修改账户信息
     modifyAccount() {
-      axios.post('api/user/updateUser', this.editForm)
+      axios.post('apis/user/updateUser', this.editForm)
       .then((res) => {
         ElMessage({
           message: '修改账号成功' + res.data.code,

@@ -32,6 +32,7 @@
 
 <script>
   import axios from 'axios'
+  // import { ElMessage, ElMessageBox } from 'element-plus'
   export default {
     name: "User",
     props: {
@@ -52,7 +53,7 @@
       this.getUserInfo()
     },
     methods: {
-      // 添加请求头，后续改为统一封装
+      // // 添加请求头，后续改为统一封装
       addAxiosHeader() {
         axios.interceptors.request.use(config => {
           config.headers = {
@@ -62,7 +63,7 @@
         })
       },
       getUserInfo() {
-        axios.get('api/admin/info')
+        axios.get('apis/admin/info')
         .then((res) => {
           this.form.name = res.data.name
           this.form.userType = res.data.userType
@@ -73,7 +74,7 @@
         })
       },
       renewInfo() {
-        axios.post('api/admin/pass')
+        axios.post('apis/admin/pass')
         .then((res) => {
           console.log(res)
         })
@@ -82,7 +83,7 @@
         })
       },
       userLogOut() {
-        axios.post('api/logout')
+        axios.post('apis/logout')
         .then((res) => {
           console.log(res)
           localStorage.clear()

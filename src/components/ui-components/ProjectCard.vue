@@ -25,7 +25,7 @@
     methods: {
       JumpToUrl(url) {
         url = this.url
-        console.log(url)
+        // console.log(url)
         this.$router.push(url)
       }
     }
