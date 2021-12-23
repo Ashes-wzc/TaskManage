@@ -3,6 +3,8 @@
     <el-checkbox v-model=Status class="task_check_btn" @change="renewStatus(Status)"></el-checkbox>
     <div class="task_detail">
       <div>{{ TaskName }}</div>
+      <!-- <div>{{ createDate }}</div>
+      <div>{{ targetDate }}</div> -->
     </div>
   </div>
 </template>
@@ -12,17 +14,20 @@
     name: "TaskCard",
     props: {
       TaskTitle: String,
-      TaskStatus: Boolean
+      TaskStatus: Boolean,
+      // createDate: String,
+      // targetDate: String
     },
     data() {
       return {
         TaskName: this.$props.TaskTitle,
-        Status: this.$props.TaskStatus
+        Status: this.$props.TaskStatus,
+        // createDate: this.$props.createDate,
+        // targetDate: this.$props.targetDate
       }
     },
     methods: {
       renewStatus(status) {
-        // console.log(status)
         this.$emit("listenToChildEvent", status)
       }
     }

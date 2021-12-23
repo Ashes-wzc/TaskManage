@@ -1,18 +1,30 @@
 <template>
-  Process
-  <!-- <el-table 
-    :data="taskList"
+  <el-select v-model="schemeSelect" placeholder="选择计划" @change="schemeChange">
+    <el-option
+      v-for="(scheme, key) in schemeList"
+      :key="key"
+      :label="scheme.schemeName"
+      :value="scheme.schemeId"
+    >
+    </el-option>
+  </el-select>
+  <el-table
+    :data="showingScheme"
     style="width: 100%"
     :row-class-name="tableRowClassName"
     max-height="800"
   >
-    <el-table-column prop="name" label="名称" width="200" fixed></el-table-column>
-    <el-table-column prop="id" label="编号" width="150"></el-table-column>
-    <el-table-column prop="status" label="状态" width="150"></el-table-column>
-    <el-table-column prop="last_modify" label="最近修改" width="150"></el-table-column>
-    <el-table-column prop="start" label="起始时间" width="150"></el-table-column>
-    <el-table-column prop="end" label="结束时间" width="150"></el-table-column>
-    <el-table-column prop="end-time" label="完成时间" width="150"></el-table-column>
+    <el-table-column prop="taskName" label="名称" width="200" fixed></el-table-column>
+    <el-table-column prop="taskId" label="编号" width="150"></el-table-column>
+    <el-table-column prop="isfinished" label="状态" width="150">
+      <!-- <template slot-scope="{row: {isfinished}}">
+
+      </template> -->
+    </el-table-column>
+    <!-- <el-table-column prop="last_modify" label="最近修改" width="150"></el-table-column> -->
+    <el-table-column prop="createDate" label="起始时间" width="150"></el-table-column>
+    <el-table-column prop="targetDate" label="结束时间" width="150"></el-table-column>
+    <!-- <el-table-column prop="end-time" label="完成时间" width="150"></el-table-column>
     <el-table-column prop="describe" label="描述" width="800"></el-table-column>
     <el-table-column align="right" fixed="right" width="150">
       <template #header>
@@ -22,14 +34,14 @@
         <el-button size="mini" @click="modifyTask">查看</el-button>
         <el-button size="mini" type="danger" @click="deleteTask">删除</el-button>
       </template>
-    </el-table-column>
+    </el-table-column> -->
   </el-table>
-  <el-drawer v-model="drawer" title="任务详情" :direction="rtl" :before-close="drawerClose" :with-header="false">
+  <!-- <el-drawer v-model="drawer" title="任务详情" :direction="rtl" :before-close="drawerClose" :with-header="false">
     <div class="taskDrawer">
       <TaskModifyDrawer :drawerVisible="drawer" @changeDrawerVisible="drawerVisible" />
     </div>
-  </el-drawer>
-  <el-dialog
+  </el-drawer> -->
+  <!-- <el-dialog
     v-model="dialog"
     title="添加任务"
     width="50%"
@@ -70,9 +82,9 @@
 </template>
 
 <script>
+  import { getSchemeAPI } from '@/utils/api'
   // import { ElMessage, ElMessageBox } from 'element-plus'
   // import TaskModifyDrawer from '../../../ui-components/TaskModifyDrawer.vue'
-  // let tasklist = require('./../fakedata/taskInfo.json')
   // let modifyData = tasklist.taskList
   // for (let i = 0; i < modifyData.length; i++) {
   //   switch (modifyData[i].status) {
@@ -91,118 +103,138 @@
   // }
   export default {
     name: "Process",
-    props: {
-      msg: String,
-    },
     components: {
       // TaskModifyDrawer,
     },
     data() {
       return {
+        schemeList: [],
+        schemeSelect: Number,
+        showingScheme: []
         // taskList: modifyData,
-        drawer: false,
-        dialog: false,
-        tableHeight: 300,
-        form: {
-          name: '',
-          id: '',
-          dateRange: '',
-          desc: '',
-          status: '',
-        }
-      };
+        // drawer: false,
+        // dialog: false,
+        // tableHeight: 300,
+        // form: {
+        //   name: '',
+        //   id: '',
+        //   dateRange: '',
+        //   desc: '',
+        //   status: '',
+        // }
+      }
     },
-    // methods: {
-    //   tableRowClassName({ row }) {
-    //     if (row.status === '已超时') {
-    //       return 'warning-row'
-    //     } else if (row.status === '已完成') {
-    //       return 'success-row'
-    //     } else if (row.status === '进行中') {
-    //       return 'doing-row'
-    //     }
-    //     return ''
-    //   },
-    //   deleteTask() {
-    //     ElMessageBox.confirm(
-    //       '确定删除此任务吗？',
-    //       '请确认!',
-    //       {
-    //         confirmButtonText: '确定',
-    //         cancelButtonText: '取消',
-    //         type: 'warning',
-    //       }
-    //     )
-    //     .then(() => {
-    //       ElMessage({
-    //         type: 'success',
-    //         message: '删除任务成功!'
-    //       })
-    //     })
-    //     .catch(() => {
-    //       ElMessage({
-    //         type: 'info',
-    //         message: '取消删除任务。'
-    //       })
-    //     })
-    //   },
-    //   modifyTask() {
-    //     this.$data.drawer = true
-    //   },
-    //   drawerClose() {
-    //     ElMessageBox.confirm(
-    //       '确定放弃修改任务吗？',
-    //       '请确认!',
-    //       {
-    //         confirmButtonText: '确定',
-    //         cancelButtonText: '取消',
-    //         type: 'warning',
-    //       }
-    //     )
-    //     .then(() => {
-    //       ElMessage({
-    //         type: 'success',
-    //         message: '放弃修改任务!'
-    //       })
-    //       this.$data.drawer = false
-    //     })
-    //     .catch(() => {
-    //       ElMessage({
-    //         type: 'info',
-    //         message: '继续修改任务。'
-    //       })
-    //       this.$data.drawer = true
-    //     })
-    //   },
-    //   drawerVisible(visibleParams) {
-    //     this.$data.drawer = visibleParams
-    //   },
-    //   dialogClose(){
-    //     ElMessageBox.confirm(
-    //       '确定放弃添加任务吗？',
-    //       '请确认!',
-    //       {
-    //         confirmButtonText: '确定',
-    //         cancelButtonText: '取消',
-    //         type: 'warning',
-    //       }
-    //     )
-    //     .then(() => {
-    //       ElMessage({
-    //         type: 'success',
-    //         message: '放弃添加任务!'
-    //       })
-    //       this.$data.dialog = false
-    //     })
-    //     .catch(() => {
-    //       ElMessage({
-    //         type: 'info',
-    //         message: '继续添加任务。'
-    //       })
-    //       this.$data.dialog = true
-    //     })
-    //   }
-    // },
+    mounted() {
+      this.getScheme()
+    },
+    methods: {
+      // 获取全部的计划数据
+      getScheme() {
+        getSchemeAPI(1)
+        .then((res) => {
+          this.schemeList = res.data
+          console.log(this.schemeList)
+          this.showingScheme = this.schemeList[0].tasks
+          this.schemeSelect = 1
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
+      },
+      // 切换显示的计划
+      schemeChange() {
+        this.showingScheme = this.schemeList[this.schemeSelect - 1].tasks
+      },
+      tableRowClassName({ row }) {
+        if (row.status === '已超时') {
+          return 'warning-row'
+        } else if (row.status === '已完成') {
+          return 'success-row'
+        } else if (row.status === '进行中') {
+          return 'doing-row'
+        }
+        return ''
+      },
+      // deleteTask() {
+      //   ElMessageBox.confirm(
+      //     '确定删除此任务吗？',
+      //     '请确认!',
+      //     {
+      //       confirmButtonText: '确定',
+      //       cancelButtonText: '取消',
+      //       type: 'warning',
+      //     }
+      //   )
+      //   .then(() => {
+      //     ElMessage({
+      //       type: 'success',
+      //       message: '删除任务成功!'
+      //     })
+      //   })
+      //   .catch(() => {
+      //     ElMessage({
+      //       type: 'info',
+      //       message: '取消删除任务。'
+      //     })
+      //   })
+      // },
+      // modifyTask() {
+      //   this.$data.drawer = true
+      // },
+      // drawerClose() {
+      //   ElMessageBox.confirm(
+      //     '确定放弃修改任务吗？',
+      //     '请确认!',
+      //     {
+      //       confirmButtonText: '确定',
+      //       cancelButtonText: '取消',
+      //       type: 'warning',
+      //     }
+      //   )
+      //   .then(() => {
+      //     ElMessage({
+      //       type: 'success',
+      //       message: '放弃修改任务!'
+      //     })
+      //     this.$data.drawer = false
+      //   })
+      //   .catch(() => {
+      //     ElMessage({
+      //       type: 'info',
+      //       message: '继续修改任务。'
+      //     })
+      //     this.$data.drawer = true
+      //   })
+      // },
+      // drawerVisible(visibleParams) {
+      //   this.$data.drawer = visibleParams
+      // },
+      // dialogClose(){
+      //   ElMessageBox.confirm(
+      //     '确定放弃添加任务吗？',
+      //     '请确认!',
+      //     {
+      //       confirmButtonText: '确定',
+      //       cancelButtonText: '取消',
+      //       type: 'warning',
+      //     }
+      //   )
+      //   .then(() => {
+      //     ElMessage({
+      //       type: 'success',
+      //       message: '放弃添加任务!'
+      //     })
+      //     this.$data.dialog = false
+      //   })
+      //   .catch(() => {
+      //     ElMessage({
+      //       type: 'info',
+      //       message: '继续添加任务。'
+      //     })
+      //     this.$data.dialog = true
+      //   })
+      // }
+    },
   }
 </script>
 

@@ -5,6 +5,9 @@
         <el-menu-item index="/projects/detail">详情</el-menu-item>
         <el-menu-item index="/projects/schedule">日程</el-menu-item>
         <el-menu-item index="/projects/process">进度</el-menu-item>
+        <p style="color:red;">
+          项目名:{{ projectName }}, 开始日期:{{ createDate }}, 预期结束日期:{{ targetDate }}
+        </p>
       </el-menu>
       <el-button @click="projectSelect">
         项目选择
@@ -22,62 +25,43 @@
     <h1 style="margin-top:0;">项目选择</h1>
     <el-menu>
       <el-menu-item style="padding:0;">B8L</el-menu-item>
-      <el-menu-item style="padding:0;">标定机</el-menu-item>
     </el-menu>
   </el-drawer>
 </template>
 
 <script>
-  // import axios from 'axios'
-  // import { ElMessage } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import { getAllProjectsAPI } from './../../../utils/api'
   export default {
     name: "Projects",
     data() {
       return {
-        projectList: [],
+        projectName: '',
+        createDate: '',
+        targetDate: '',
         projectSelectDrawer: false
       }
     },
     mounted() {
-      // this.addAxiosHeader()
-      // this.getProjectList()
-      this.testAxios()
-      this.$router.push('/projects/schedule')
-      // this.$test()
+      this.getAllProjects()
+      this.$router.push('/projects/process')
     },
     methods: {
-      testAxios() {
+      getAllProjects() {
         getAllProjectsAPI()
         .then(res => {
-          console.log(res.data)
-          this.$data.projectList = res.data
+          this.$data.projectName = res.data[0].projectName
+          this.$data.createDate = res.data[0].createDate
+          this.$data.targetDate = res.data[0].targetDate
+        })
+        .catch((error) => {
+          ElMessage.error(error.toString())
         })
       },
-      // 添加请求头，后续改为统一封装
-      // addAxiosHeader() {
-      //   axios.interceptors.request.use(config => {
-      //     config.headers = {
-      //       'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
-      //     }
-      //     return config
-      //   })
-      // },
-      // getProjectList() {
-      //   axios.get('apis' + '/project/getAllProjects')
-      //   .then((res) => {
-      //     console.log(res.data)
-      //     this.$data.projectList = res.data
-      //   })
-      //   .catch((error) => {
-      //     ElMessage.error(error.toString())
-      //   })
-      // },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
       projectSelect(){
-        console.log('projectSelect')
         this.projectSelectDrawer = true
       }
     }

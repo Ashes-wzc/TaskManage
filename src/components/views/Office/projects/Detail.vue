@@ -1,27 +1,31 @@
 <template>
   <div class="column_center">
     <div class="task_page_container">
-      <div class="task_type_container" v-for="(TaskData, index1) in TaskDatas" :key="index1">
+      <div class="task_type_container" v-for="(scheme, index1) in schemes" :key="index1">
         <div class="task_type_title">
-          <span style="font-size: 20px" v-text="TaskData.TypeName"></span>
-          <span style="font-size: 16px; color: #595959; margin-left: 12px" v-text="TaskData.TaskList.length"></span>
+          <span style="font-size: 20px" v-text="scheme.schemeName"></span>
+          <span style="font-size: 16px; color: #595959; margin-left: 12px" v-text="scheme.tasks.length"></span>
         </div>
         <el-scrollbar style="flex: 1">
           <div class="task_list">
             <el-timeline>
               <el-timeline-item
                 style="text-align: left;"
-                v-for="(task, index2) in TaskData.TaskList"
+                v-for="(task, index2) in scheme.tasks"
                 :key="index2"
                 :icon="task.icon"
                 :type="task.type"
-                :color="task.TaskStatus == true ? '#0bbd87': 'red'"
+                :color="task.isfinished == true ? '#0bbd87': 'red'"
                 :size="task.size"
                 :hollow="task.hollow"
-                :timestamp="task.TaskDate"
+                :timestamp="task.createDate"
                 placement="top"
               >
-                <TaskCard :TaskTitle="task.TaskName" :TaskStatus="task.TaskStatus" v-on:listenToChildEvent="changeStatusFromChild(index1, index2, $event)"/>
+                <TaskCard 
+                  :TaskTitle="task.taskName"
+                  :TaskStatus="task.isfinished"
+                  v-on:listenToChildEvent="changeStatusFromChild(index1, index2, $event)"
+                />
               </el-timeline-item>
             </el-timeline>
           </div>
@@ -32,7 +36,8 @@
 </template>
 
 <script>
-  import TaskCard from '../../../ui-components/TaskCard.vue'
+  import { getSchemeAPI } from '@/utils/api'
+  import TaskCard from '@/components/ui-components/TaskCard.vue'
   export default {
     name: "Detail",
     props: {
@@ -41,164 +46,12 @@
     components: {
       TaskCard
     },
+    mounted() {
+      this.getScheme()
+    },
     data() {
       return {
-        TaskDatas: [
-          {
-            TypeName: '立项',
-            TaskList:[
-              {
-                TaskName: '方案评估',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '产品选型',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '立项',
-                TaskDate: '2021-9-9',
-                TaskStatus: false
-              }
-            ]
-          },
-          {
-            TypeName: '标准',
-            TaskList:[
-              {
-                TaskName: '硬件标准',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '软件标准',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          },
-          {
-            TypeName: '硬件设计',
-            TaskList:[
-              {
-                TaskName: '电路设计',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '结构设计',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '硬件配置',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          },
-          {
-            TypeName: '软件设计',
-            TaskList:[
-              {
-                TaskName: '软件设计',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '环境配置',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '架构设计',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '线上测试',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '程序打包',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          },
-          {
-            TypeName: '样品制造',
-            TaskList:[
-              {
-                TaskName: '样品测试',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '样品制造',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          },
-          {
-            TypeName: '测试',
-            TaskList:[
-              {
-                TaskName: '硬件测试',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '软件测试',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '其他测试',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          },
+        TaskDatasss: [
           {
             TypeName: '量产',
             TaskList:[
@@ -214,12 +67,23 @@
               }
             ]
           }
-        ]
+        ],
+        schemes: []
       }
     },
     methods: {
+      getScheme() {
+        getSchemeAPI(1)
+        .then((res) => {
+          this.schemes = res.data
+          console.log(this.schemes)
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
+      },
       changeStatusFromChild(id1, id2 , event) {
-        this.$data.TaskDatas[id1].TaskList[id2].TaskStatus = event
+        this.$data.schemes[id1].tasks[id2].isfinished = event
       }
     }
   }

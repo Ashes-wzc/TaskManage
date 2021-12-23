@@ -4,9 +4,7 @@ function myAxios(axiosConfig) {
   const service = axios.create({
     baseURL: '/apis',
     timeout: 1000 * 5,
-    // headers: {
-    //   'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
-    // }
+    // headers: {}
   })
   service.interceptors.request.use(
     config => {
