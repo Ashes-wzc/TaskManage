@@ -17,13 +17,14 @@
     <el-table-column prop="taskName" label="名称" width="200" fixed></el-table-column>
     <el-table-column prop="taskId" label="编号" width="150"></el-table-column>
     <el-table-column prop="isfinished" label="状态" width="150">
-      <!-- <template slot-scope="{row: {isfinished}}">
-
-      </template> -->
+      <template #default="scope">
+        <span v-if="scope.row.isfinished">已完成</span>
+        <span v-else>未完成</span>
+      </template>
     </el-table-column>
     <!-- <el-table-column prop="last_modify" label="最近修改" width="150"></el-table-column> -->
     <el-table-column prop="createDate" label="起始时间" width="150"></el-table-column>
-    <el-table-column prop="targetDate" label="结束时间" width="150"></el-table-column>
+    <el-table-column prop="targetDate" label="计划结束时间" width="150"></el-table-column>
     <!-- <el-table-column prop="end-time" label="完成时间" width="150"></el-table-column>
     <el-table-column prop="describe" label="描述" width="800"></el-table-column>
     <el-table-column align="right" fixed="right" width="150">
@@ -85,22 +86,6 @@
   import { getSchemeAPI } from '@/utils/api'
   // import { ElMessage, ElMessageBox } from 'element-plus'
   // import TaskModifyDrawer from '../../../ui-components/TaskModifyDrawer.vue'
-  // let modifyData = tasklist.taskList
-  // for (let i = 0; i < modifyData.length; i++) {
-  //   switch (modifyData[i].status) {
-  //     case 0:
-  //       modifyData[i].status = '已超时'
-  //       break;
-  //     case 1:
-  //       modifyData[i].status = '已完成'
-  //       break;
-  //     case 2:
-  //       modifyData[i].status = '进行中'
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
   export default {
     name: "Process",
     components: {
@@ -109,9 +94,8 @@
     data() {
       return {
         schemeList: [],
-        schemeSelect: Number,
-        showingScheme: []
-        // taskList: modifyData,
+        schemeSelect: new Number,
+        showingScheme: [],
         // drawer: false,
         // dialog: false,
         // tableHeight: 300,
@@ -130,7 +114,9 @@
     methods: {
       // 获取全部的计划数据
       getScheme() {
-        getSchemeAPI(1)
+        let currentProject = sessionStorage.getItem('currentProject')
+        let currentProjectId = currentProject == null ? 1 : currentProject
+        getSchemeAPI(currentProjectId)
         .then((res) => {
           this.schemeList = res.data
           console.log(this.schemeList)
@@ -146,14 +132,11 @@
         this.showingScheme = this.schemeList[this.schemeSelect - 1].tasks
       },
       tableRowClassName({ row }) {
-        if (row.status === '已超时') {
+        if (row.isfinished == false) {
           return 'warning-row'
-        } else if (row.status === '已完成') {
+        } else {
           return 'success-row'
-        } else if (row.status === '进行中') {
-          return 'doing-row'
         }
-        return ''
       },
       // deleteTask() {
       //   ElMessageBox.confirm(
