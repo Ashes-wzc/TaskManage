@@ -1,18 +1,22 @@
 <template>
-  <!-- 计划选择下拉框 -->
-  <el-select v-model="schemeSelect" placeholder="选择计划" @change="schemeChange">
-    <el-option
-      v-for="(scheme, key) in schemeList"
-      :key="key"
-      :label="scheme.schemeName"
-      :value="scheme.schemeId"
-    >
-    </el-option>
-  </el-select>
+  <!-- 计划选择下拉框、添加按钮、删除按钮 -->
+  <div class="scheme_dashboard">
+    <el-select v-model="schemeSelect" placeholder="选择计划" @change="schemeChange" style="margin-right: 10px;">
+      <el-option
+        v-for="(scheme, key) in schemeList"
+        :key="key"
+        :label="scheme.schemeName"
+        :value="scheme.schemeId"
+      >
+      </el-option>
+    </el-select>
+    <el-button size="mini" type="primary" @click="addSchemeBtn">添加</el-button>
+    <el-button size="mini" @click="checkSchemeBtn">查看</el-button>
+  </div>
   <!-- 数据展示表格 -->
   <el-table
     :data="showingScheme"
-    style="width: 100%"
+    style="width: 100%;margin-top:10px;"
     :row-class-name="tableRowClassName"
     max-height="800"
   >
@@ -43,6 +47,7 @@
       </template>
     </el-table-column>
   </el-table>
+  <!-- 任务详情侧边弹出抽屉 -->
   <el-drawer v-model="drawer" title="任务详情" :before-close="drawerClose" :with-header="false">
     <div class="taskDrawer">
       <TaskModifyDrawer :drawerVisible=drawer @changeDrawerVisible=drawerVisible />
@@ -72,17 +77,26 @@
       </span>
     </template>
   </el-dialog>
+  <!-- 添加计划对话框 -->
+  <AddSchemeDialog 
+    :visible="addSchemeDialogVisible" 
+    @setDialogVisible="addSchemeDialogClose($event)"
+  />
+  <!-- 修改计划对话框 -->
 </template>
 
 <script>
   import { getSchemeAPI } from '@/utils/api'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
+  import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
   export default {
     name: "Process",
     components: {
       TaskModifyDrawer,
+      AddSchemeDialog,
     },
+    emits: ['setDialogVisible'],
     data() {
       return {
         schemeList: [],
@@ -90,6 +104,7 @@
         showingScheme: [],
         drawer: false,
         dialog: false,
+        addSchemeDialogVisible: false,
         addTaskForm: {
           headerid: new Number,
           participants: [],
@@ -106,7 +121,6 @@
     },
     mounted() {
       this.getScheme()
-      // this.schemeChange()
     },
     methods: {
       // 获取全部的计划数据
@@ -129,6 +143,14 @@
       schemeChange() {
         this.showingScheme = this.schemeList[this.schemeSelect - 1].tasks
         this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].sid
+      },
+      // 添加计划
+      addSchemeBtn() {
+        this.addSchemeDialogVisible = true
+      },
+      // 删除计划
+      checkSchemeBtn() {
+        console.log('delete scheme')
       },
       // 数据表格按完成情况显示不同的颜色
       tableRowClassName({ row }) {
@@ -220,12 +242,19 @@
           })
           this.$data.dialog = true
         })
+      },
+      addSchemeDialogClose(event) {
+        this.addSchemeDialogVisible = event
       }
     },
   }
 </script>
 
 <style>
+  .scheme_dashboard {
+    display: flex;
+    flex-direction: row;
+  }
   .el-table .warning-row {
     --el-table-tr-background-color: var(--el-color-warning-lighter);
   }

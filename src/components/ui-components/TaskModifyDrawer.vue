@@ -46,7 +46,7 @@ export default {
     drawerVisible: Boolean,
   },
   data() {
-    return{
+    return {
       form: {
         name: '',
         id: '',

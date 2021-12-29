@@ -51,23 +51,6 @@
     },
     data() {
       return {
-        TaskDatasss: [
-          {
-            TypeName: '量产',
-            TaskList:[
-              {
-                TaskName: '提交订单',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              },
-              {
-                TaskName: '量产完成',
-                TaskDate: '2021-9-9',
-                TaskStatus: true
-              }
-            ]
-          }
-        ],
         schemes: []
       }
     },

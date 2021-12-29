@@ -1,6 +1,6 @@
 import myAxios from "./myAxios"
 
-/****** 人员管理API ******/
+/************************************ 人员管理API ************************************/
 
 // 获取所有用户信息
 export function getAllUserAPI() {
@@ -10,7 +10,7 @@ export function getAllUserAPI() {
   })
 }
 
-/****** 项目管理API ******/
+/************************************ 项目管理API ************************************/
 
 // 获取全部的项目
 export function getAllProjectsAPI() {
@@ -36,7 +36,7 @@ export function deleteProjectAPI(pid) {
   })
 }
 
-/****** 计划管理API ******/
+/************************************ 计划管理API ************************************/
 
 // 获取对应项目的所有计划
 export function getSchemeAPI(schemePid) {
@@ -48,8 +48,18 @@ export function getSchemeAPI(schemePid) {
     }
   })
 }
+// 添加计划
+export function addSchemeAPI(schemeInfo) {
+  return myAxios({
+    url: '/scheme/addScheme',
+    method: 'POST',
+    data: schemeInfo
+  })
+}
+// 更新计划信息
+// 删除计划信息
 
-/****** 任务管理API ******/
+/************************************ 任务管理API ************************************/
 
 // 添加对应计划下的任务
 export function addTaskAPI(addTaskInfo) {
@@ -76,5 +86,36 @@ export function deleteTask(deleteTaskTid) {
     url: '/task/deleteTask',
     method: 'POST',
     data: deleteTaskTid
+  })
+}
+
+/************************************ 文件管理API ************************************/
+
+// 获取对应任务下的文档
+export function getDocumentAPI() {
+  return myAxios({
+    url: '/document/getDocument',
+    method: 'GET'
+  })
+}
+// 上传对应任务下的文档
+export function uploadDocumentAPI() {
+  return myAxios({
+    url: '/document/uploadDocument',
+    method: 'POST'
+  })
+}
+// 下载对应任务文档
+export function downloadDocumentAPI() {
+  return myAxios({
+    url: '/document/downloadDocument',
+    method: 'GET'
+  })
+}
+// 删除文档信息
+export function deleteDocumentAPI() {
+  return myAxios({
+    url: '/document/deleteDocument',
+    method: 'POST'
   })
 }

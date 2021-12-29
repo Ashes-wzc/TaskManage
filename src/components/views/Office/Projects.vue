@@ -32,7 +32,7 @@
         </template>
         <template #default="scope">
           <el-button 
-            size="mini" 
+            size="mini"
             @click="projectEnterBtn(scope.$index, scope.row)"
           >进入</el-button>
           <el-button
@@ -125,10 +125,12 @@
         getAllProjectsAPI()
         .then(res => {
           this.$data.projects = res.data
-          this.$data.projectName = res.data[0].projectName
-          this.$data.createDate = res.data[0].createDate
-          this.$data.targetDate = res.data[0].targetDate
-          console.log(res.data)
+          let sessionStorageIndex = sessionStorage.getItem('currentProjectIndex')
+          let currentProjectIndex = sessionStorageIndex == null ? 0 : sessionStorageIndex
+          this.$data.projectName = res.data[currentProjectIndex].projectName
+          this.$data.createDate = res.data[currentProjectIndex].createDate
+          this.$data.targetDate = res.data[currentProjectIndex].targetDate
+          console.log('getAllProjectAPI:', res.data)
         })
         .catch(error => {
           ElMessage.error(error.toString())
@@ -141,6 +143,7 @@
       projectEnterBtn(index, row){
         console.log(index, row)
         sessionStorage.setItem('currentProject', row.projectId)
+        sessionStorage.setItem('currentProjectIndex', index)
         this.$router.push('/projects/process')
       },
       // 删除项目
