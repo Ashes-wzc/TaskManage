@@ -2,9 +2,9 @@
   <el-container class="project-container">
     <el-header height="60px" class="project-header">
       <el-menu :default-active="$route.path" class="project-menu" mode="horizontal" @select="handleSelect" router>
-        <el-menu-item index="/projects/detail">详情</el-menu-item>
+        <el-menu-item index="/projects/detail">计划总览</el-menu-item>
         <el-menu-item index="/projects/schedule">日程</el-menu-item>
-        <el-menu-item index="/projects/process">进度</el-menu-item>
+        <el-menu-item index="/projects/process">项目详情</el-menu-item>
         <p style="color:red;">
           项目名:{{ projectName }}, 开始日期:{{ createDate }}, 预期结束日期:{{ targetDate }}
         </p>
@@ -83,7 +83,7 @@
 
 <script>
   import { ElMessage } from 'element-plus'
-  import { getAllProjectsAPI, addProjectAPI, deleteProjectAPI } from '@/utils/api'
+  import { getAllUserAPI, getAllProjectsAPI, addProjectAPI, deleteProjectAPI } from '@/utils/api'
   export default {
     name: "Projects",
     data() {
@@ -92,7 +92,7 @@
         projectName: '',
         createDate: '',
         targetDate: '',
-        projectSelectDrawer: false,
+        projectSelectDrawer: false, // 项目选择抽屉是否显示
         addProjectDialogVisible: false, // 添加项目表单对话框是否显示
         form: {
           headerid: new Number,
@@ -110,6 +110,17 @@
       this.$router.push('/projects/process')
     },
     methods: {
+      // 获取全部用户
+      getAllUser() {
+        getAllUserAPI()
+        .then(res => {
+          console.log(res.data)
+          sessionStorage.setItem('userList', res.data)
+        })
+        .catch(err => {
+          console.log(err.toString())
+        })
+      },
       getAllProjects() {
         getAllProjectsAPI()
         .then(res => {

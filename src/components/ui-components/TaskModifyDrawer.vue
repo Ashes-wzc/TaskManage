@@ -1,5 +1,5 @@
 <template>
-  <el-tabs type="card" @tab-click="tabSwitch" stretch="true" style="width:100%">
+  <el-tabs type="card" @tab-click="tabSwitch" style="width:100%" :stretch=true>
     <el-tab-pane label="任务修改">
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="任务名称">
@@ -33,37 +33,13 @@
         </el-form>
     </el-tab-pane>
     <el-tab-pane label="任务历史">
-      <el-table :data="taskList" style="width: 100%">
-        <el-table-column prop="name" label="用户" />
-        <el-table-column prop="status" label="状态" />
-        <el-table-column prop="last_modify" label="修改日期" />
-        <el-table-column prop="start" label="开始日期" />
-        <el-table-column prop="end" label="结束日期" />
-        <el-table-column prop="describe" label="描述" />
-      </el-table>
+      任务历史
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
 import { ElMessage, ElMessageBox } from 'element-plus'
-let tasklist = require('./../fakedata/history.json')
-let modifyData = tasklist.taskList
-for (let i = 0; i < modifyData.length; i++) {
-  switch (modifyData[i].status) {
-    case 0:
-      modifyData[i].status = '已超时'
-      break;
-    case 1:
-      modifyData[i].status = '已完成'
-      break;
-    case 2:
-      modifyData[i].status = '进行中'
-      break;
-    default:
-      break;
-  }
-}
 export default {
   name: "TaskModifyDrawer",
   props: {
@@ -71,7 +47,6 @@ export default {
   },
   data() {
     return{
-      taskList: modifyData,
       form: {
         name: '',
         id: '',
