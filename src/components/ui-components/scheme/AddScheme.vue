@@ -20,13 +20,13 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button size='mini' type='primary'>添加</el-button>
+      <el-button size='mini' type='primary' @click="submitForm">添加</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script>
-// import { addSchemeAPI } from '@/utils/api'
+import { addSchemeAPI } from '@/utils/api'
 export default {
   name: 'AddSchemeDialog',
   props: {
@@ -35,13 +35,13 @@ export default {
   data() {
     return {
       form: {
-        headerid: new Number,
-        pid: new Number,
+        headerid: '001',
+        pid: '1',
         scheme: {
-          createDate: '',
+          createDate: '2021-12-31 14:00:00',
           isfinished: false,
-          schemeName: '',
-          targetDate: ''
+          schemeName: 'test',
+          targetDate: '2022-01-31 14:00:00'
         }
       }
     }
@@ -49,6 +49,15 @@ export default {
   methods: {
     dialogClose(isvisible) {
       this.$emit("setDialogVisible", isvisible)
+    },
+    submitForm() {
+      addSchemeAPI(this.form)
+      .then(res => {
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
     }
   }
 }

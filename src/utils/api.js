@@ -66,9 +66,6 @@ export function addTaskAPI(addTaskInfo) {
   return myAxios({
     url: '/task/addTask',
     method: 'POST',
-    params: {
-
-    },
     data: addTaskInfo
   })
 }

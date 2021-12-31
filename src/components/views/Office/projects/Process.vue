@@ -62,18 +62,27 @@
   >
     <el-form ref="form" :model="addTaskForm" label-width="120px">
       <el-form-item label="任务名称">
-        <el-input v-model="addTaskForm.name"></el-input>
+        <el-input v-model="addTaskForm.task.taskName"></el-input>
       </el-form-item>
-      <el-form-item label="任务编号">
-        <el-input v-model="addTaskForm.id"></el-input>
+      <el-form-item label="负责人工号">
+        <el-input v-model="addTaskForm.headerid"></el-input>
+      </el-form-item>
+      <el-form-item label="所属计划id">
+        <el-input v-model="addTaskForm.sid"></el-input>
+      </el-form-item>
+      <el-form-item label="开始时间">
+        <el-input v-model="addTaskForm.task.createDate"></el-input>
+      </el-form-item>
+      <el-form-item label="计划结束时间">
+        <el-input v-model="addTaskForm.task.targetDate"></el-input>
       </el-form-item>
       <el-form-item label="任务描述">
-        <el-input v-model="addTaskForm.desc" type="textarea"></el-input>
+        <el-input v-model="addTaskForm.task.taskPricipal" type="textarea"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="dialog=false">提交</el-button>
+        <el-button type="primary" @click="submitAddTaskForm">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -86,7 +95,7 @@
 </template>
 
 <script>
-  import { getSchemeAPI } from '@/utils/api'
+  import { getSchemeAPI, addTaskAPI } from '@/utils/api'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
@@ -96,7 +105,7 @@
       TaskModifyDrawer,
       AddSchemeDialog,
     },
-    emits: ['setDialogVisible'],
+    // emits: ['setDialogVisible'],
     data() {
       return {
         schemeList: [],
@@ -106,15 +115,15 @@
         dialog: false,
         addSchemeDialogVisible: false,
         addTaskForm: {
-          headerid: new Number,
+          headerid: '001',
           participants: [],
-          sid: new Number,
+          sid: '',
           task: {
-            createDate: '',
+            createDate: '2021-12-31 14:00:00',
             isfinished: false,
-            targetDate: '',
-            taskName: '',
-            taskPricipal: ''
+            targetDate: '2021-12-31 14:00:00',
+            taskName: '测试',
+            taskPricipal: '写点备注'
           }
         }
       }
@@ -142,7 +151,7 @@
       // 切换显示的计划
       schemeChange() {
         this.showingScheme = this.schemeList[this.schemeSelect - 1].tasks
-        this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].sid
+        this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].schemeId
       },
       // 添加计划
       addSchemeBtn() {
@@ -159,6 +168,18 @@
         } else {
           return 'success-row'
         }
+      },
+      // 添加任务表单发送
+      submitAddTaskForm() {
+        addTaskAPI(this.addTaskForm)
+        .then(res => {
+          console.log(res.data)
+          this.getScheme()
+          this.dialog = false
+        })
+        .catch(err => {
+          console.log(err.toString())
+        })
       },
       // 删除任务
       deleteTask(row) {
