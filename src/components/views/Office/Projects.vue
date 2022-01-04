@@ -1,20 +1,23 @@
 <template>
   <el-container class="project-container">
+    <!-- 项目管理顶部导航条 -->
     <el-header height="60px" class="project-header">
-      <el-menu :default-active="$route.path" class="project-menu" mode="horizontal" @select="handleSelect" router>
+      <el-menu :default-active="$route.path" class="project-menu" mode="horizontal" router>
         <el-menu-item index="/projects/detail">计划总览</el-menu-item>
         <el-menu-item index="/projects/schedule">日程</el-menu-item>
         <el-menu-item index="/projects/process">项目详情</el-menu-item>
-        <p style="color:red;">
+        <p style="color:red;margin-left:10px;">
           项目名:{{ projectName }}, 开始日期:{{ createDate }}, 预期结束日期:{{ targetDate }}
         </p>
       </el-menu>
       <el-button @click="this.$data.projectSelectDrawer = true">项目管理</el-button>
     </el-header>
+    <!-- 项目管理主体页面 -->
     <el-main class="project-main">
       <router-view></router-view>
     </el-main>
   </el-container>
+  <!-- 项目管理右侧抽屉 -->
   <el-drawer
     v-model="projectSelectDrawer"
     size="20%"
@@ -28,22 +31,29 @@
           <el-button
             size="mini"
             @click="this.$data.addProjectDialogVisible = true"
-          >添加项目</el-button>
+          >
+            添加项目
+          </el-button>
         </template>
         <template #default="scope">
           <el-button 
             size="mini"
-            @click="projectEnterBtn(scope.$index, scope.row)"
-          >进入</el-button>
+            @click="updateCurrentProjectInfo(scope.$index, scope.row)"
+          >
+            进入
+          </el-button>
           <el-button
             size="mini" 
             type="danger" 
-            @click="projectDeleteBtn(scope.$index, scope.row)"
-          >删除</el-button>
+            @click="projectDeleteBtn(scope.row.projectName, scope.$index)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
   </el-drawer>
+  <!-- 添加项目对话框 -->
   <el-dialog
     v-model="addProjectDialogVisible"
     title="添加项目"
@@ -82,16 +92,52 @@
 </template>
 
 <script>
+  import { ref, onMounted } from 'vue'
   import { ElMessage } from 'element-plus'
-  import { getAllUserAPI, getAllProjectsAPI, addProjectAPI, deleteProjectAPI } from '@/utils/api'
+  import { updateCurrentProject } from '@/store/store'
+  import { getAllProjectsAPI, addProjectAPI, deleteProjectAPI } from '@/utils/api'
   export default {
     name: "Projects",
+    setup () {
+      // const currentProjectIndex = ref(0)
+      const projects = ref([])
+      const projectName = ref('Null')
+      const createDate = ref('Null')
+      const targetDate = ref('Null')
+      const updateCurrentProjectInfo = (name, index) => {
+        updateCurrentProject(name, index)
+      }
+      const getAllProjects = () => {
+        getAllProjectsAPI()
+        .then(res => {
+          if (res.data.length > 0) {
+            projects.value = res.data
+            projectName.value = res.data[1].projectName
+            createDate.value = res.data[1].createDate
+            targetDate.value = res.data[1].targetDate
+          }
+          else {
+            ElMessage.error('暂无项目数据')
+          }
+        })
+        .catch(error => {
+          ElMessage.error(error.toString())
+        })
+      }
+
+      onMounted(getAllProjects)
+
+      return {
+        projects,
+        projectName,
+        createDate,
+        targetDate,
+        getAllProjects,
+        updateCurrentProjectInfo
+      }
+    },
     data() {
       return {
-        projects: [],
-        projectName: '',
-        createDate: '',
-        targetDate: '',
         projectSelectDrawer: false, // 项目选择抽屉是否显示
         addProjectDialogVisible: false, // 添加项目表单对话框是否显示
         form: {
@@ -105,50 +151,10 @@
         }
       }
     },
-    mounted() {
-      this.getAllProjects()
-      this.$router.push('/projects/process')
-    },
     methods: {
-      // 获取全部用户
-      getAllUser() {
-        getAllUserAPI()
-        .then(res => {
-          console.log(res.data)
-          sessionStorage.setItem('userList', res.data)
-        })
-        .catch(err => {
-          console.log(err.toString())
-        })
-      },
-      getAllProjects() {
-        getAllProjectsAPI()
-        .then(res => {
-          this.$data.projects = res.data
-          let sessionStorageIndex = sessionStorage.getItem('currentProjectIndex')
-          let currentProjectIndex = sessionStorageIndex == null ? 0 : sessionStorageIndex
-          this.$data.projectName = res.data[currentProjectIndex].projectName
-          this.$data.createDate = res.data[currentProjectIndex].createDate
-          this.$data.targetDate = res.data[currentProjectIndex].targetDate
-          console.log('getAllProjectAPI:', res.data)
-        })
-        .catch(error => {
-          ElMessage.error(error.toString())
-        })
-      },
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      // 选择项目
-      projectEnterBtn(index, row){
-        console.log(index, row)
-        sessionStorage.setItem('currentProject', row.projectId)
-        sessionStorage.setItem('currentProjectIndex', index)
-        this.$router.push('/projects/process')
-      },
       // 删除项目
       projectDeleteBtn(index, row) {
-        // console.log(index, row)
+        console.log(index, row)
         let pid = {
           pid: row.projectId
         }

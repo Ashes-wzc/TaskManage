@@ -6,7 +6,7 @@
           <div class="logo">DEMUP</div>
         </el-row>
         <el-menu :default-active="$route.path" class="el-menu-vertical" @select="handleSelect" router>
-          <el-menu-item index="/projects">
+          <el-menu-item index="/projects/process">
             <i class="el-icon-document"></i>
             <template #title>项目管理</template>
           </el-menu-item>

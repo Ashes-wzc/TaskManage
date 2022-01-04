@@ -1,4 +1,5 @@
 <template>
+  <p>{{ pname }}</p>
   <!-- 计划选择下拉框、添加按钮、删除按钮 -->
   <div class="scheme_dashboard">
     <el-select v-model="schemeSelect" placeholder="选择计划" @change="schemeChange" style="margin-right: 10px;">
@@ -20,18 +21,18 @@
     :row-class-name="tableRowClassName"
     max-height="800"
   >
-    <el-table-column prop="taskName" label="名称" width="200" fixed></el-table-column>
-    <el-table-column prop="taskId" label="编号"></el-table-column>
-    <el-table-column prop="isfinished" label="状态">
+    <el-table-column prop="taskName" label="名称" fixed align="center"></el-table-column>
+    <el-table-column prop="taskId" label="编号" align="center"></el-table-column>
+    <el-table-column prop="isfinished" label="状态" align="center">
       <template #default="scope">
         <span v-if="scope.row.isfinished">已完成</span>
         <span v-else>未完成</span>
       </template>
     </el-table-column>
-    <el-table-column prop="createDate" label="起始时间"></el-table-column>
-    <el-table-column prop="targetDate" label="计划结束时间"></el-table-column>
-    <el-table-column prop="headers[0].name" label="负责人"></el-table-column>
-    <el-table-column label="文件">
+    <el-table-column prop="createDate" label="起始时间" align="center"></el-table-column>
+    <el-table-column prop="targetDate" label="计划结束时间" align="center"></el-table-column>
+    <el-table-column prop="headers[0].name" label="负责人" align="center"></el-table-column>
+    <el-table-column label="文件" align="center">
       <template #default>
         <el-button size="mini">上传</el-button>
         <el-button size="mini">查看</el-button>
@@ -95,6 +96,8 @@
 </template>
 
 <script>
+  import { computed } from 'vue'
+  import { currentProjectInfo } from '@/store/store'
   import { getSchemeAPI, addTaskAPI } from '@/utils/api'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
@@ -105,7 +108,29 @@
       TaskModifyDrawer,
       AddSchemeDialog,
     },
-    // emits: ['setDialogVisible'],
+    setup() {
+      // const projectData = ref([])
+      const pname = computed(() => {
+        return currentProjectInfo.name
+      })
+
+      // const getProjectData = ()=> {
+      //   getSchemeAPI(currentProjectId)
+      //   .then((res) => {
+      //     this.schemeList = res.data
+      //     console.log(this.schemeList)
+      //     this.showingScheme = this.schemeList[0].tasks
+      //     this.schemeSelect = 1
+      //     this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].sid
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.toString())
+      //   })
+      // }
+      return {
+        pname
+      }
+    },
     data() {
       return {
         schemeList: [],
