@@ -57,7 +57,21 @@ export function addSchemeAPI(schemeInfo) {
   })
 }
 // 更新计划信息
+export function updateSchemeAPI(schemeInfo) {
+  return myAxios({
+    url: '/scheme/updateScheme',
+    method: 'POST',
+    data: schemeInfo
+  })
+}
 // 删除计划信息
+export function deleteSchemeAPI(sid) {
+  return myAxios({
+    url: '/scheme/deleteScheme',
+    method: 'POST',
+    data: sid
+  })
+}
 
 /************************************ 任务管理API ************************************/
 
@@ -70,7 +84,7 @@ export function addTaskAPI(addTaskInfo) {
   })
 }
 // 更新任务信息
-export function updateTask(updataTaskInfo) {
+export function updateTaskAPI(updataTaskInfo) {
   return myAxios({
     url: '/task/updateTask',
     method: 'POST',
@@ -78,11 +92,11 @@ export function updateTask(updataTaskInfo) {
   })
 }
 // 删除任务信息
-export function deleteTask(deleteTaskTid) {
+export function deleteTaskAPI(tid) {
   return myAxios({
     url: '/task/deleteTask',
     method: 'POST',
-    data: deleteTaskTid
+    data: tid
   })
 }
 

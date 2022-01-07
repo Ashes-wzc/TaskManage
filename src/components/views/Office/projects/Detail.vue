@@ -38,6 +38,8 @@
 <script>
   import { getSchemeAPI } from '@/utils/api'
   import TaskCard from '@/components/ui-components/TaskCard.vue'
+  import { currentProjectInfo } from '@/store/store'
+  import { computed } from 'vue'
   export default {
     name: "Detail",
     props: {
@@ -45,6 +47,14 @@
     },
     components: {
       TaskCard
+    },
+    setup(){
+      const currentProjectId = computed(() => {
+        return currentProjectInfo.id
+      })
+      return {
+        currentProjectId
+      }
     },
     mounted() {
       this.getScheme()
@@ -56,7 +66,7 @@
     },
     methods: {
       getScheme() {
-        getSchemeAPI(1)
+        getSchemeAPI(this.currentProjectId)
         .then((res) => {
           this.schemes = res.data
           console.log(this.schemes)

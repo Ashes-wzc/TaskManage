@@ -1,9 +1,9 @@
 <template>
   <el-dialog
     title="添加计划"
-    v-model="this.$props.visible"
+    v-model="selfVisible"
     width="50%"
-    @close="dialogClose(false)"
+    @close="returnVisible(false)"
   >
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label="计划名称">
@@ -27,10 +27,27 @@
 
 <script>
 import { addSchemeAPI } from '@/utils/api'
+import { currentProjectInfo } from '@/store/store'
+import { ref, toRefs, computed } from 'vue'
 export default {
   name: 'AddSchemeDialog',
   props: {
     visible: Boolean,
+  },
+  setup(props, context) {
+    const currentProjectId = computed(() => {
+        return currentProjectInfo.id
+      })
+    const { visible } = toRefs(props)
+    const selfVisible = ref(visible)
+    const returnVisible = (v) => {
+      context.emit('setDialogVisible', v)
+    }
+    return {
+      selfVisible,
+      returnVisible,
+      currentProjectId
+    }
   },
   emits: ["setDialogVisible"],
   data() {
@@ -48,13 +65,13 @@ export default {
     }
   },
   methods: {
-    dialogClose(isvisible) {
-      this.$emit("setDialogVisible", isvisible)
-    },
     submitForm() {
+      this.form.pid = this.currentProjectId
+      console.log(this.form.pid)
       addSchemeAPI(this.form)
       .then(res => {
         console.log(res.data)
+        this.returnVisible(false)
       })
       .catch(err => {
         console.log(err.toString())

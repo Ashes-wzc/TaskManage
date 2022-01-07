@@ -38,14 +38,14 @@
         <template #default="scope">
           <el-button 
             size="mini"
-            @click="updateCurrentProjectInfo(scope.$index, scope.row)"
+            @click="updateCurrentProjectInfo(scope.row, scope.$index)"
           >
             进入
           </el-button>
           <el-button
             size="mini" 
             type="danger" 
-            @click="projectDeleteBtn(scope.row.projectName, scope.$index)"
+            @click="projectDeleteBtn(scope.row, scope.$index)"
           >
             删除
           </el-button>
@@ -99,22 +99,26 @@
   export default {
     name: "Projects",
     setup () {
-      // const currentProjectIndex = ref(0)
       const projects = ref([])
       const projectName = ref('Null')
       const createDate = ref('Null')
       const targetDate = ref('Null')
-      const updateCurrentProjectInfo = (name, index) => {
-        updateCurrentProject(name, index)
+      const updateProjectInfoInPage = (index) => {
+        projectName.value = projects.value[index].projectName
+        createDate.value = projects.value[index].createDate
+        targetDate.value = projects.value[index].targetDate
+      }
+      const updateCurrentProjectInfo = (row, index) => {
+        updateCurrentProject(row, index)
+        updateProjectInfoInPage(index)
       }
       const getAllProjects = () => {
         getAllProjectsAPI()
         .then(res => {
           if (res.data.length > 0) {
             projects.value = res.data
-            projectName.value = res.data[1].projectName
-            createDate.value = res.data[1].createDate
-            targetDate.value = res.data[1].targetDate
+            updateCurrentProject(res.data[0], 0)
+            updateProjectInfoInPage(0)
           }
           else {
             ElMessage.error('暂无项目数据')
@@ -124,9 +128,9 @@
           ElMessage.error(error.toString())
         })
       }
-
-      onMounted(getAllProjects)
-
+      onMounted(() => {
+        getAllProjects()
+      })
       return {
         projects,
         projectName,
@@ -153,8 +157,8 @@
     },
     methods: {
       // 删除项目
-      projectDeleteBtn(index, row) {
-        console.log(index, row)
+      projectDeleteBtn(row, index) {
+        console.log(row, index)
         let pid = {
           pid: row.projectId
         }

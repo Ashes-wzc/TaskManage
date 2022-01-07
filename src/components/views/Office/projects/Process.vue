@@ -1,18 +1,17 @@
 <template>
-  <p>{{ pname }}</p>
   <!-- 计划选择下拉框、添加按钮、删除按钮 -->
   <div class="scheme_dashboard">
-    <el-select v-model="schemeSelect" placeholder="选择计划" @change="schemeChange" style="margin-right: 10px;">
+    <el-select v-model="schemeSelect" @change="schemeChange" style="margin-right: 10px;">
       <el-option
         v-for="(scheme, key) in schemeList"
         :key="key"
         :label="scheme.schemeName"
-        :value="scheme.schemeId"
+        :value="key"
       >
       </el-option>
     </el-select>
-    <el-button size="mini" type="primary" @click="addSchemeBtn">添加</el-button>
-    <el-button size="mini" @click="checkSchemeBtn">查看</el-button>
+    <el-button size="mini" type="primary" @click="addSchemeDialogVisible = true">添加</el-button>
+    <el-button size="mini" @click="updateSchemeDialogVisible = true">查看</el-button>
   </div>
   <!-- 数据展示表格 -->
   <el-table
@@ -68,9 +67,6 @@
       <el-form-item label="负责人工号">
         <el-input v-model="addTaskForm.headerid"></el-input>
       </el-form-item>
-      <el-form-item label="所属计划id">
-        <el-input v-model="addTaskForm.sid"></el-input>
-      </el-form-item>
       <el-form-item label="开始时间">
         <el-input v-model="addTaskForm.task.createDate"></el-input>
       </el-form-item>
@@ -88,57 +84,89 @@
     </template>
   </el-dialog>
   <!-- 添加计划对话框 -->
-  <AddSchemeDialog 
+  <AddSchemeDialog
     :visible="addSchemeDialogVisible" 
     @setDialogVisible="addSchemeDialogClose($event)"
   />
   <!-- 修改计划对话框 -->
+  <UpdateSchemeDialog 
+    :visible="updateSchemeDialogVisible"
+    :schemeData="showingSchemeInfo"
+    @setDialogVisible="updateSchemeDialogClose($event)"
+  />
 </template>
 
 <script>
-  import { computed } from 'vue'
+  import { ref, computed, onMounted, watch } from 'vue'
   import { currentProjectInfo } from '@/store/store'
-  import { getSchemeAPI, addTaskAPI } from '@/utils/api'
+  import { getSchemeAPI, addTaskAPI, deleteTaskAPI } from '@/utils/api'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
+  import UpdateSchemeDialog from '@/components/ui-components/scheme/UpdateScheme.vue'
   export default {
     name: "Process",
     components: {
       TaskModifyDrawer,
       AddSchemeDialog,
+      UpdateSchemeDialog
     },
     setup() {
-      // const projectData = ref([])
-      const pname = computed(() => {
-        return currentProjectInfo.name
+      // 当前展示的项目id
+      const currentProjectId = computed(() => {
+        return currentProjectInfo.id
       })
-
-      // const getProjectData = ()=> {
-      //   getSchemeAPI(currentProjectId)
-      //   .then((res) => {
-      //     this.schemeList = res.data
-      //     console.log(this.schemeList)
-      //     this.showingScheme = this.schemeList[0].tasks
-      //     this.schemeSelect = 1
-      //     this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].sid
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.toString())
-      //   })
-      // }
+      const schemeList = ref([]) // 当前展示项目的计划数据列表
+      const schemeSelect = ref(0) // 选中的计划index
+      const showingScheme = ref([]) // 当前展示的计划
+      const showingSchemeInfo = ref([]) // 当前展示的计划的数据
+      const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
+      const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
+      // 访问API获取项目里的全部计划信息
+      const getAllScheme = () => {
+        // schemeList.value = []
+        getSchemeAPI(currentProjectId.value)
+        .then((res) => {
+          console.log(res.data.length, res.data)
+          if (res.data.length > 0) {
+            schemeList.value = res.data
+            showingScheme.value = res.data[0].tasks
+            showingSchemeInfo.value = res.data[0]
+          }
+          else {
+            schemeList.value = []
+            showingScheme.value = []
+            showingSchemeInfo.value = []
+          }
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
+      }
+      // 切换显示的计划
+      const schemeChange = () => {
+        console.log(schemeSelect.value, schemeList.value)
+        showingScheme.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value].tasks : []
+        showingSchemeInfo.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value] : []
+      }
+      onMounted(getAllScheme)
+      watch(currentProjectId, getAllScheme)
       return {
-        pname
+        schemeList,
+        schemeSelect,
+        showingScheme,
+        showingSchemeInfo,
+        addSchemeDialogVisible,
+        updateSchemeDialogVisible,
+        currentProjectId,
+        getAllScheme,
+        schemeChange
       }
     },
     data() {
       return {
-        schemeList: [],
-        schemeSelect: new Number,
-        showingScheme: [],
         drawer: false,
         dialog: false,
-        addSchemeDialogVisible: false,
         addTaskForm: {
           headerid: '001',
           participants: [],
@@ -153,39 +181,7 @@
         }
       }
     },
-    mounted() {
-      this.getScheme()
-    },
     methods: {
-      // 获取全部的计划数据
-      getScheme() {
-        let currentProject = sessionStorage.getItem('currentProject')
-        let currentProjectId = currentProject == null ? 1 : currentProject
-        getSchemeAPI(currentProjectId)
-        .then((res) => {
-          this.schemeList = res.data
-          console.log(this.schemeList)
-          this.showingScheme = this.schemeList[0].tasks
-          this.schemeSelect = 1
-          this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].sid
-        })
-        .catch((err) => {
-          console.log(err.toString())
-        })
-      },
-      // 切换显示的计划
-      schemeChange() {
-        this.showingScheme = this.schemeList[this.schemeSelect - 1].tasks
-        this.addTaskForm.sid = this.schemeList[this.schemeSelect - 1].schemeId
-      },
-      // 添加计划
-      addSchemeBtn() {
-        this.addSchemeDialogVisible = true
-      },
-      // 删除计划
-      checkSchemeBtn() {
-        console.log('delete scheme')
-      },
       // 数据表格按完成情况显示不同的颜色
       tableRowClassName({ row }) {
         if (row.isfinished == false) {
@@ -196,10 +192,11 @@
       },
       // 添加任务表单发送
       submitAddTaskForm() {
+        this.addTaskForm.sid = this.showingSchemeInfo.schemeId
         addTaskAPI(this.addTaskForm)
         .then(res => {
           console.log(res.data)
-          this.getScheme()
+          this.getAllScheme()
           this.dialog = false
         })
         .catch(err => {
@@ -208,28 +205,38 @@
       },
       // 删除任务
       deleteTask(row) {
-        console.log(row)
-        ElMessageBox.confirm(
-          '确定删除此任务吗？',
-          '请确认!',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        )
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '删除任务成功!'
-          })
+        const tid = {
+          tid: row.taskId
+        }
+        deleteTaskAPI(tid)
+        .then(res => {
+          console.log(res.data)
+          this.getAllScheme()
         })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '取消删除任务。'
-          })
+        .catch(err => {
+          console.log(err.toString())
         })
+        // ElMessageBox.confirm(
+        //   '确定删除此任务吗？',
+        //   '请确认!',
+        //   {
+        //     confirmButtonText: '确定',
+        //     cancelButtonText: '取消',
+        //     type: 'warning',
+        //   }
+        // )
+        // .then(() => {
+        //   ElMessage({
+        //     type: 'success',
+        //     message: '删除任务成功!'
+        //   })
+        // })
+        // .catch(() => {
+        //   ElMessage({
+        //     type: 'info',
+        //     message: '取消删除任务。'
+        //   })
+        // })
       },
       // 弹出修改任务侧边抽屉
       modifyTask(row) {
@@ -291,6 +298,11 @@
       },
       addSchemeDialogClose(event) {
         this.addSchemeDialogVisible = event
+        this.getAllScheme()
+      },
+      updateSchemeDialogClose(event) {
+        this.updateSchemeDialogVisible = event
+        this.getAllScheme()
       }
     },
   }

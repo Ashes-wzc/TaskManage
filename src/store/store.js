@@ -1,14 +1,16 @@
 import { reactive, readonly } from "vue"
 
 // 当前展示的项目数据
-const initCurrentProject = reactive({
+const initCurrentProjectInfo = reactive({
+  index: 0,
   name: '',
-  index: new Number,
+  id: new Number
 })
-export const currentProjectInfo = readonly(initCurrentProject)
-export function updateCurrentProject(name, index) {
-  initCurrentProject.name = name
-  initCurrentProject.index = index
+export const currentProjectInfo = readonly(initCurrentProjectInfo)
+export function updateCurrentProject(data, index) {
+  initCurrentProjectInfo.index = index
+  initCurrentProjectInfo.name = data.projectName
+  initCurrentProjectInfo.id = data.projectId
 }
 
 // 全部用户列表
