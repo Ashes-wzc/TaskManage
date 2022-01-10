@@ -27,6 +27,14 @@ export function addProjectAPI(projectInfo) {
     data: projectInfo
   })
 }
+// 修改项目
+export function updateProjectAPI(projectInfo) {
+  return myAxios({
+    url: '/project/updateProject',
+    method: 'POST',
+    data: projectInfo
+  })
+}
 // 删除项目
 export function deleteProjectAPI(pid) {
   return myAxios({

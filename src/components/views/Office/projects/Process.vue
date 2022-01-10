@@ -120,11 +120,10 @@
       const schemeSelect = ref(0) // 选中的计划index
       const showingScheme = ref([]) // 当前展示的计划
       const showingSchemeInfo = ref([]) // 当前展示的计划的数据
-      const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
+      // const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
       const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
       // 访问API获取项目里的全部计划信息
       const getAllScheme = () => {
-        // schemeList.value = []
         getSchemeAPI(currentProjectId.value)
         .then((res) => {
           console.log(res.data.length, res.data)
@@ -156,7 +155,7 @@
         schemeSelect,
         showingScheme,
         showingSchemeInfo,
-        addSchemeDialogVisible,
+        // addSchemeDialogVisible,
         updateSchemeDialogVisible,
         currentProjectId,
         getAllScheme,
@@ -165,6 +164,7 @@
     },
     data() {
       return {
+        addSchemeDialogVisible: false,
         drawer: false,
         dialog: false,
         addTaskForm: {
@@ -298,6 +298,7 @@
       },
       addSchemeDialogClose(event) {
         this.addSchemeDialogVisible = event
+        console.log(this.addSchemeDialogVisible)
         this.getAllScheme()
       },
       updateSchemeDialogClose(event) {

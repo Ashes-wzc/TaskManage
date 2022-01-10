@@ -36,8 +36,8 @@ export default {
   },
   setup(props, context) {
     const currentProjectId = computed(() => {
-        return currentProjectInfo.id
-      })
+      return currentProjectInfo.id
+    })
     const { visible } = toRefs(props)
     const selfVisible = ref(visible)
     const returnVisible = (v) => {

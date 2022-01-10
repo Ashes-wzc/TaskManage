@@ -86,7 +86,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-        <el-button type="primary" @click="projectAddForm">提交</el-button>
+      <el-button type="primary" @click="projectAddForm">提交</el-button>
     </template>
   </el-dialog>
 </template>

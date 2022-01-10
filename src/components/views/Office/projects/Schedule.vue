@@ -1,5 +1,5 @@
 <template>
-  Schedule
+  scheme
   <!-- <p>{{ data.isSelected ? 'yes' : 'no' }}</p> -->
   <!-- <el-calendar>
     <template #dateCell="{data}">
@@ -25,50 +25,27 @@
 </template>
 
 <script>
-  // let projectrawList = require('./../fakedata/projectInfo.json')
-  // let projectList = projectrawList.projects
-  // for (let i = 0; i < projectList.length; i++) {
-  //   let originEndDate = projectList[i].endDate
-  //   let dayCount
-  //   switch (new Date(originEndDate).getDay()) {
-  //     case 0:
-  //       dayCount = 0
-  //       break;
-  //     case 1:
-  //       dayCount = 6
-  //       break;
-  //     case 2:
-  //       dayCount = 5
-  //       break;
-  //     case 3:
-  //       dayCount = 4
-  //       break;
-  //     case 4:
-  //       dayCount = 3
-  //       break;
-  //     case 5:
-  //       dayCount = 2
-  //       break;
-  //     case 6:
-  //       dayCount = 1
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   let tempDate = new Date(originEndDate.replace(/-/g,"/"))
-  //   let resultDate = new Date((tempDate/1000+(86400*dayCount))*1000)
-  //   let resultDateStr = resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate())
-  //   projectList[i].addDay = resultDateStr
-  // }
+  import { computed, onMounted } from 'vue'
+  import { getSchemeAPI } from '@/utils/api'
+  import { currentProjectInfo } from '@/store/store'
   export default {
     name: "Schedule",
-    props: {
-      msg: String,
-    },
-    data() {
-      return {
-        // projects: projectList
+    setup() {
+      // 当前展示项目的id
+      const showingProjectId = computed(() => {
+        return currentProjectInfo.id
+      })
+      // 获取当前展示项目的数据
+      const getSchemeData = () => {
+        getSchemeAPI(showingProjectId.value)
+        .then((res) => {
+          console.log(res.data.length, res.data)
+        })
+        .catch((err) => {
+          console.log(err.toString())
+        })
       }
+      onMounted(getSchemeData)
     },
     methods: {
       // 判断进度条的显示范围
@@ -101,6 +78,7 @@
             return '#B5B5B5';
         }
       },
+      // 防止进度条错位
       preventMisposition(date, start, end) {
         if (start < date & date <= end) {
           return '0.0'
@@ -108,7 +86,40 @@
         else {
           return '1.0'
         }
-      }
+      },
+      // for (let i = 0; i < projectList.length; i++) {
+      //   let originEndDate = projectList[i].endDate
+      //   let dayCount
+      //   switch (new Date(originEndDate).getDay()) {
+      //     case 0:
+      //       dayCount = 0
+      //       break;
+      //     case 1:
+      //       dayCount = 6
+      //       break;
+      //     case 2:
+      //       dayCount = 5
+      //       break;
+      //     case 3:
+      //       dayCount = 4
+      //       break;
+      //     case 4:
+      //       dayCount = 3
+      //       break;
+      //     case 5:
+      //       dayCount = 2
+      //       break;
+      //     case 6:
+      //       dayCount = 1
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      //   let tempDate = new Date(originEndDate.replace(/-/g,"/"))
+      //   let resultDate = new Date((tempDate/1000+(86400*dayCount))*1000)
+      //   let resultDateStr = resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate())
+      //   projectList[i].addDay = resultDateStr
+      // }
     }
   }
 </script>
