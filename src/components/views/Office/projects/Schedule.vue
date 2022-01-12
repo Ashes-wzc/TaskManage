@@ -1,31 +1,38 @@
 <template>
-  scheme
   <!-- <p>{{ data.isSelected ? 'yes' : 'no' }}</p> -->
-  <!-- <el-calendar>
+  <el-calendar>
     <template #dateCell="{data}">
       <p style="margin:0px">{{ data.day.split('-').slice(1).join('-') }}</p>
-      <template v-for="(project, index) in projects" :key="index">
-        <el-tooltip
-          v-if="this.isTaskExist(data.day, project.startDate, project.addDay)"
-          effect="dark"
-          placement="top"
-        >
-          <template #content>{{ project.name }}</template>
-          <div 
-            class="task-bar" 
-            :style="{
-              backgroundColor:this.priorityColor(project.priority),
-              opacity:this.preventMisposition(data.day, project.endDate, project.addDay)
-            }"
-          ></div>
-        </el-tooltip>
-      </template>
+        <template v-for="(scheme, index1) in currentProjectData" :key="index1">
+          <template v-for="(task, index2) in scheme.tasks" :key="index2">
+            <el-tooltip
+              v-if="this.isTaskExist(data.day, task.createDate, task.targetDate)"
+              effect="dark"
+              placement="top"
+            >
+              <template #content>{{ task.taskName }}</template>
+              <!-- <div
+                class="task-bar" 
+                :style="{
+                  backgroundColor:this.priorityColor(project.priority),
+                  opacity:this.preventMisposition(data.day, project.endDate, project.addDay)
+                }"
+              ></div> -->
+              <div
+                class="task-bar" 
+                :style="{
+                  backgroundColor:this.priorityColor(task.taskId),
+                }"
+              ></div>
+            </el-tooltip>
+          </template>
+        </template>
     </template>
-  </el-calendar> -->
+  </el-calendar>
 </template>
 
 <script>
-  import { computed, onMounted } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   import { getSchemeAPI } from '@/utils/api'
   import { currentProjectInfo } from '@/store/store'
   export default {
@@ -35,22 +42,31 @@
       const showingProjectId = computed(() => {
         return currentProjectInfo.id
       })
+      // 当前展示的项目的数据
+      const currentProjectData = ref([])
       // 获取当前展示项目的数据
       const getSchemeData = () => {
         getSchemeAPI(showingProjectId.value)
         .then((res) => {
-          console.log(res.data.length, res.data)
+          console.log('schedule', res.data.length, res.data)
+          currentProjectData.value = res.data
         })
         .catch((err) => {
           console.log(err.toString())
         })
       }
       onMounted(getSchemeData)
+      return {
+        currentProjectData
+      }
     },
     methods: {
       // 判断进度条的显示范围
-      isTaskExist(date, startDate, endDate) {
-        if (startDate <= date & date <= endDate) {
+      isTaskExist(date, createDate, targetDate) {
+        const tempDate = new Date(date.replace(/-/g,"/")).toLocaleDateString()
+        const startDate = new Date(createDate).toLocaleDateString()
+        const endDate = new Date(targetDate).toLocaleDateString()
+        if (startDate <= tempDate & tempDate <= endDate) {
           return true
         }
         else {
@@ -59,7 +75,8 @@
       },
       // 不同优先级的背景颜色
       priorityColor(priority) {
-        switch (priority) {
+        const colorId = parseInt(priority)%7
+        switch (colorId) {
           case 1:
             return '#1989FA'
           case 2:

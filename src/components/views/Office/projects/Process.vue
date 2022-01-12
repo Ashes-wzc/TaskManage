@@ -2,24 +2,13 @@
   <!-- 计划选择下拉框、添加按钮、删除按钮 -->
   <div class="scheme_dashboard">
     <el-select v-model="schemeSelect" @change="schemeChange" style="margin-right: 10px;">
-      <el-option
-        v-for="(scheme, key) in schemeList"
-        :key="key"
-        :label="scheme.schemeName"
-        :value="key"
-      >
-      </el-option>
+      <el-option v-for="(scheme, key) in schemeList" :key="key" :label="scheme.schemeName" :value="key" />
     </el-select>
     <el-button size="mini" type="primary" @click="addSchemeDialogVisible = true">添加</el-button>
     <el-button size="mini" @click="updateSchemeDialogVisible = true">查看</el-button>
   </div>
   <!-- 数据展示表格 -->
-  <el-table
-    :data="showingScheme"
-    style="width: 100%;margin-top:10px;"
-    :row-class-name="tableRowClassName"
-    max-height="800"
-  >
+  <el-table :data="showingScheme" style="width: 100%;margin-top:10px;" :row-class-name="tableRowClassName" max-height="800">
     <el-table-column prop="taskName" label="名称" fixed align="center"></el-table-column>
     <el-table-column prop="taskId" label="编号" align="center"></el-table-column>
     <el-table-column prop="isfinished" label="状态" align="center">
@@ -33,8 +22,8 @@
     <el-table-column prop="headers[0].name" label="负责人" align="center"></el-table-column>
     <el-table-column label="文件" align="center">
       <template #default>
-        <el-button size="mini">上传</el-button>
-        <el-button size="mini">查看</el-button>
+        <el-button size="mini" type="primary">上传</el-button>
+        <el-button size="mini" @click="fileDialogVisible = true">查看</el-button>
       </template>
     </el-table-column>
     <el-table-column align="right" fixed="right" width="150">
@@ -84,16 +73,11 @@
     </template>
   </el-dialog>
   <!-- 添加计划对话框 -->
-  <AddSchemeDialog
-    :visible="addSchemeDialogVisible" 
-    @setDialogVisible="addSchemeDialogClose($event)"
-  />
+  <AddSchemeDialog :visible="addSchemeDialogVisible" @setDialogVisible="addSchemeDialogClose($event)" />
   <!-- 修改计划对话框 -->
-  <UpdateSchemeDialog 
-    :visible="updateSchemeDialogVisible"
-    :schemeData="showingSchemeInfo"
-    @setDialogVisible="updateSchemeDialogClose($event)"
-  />
+  <UpdateSchemeDialog :visible="updateSchemeDialogVisible" :schemeData="showingSchemeInfo" @setDialogVisible="updateSchemeDialogClose($event)" />
+  <!-- 查看文件对话框 -->
+  <FileDialog :visible="fileDialogVisible" @setDialogVisible="fileDialogClose($event)"/>
 </template>
 
 <script>
@@ -104,12 +88,14 @@
   import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
   import UpdateSchemeDialog from '@/components/ui-components/scheme/UpdateScheme.vue'
+  import FileDialog from '@/components/ui-components/FileDialog.vue'
   export default {
     name: "Process",
     components: {
       TaskModifyDrawer,
       AddSchemeDialog,
-      UpdateSchemeDialog
+      UpdateSchemeDialog,
+      FileDialog
     },
     setup() {
       // 当前展示的项目id
@@ -122,6 +108,7 @@
       const showingSchemeInfo = ref([]) // 当前展示的计划的数据
       // const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
       const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
+      const fileDialogVisible = ref(false) // 文件对话框是否显示
       // 访问API获取项目里的全部计划信息
       const getAllScheme = () => {
         getSchemeAPI(currentProjectId.value)
@@ -148,6 +135,9 @@
         showingScheme.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value].tasks : []
         showingSchemeInfo.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value] : []
       }
+      const fileDialogClose = (v) => {
+        fileDialogVisible.value = v
+      }
       onMounted(getAllScheme)
       watch(currentProjectId, getAllScheme)
       return {
@@ -157,9 +147,11 @@
         showingSchemeInfo,
         // addSchemeDialogVisible,
         updateSchemeDialogVisible,
+        fileDialogVisible,
         currentProjectId,
         getAllScheme,
-        schemeChange
+        schemeChange,
+        fileDialogClose
       }
     },
     data() {
