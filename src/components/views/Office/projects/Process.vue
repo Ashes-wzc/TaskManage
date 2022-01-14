@@ -1,14 +1,20 @@
+<!-- 项目详情页面 -->
 <template>
   <!-- 计划选择下拉框、添加按钮、删除按钮 -->
-  <div class="scheme_dashboard">
-    <el-select v-model="schemeSelect" @change="schemeChange" style="margin-right: 10px;">
-      <el-option v-for="(scheme, key) in schemeList" :key="key" :label="scheme.schemeName" :value="key" />
+  <div style="display:flex;flex-direction:row;">
+    <el-select v-model="currentSchemeIndex" @change="schemeChange" style="margin-right: 10px;">
+      <el-option v-for="(scheme, key) in optionListData" :key="key" :label="scheme.schemeName" :value="key" />
     </el-select>
     <el-button size="mini" type="primary" @click="addSchemeDialogVisible = true">添加</el-button>
     <el-button size="mini" @click="updateSchemeDialogVisible = true">查看</el-button>
   </div>
   <!-- 数据展示表格 -->
-  <el-table :data="showingScheme" style="width: 100%;margin-top:10px;" :row-class-name="tableRowClassName" max-height="800">
+  <el-table 
+    :data="showingScheme"
+    style="width: 100%;margin-top:10px;" 
+    :row-class-name="tableRowClassName" 
+    max-height="800"
+  >
     <el-table-column prop="taskName" label="名称" fixed align="center"></el-table-column>
     <el-table-column prop="taskId" label="编号" align="center"></el-table-column>
     <el-table-column prop="isfinished" label="状态" align="center">
@@ -28,7 +34,7 @@
     </el-table-column>
     <el-table-column align="right" fixed="right" width="150">
       <template #header>
-        <el-button size="mini" type="primary" @click="dialog = true">添加</el-button>
+        <el-button size="mini" type="primary" @click="addTaskDialogVisible = true">添加</el-button>
       </template>
       <template #default="scope">
         <el-button size="mini" @click="modifyTask(scope.row)">修改</el-button>
@@ -36,93 +42,83 @@
       </template>
     </el-table-column>
   </el-table>
+  <!-- 添加计划对话框 -->
+  <AddSchemeDialog
+    :visible="addSchemeDialogVisible"
+    @setDialogVisible="addSchemeDialogClose($event)"
+  />
+  <!-- 修改计划对话框 -->
+  <UpdateSchemeDialog
+    :visible="updateSchemeDialogVisible"
+    @setDialogVisible="updateSchemeDialogClose($event)"
+  />
+  <!-- 添加任务对话框 -->
+  <AddTaskDialog
+    :visible="addTaskDialogVisible"
+    @setDialogVisible="addTaskDialogClose($event)"
+  />
   <!-- 任务详情侧边弹出抽屉 -->
-  <el-drawer v-model="drawer" title="任务详情" :before-close="drawerClose" :with-header="false">
+  <!-- <el-drawer v-model="drawer" title="任务详情" :before-close="drawerClose" :with-header="false">
     <div class="taskDrawer">
       <TaskModifyDrawer :drawerVisible=drawer @changeDrawerVisible=drawerVisible />
     </div>
-  </el-drawer>
-  <!-- 添加任务对话框 -->
-  <el-dialog
-    v-model="dialog"
-    title="添加任务"
-    width="50%"
-    :before-close="dialogClose"
-  >
-    <el-form ref="form" :model="addTaskForm" label-width="120px">
-      <el-form-item label="任务名称">
-        <el-input v-model="addTaskForm.task.taskName"></el-input>
-      </el-form-item>
-      <el-form-item label="负责人工号">
-        <el-input v-model="addTaskForm.headerid"></el-input>
-      </el-form-item>
-      <el-form-item label="开始时间">
-        <el-input v-model="addTaskForm.task.createDate"></el-input>
-      </el-form-item>
-      <el-form-item label="计划结束时间">
-        <el-input v-model="addTaskForm.task.targetDate"></el-input>
-      </el-form-item>
-      <el-form-item label="任务描述">
-        <el-input v-model="addTaskForm.task.taskPricipal" type="textarea"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button type="primary" @click="submitAddTaskForm">提交</el-button>
-      </span>
-    </template>
-  </el-dialog>
-  <!-- 添加计划对话框 -->
-  <AddSchemeDialog :visible="addSchemeDialogVisible" @setDialogVisible="addSchemeDialogClose($event)" />
-  <!-- 修改计划对话框 -->
-  <UpdateSchemeDialog :visible="updateSchemeDialogVisible" :schemeData="showingSchemeInfo" @setDialogVisible="updateSchemeDialogClose($event)" />
+  </el-drawer> -->
   <!-- 查看文件对话框 -->
-  <FileDialog :visible="fileDialogVisible" @setDialogVisible="fileDialogClose($event)"/>
+  <!-- <FileDialog :visible="fileDialogVisible" @setDialogVisible="fileDialogClose($event)"/> -->
 </template>
 
 <script>
   import { ref, computed, onMounted, watch } from 'vue'
-  import { currentProjectInfo } from '@/store/store'
-  import { getSchemeAPI, addTaskAPI, deleteTaskAPI } from '@/utils/api'
+  import { getSchemeAPI, deleteTaskAPI } from '@/utils/api'
+  import { currentProjectInfo, currentSchemeInfo, updateScheme, updateSchemeIndex } from '@/store/store'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
   import UpdateSchemeDialog from '@/components/ui-components/scheme/UpdateScheme.vue'
-  import FileDialog from '@/components/ui-components/FileDialog.vue'
+  import AddTaskDialog from '@/components/ui-components/task/AddTaskDialog.vue'
+  // import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
+  // import FileDialog from '@/components/ui-components/FileDialog.vue'
   export default {
     name: "Process",
     components: {
-      TaskModifyDrawer,
       AddSchemeDialog,
       UpdateSchemeDialog,
-      FileDialog
+      AddTaskDialog,
+      // TaskModifyDrawer,
+      // FileDialog
     },
     setup() {
       // 当前展示的项目id
       const currentProjectId = computed(() => {
         return currentProjectInfo.id
       })
-      const schemeList = ref([]) // 当前展示项目的计划数据列表
-      const schemeSelect = ref(0) // 选中的计划index
-      const showingScheme = ref([]) // 当前展示的计划
-      const showingSchemeInfo = ref([]) // 当前展示的计划的数据
-      // const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
+      // 当前项目包含的全部计划数据以及当前显示的计划index
+      const currentScheme = computed(() => {
+        return {
+          index: currentSchemeInfo.index,
+          list: currentSchemeInfo.list,
+          showingList: currentSchemeInfo.showingList
+        }
+      })
+
+      const showingScheme = ref([]) // 当前显示的计划
+      const currentSchemeIndex = ref(currentScheme.value.index) // 当前展示计划的index
+      const optionListData = ref([]) // 计划选择下拉框数据
+      const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
       const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
+      const addTaskDialogVisible = ref(false) // 添加任务对话框是否显示
       const fileDialogVisible = ref(false) // 文件对话框是否显示
-      // 访问API获取项目里的全部计划信息
+
+      // 访问API获取项目里的全部计划信息,并写入store
       const getAllScheme = () => {
         getSchemeAPI(currentProjectId.value)
         .then((res) => {
-          console.log(res.data.length, res.data)
-          if (res.data.length > 0) {
-            schemeList.value = res.data
-            showingScheme.value = res.data[0].tasks
-            showingSchemeInfo.value = res.data[0]
-          }
-          else {
-            schemeList.value = []
-            showingScheme.value = []
-            showingSchemeInfo.value = []
+          if(res.data.length > 0) {
+            // console.log(res.data)
+            updateScheme(res.data) // 将请求到的计划数据写入store
+            const currentSid = currentSchemeInfo.index == 0 ? 0 : currentSchemeInfo.index
+            updateSchemeIndex(currentSid) // 更新store中的计划sid
+            showingScheme.value = currentSchemeInfo.showingList.tasks
+            optionListData.value = currentSchemeInfo.list
           }
         })
         .catch((err) => {
@@ -131,46 +127,56 @@
       }
       // 切换显示的计划
       const schemeChange = () => {
-        console.log(schemeSelect.value, schemeList.value)
-        showingScheme.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value].tasks : []
-        showingSchemeInfo.value = schemeList.value.length > 0 ? schemeList.value[schemeSelect.value] : []
+        updateSchemeIndex(currentSchemeIndex.value)
       }
-      const fileDialogClose = (v) => {
-        fileDialogVisible.value = v
+      // 添加计划对话框关闭emit函数
+      const addSchemeDialogClose = (event) => {
+        addSchemeDialogVisible.value = event
+        getAllScheme()
       }
+      // 更新计划对话框关闭emit函数
+      const updateSchemeDialogClose = (event) => {
+        updateSchemeDialogVisible.value = event
+        getAllScheme()
+      }
+      // 添加任务对话框关闭emit函数
+      const addTaskDialogClose = (event) => {
+        addTaskDialogVisible.value = event
+        getAllScheme()
+      }
+      // 文件对话框关闭emit函数
+      const fileDialogClose = (event) => {
+        fileDialogVisible.value = event
+      }
+
+      watch(currentProjectId, () => {
+        getAllScheme()
+      })
+      watch(currentSchemeIndex, () => {
+        showingScheme.value = currentScheme.value.showingList.tasks
+        optionListData.value = currentScheme.value.list
+      },{
+        immediate: true
+      })
       onMounted(getAllScheme)
-      watch(currentProjectId, getAllScheme)
       return {
-        schemeList,
-        schemeSelect,
+        // variable
         showingScheme,
-        showingSchemeInfo,
-        // addSchemeDialogVisible,
+        currentSchemeIndex,
+        optionListData,
+        addSchemeDialogVisible,
         updateSchemeDialogVisible,
+        addTaskDialogVisible,
         fileDialogVisible,
         currentProjectId,
+        currentScheme,
+        // function
         getAllScheme,
         schemeChange,
+        addSchemeDialogClose,
+        updateSchemeDialogClose,
+        addTaskDialogClose,
         fileDialogClose
-      }
-    },
-    data() {
-      return {
-        addSchemeDialogVisible: false,
-        drawer: false,
-        dialog: false,
-        addTaskForm: {
-          headerid: '001',
-          participants: [],
-          sid: '',
-          task: {
-            createDate: '2021-12-31 14:00:00',
-            isfinished: false,
-            targetDate: '2021-12-31 14:00:00',
-            taskName: '测试',
-            taskPricipal: '写点备注'
-          }
-        }
       }
     },
     methods: {
@@ -181,19 +187,6 @@
         } else {
           return 'success-row'
         }
-      },
-      // 添加任务表单发送
-      submitAddTaskForm() {
-        this.addTaskForm.sid = this.showingSchemeInfo.schemeId
-        addTaskAPI(this.addTaskForm)
-        .then(res => {
-          console.log(res.data)
-          this.getAllScheme()
-          this.dialog = false
-        })
-        .catch(err => {
-          console.log(err.toString())
-        })
       },
       // 删除任务
       deleteTask(row) {
@@ -208,27 +201,6 @@
         .catch(err => {
           console.log(err.toString())
         })
-        // ElMessageBox.confirm(
-        //   '确定删除此任务吗？',
-        //   '请确认!',
-        //   {
-        //     confirmButtonText: '确定',
-        //     cancelButtonText: '取消',
-        //     type: 'warning',
-        //   }
-        // )
-        // .then(() => {
-        //   ElMessage({
-        //     type: 'success',
-        //     message: '删除任务成功!'
-        //   })
-        // })
-        // .catch(() => {
-        //   ElMessage({
-        //     type: 'info',
-        //     message: '取消删除任务。'
-        //   })
-        // })
       },
       // 弹出修改任务侧边抽屉
       modifyTask(row) {
@@ -263,49 +235,11 @@
       drawerVisible(visibleParams) {
         this.$data.drawer = visibleParams
       },
-      dialogClose(){
-        ElMessageBox.confirm(
-          '确定放弃添加任务吗？',
-          '请确认!',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        )
-        .then(() => {
-          ElMessage({
-            type: 'success',
-            message: '放弃添加任务!'
-          })
-          this.$data.dialog = false
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: '继续添加任务。'
-          })
-          this.$data.dialog = true
-        })
-      },
-      addSchemeDialogClose(event) {
-        this.addSchemeDialogVisible = event
-        console.log(this.addSchemeDialogVisible)
-        this.getAllScheme()
-      },
-      updateSchemeDialogClose(event) {
-        this.updateSchemeDialogVisible = event
-        this.getAllScheme()
-      }
     },
   }
 </script>
 
 <style>
-  .scheme_dashboard {
-    display: flex;
-    flex-direction: row;
-  }
   .el-table .warning-row {
     --el-table-tr-background-color: var(--el-color-warning-lighter);
   }

@@ -84,6 +84,11 @@
         >
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="选择模版">
+        <el-select v-model="templateValue">
+          <el-option v-for="(item, key) in templateData" :key="key" :label="item.name" :value="item.name"></el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <template #footer>
       <el-button type="primary" @click="projectAddForm">提交</el-button>
@@ -152,7 +157,16 @@
             projectName: '',
             targetDate: ''
           }
-        }
+        },
+        templateValue: '',
+        templateData: [
+          {
+            name: '氛围灯'
+          },
+          {
+            name: '标定机'
+          }
+        ]
       }
     },
     methods: {
