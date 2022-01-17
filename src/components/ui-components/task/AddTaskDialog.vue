@@ -4,14 +4,28 @@
       <el-form-item label="任务名称">
         <el-input v-model="task.taskName"></el-input>
       </el-form-item>
-      <el-form-item label="负责人工号">
-        <el-input v-model="headerid"></el-input>
+      <el-form-item label="负责人">
+        <!-- <el-input v-model="headerid"></el-input> -->
+        <span style="margin-right:20px">{{ leaderText }}</span>
+        <el-button type="primary" size="mini" @click="leaderSelectDialogVisible = true">选择</el-button>
       </el-form-item>
       <el-form-item label="开始时间">
-        <el-input v-model="task.createDate"></el-input>
+        <el-date-picker
+          v-model="task.createDate"
+          type="datetime"
+          placeholder="选择开始时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        >
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="计划结束时间">
-        <el-input v-model="task.targetDate"></el-input>
+        <el-date-picker
+          v-model="task.targetDate"
+          type="datetime"
+          placeholder="选择计划结束时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        >
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="任务描述">
         <el-input v-model="task.taskPricipal" type="textarea"></el-input>
@@ -23,30 +37,41 @@
       </span>
     </template>
   </el-dialog>
+  <LeaderSelectDialog 
+    :visible="leaderSelectDialogVisible"
+    @setDialogVisible="LeaderSelectDialogClose($event)"
+    @returnUserInfo="getLeaderInfo($event)"
+  />
 </template>
 
 <script>
-import { computed, reactive, toRefs } from 'vue'
+import { ref, computed, reactive, toRefs } from 'vue'
 import { addTaskAPI } from '@/utils/api'
 import { currentSchemeInfo } from '@/store/store'
+import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
   name: 'AddTaskDialog',
   props: {
     visible: Boolean
   },
+  components: {
+    LeaderSelectDialog
+  },
   emits: ['setDialogVisible'],
   setup(props, context) {
+    const leaderSelectDialogVisible = ref(false)
+    const leaderText = ref('请选择负责人')
     // 添加任务表单
     const form = reactive({
-      headerid: 1,
+      headerid: new Number,
       participants: [],
       sid: new Number,
       task: {
-        createDate: '2022-01-10 14:00:00',
+        createDate: '',
         isfinished: false,
-        targetDate: '2022-01-31 14:00:00',
-        taskName: 'test',
-        taskPricipal: '备注'
+        targetDate: '',
+        taskName: '',
+        taskPricipal: '暂无备注'
       }
     })
     const formAsRefs = toRefs(form)
@@ -63,6 +88,13 @@ export default {
         context.emit('setDialogVisible', visible)
       }
     })
+    const LeaderSelectDialogClose = (event) => {
+      leaderSelectDialogVisible.value = event
+    }
+    const getLeaderInfo = (event) => {
+      leaderText.value = event.name
+      form.headerid = event.username
+    }
     // 提交添加任务表单
     const submitForm = () => {
       form.sid = schemeId
@@ -77,8 +109,12 @@ export default {
       })
     }
     return {
+      leaderSelectDialogVisible,
+      leaderText,
       ...formAsRefs,
       dialogVisible,
+      LeaderSelectDialogClose,
+      getLeaderInfo,
       submitForm
     }
   }

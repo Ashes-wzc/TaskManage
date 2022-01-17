@@ -111,17 +111,21 @@ export function deleteTaskAPI(tid) {
 /************************************ 文件管理API ************************************/
 
 // 获取对应任务下的文档
-export function getDocumentAPI() {
+export function getDocumentAPI(tid) {
   return myAxios({
     url: '/document/getDocument',
-    method: 'GET'
+    method: 'GET',
+    params: {
+      tid: tid
+    }
   })
 }
 // 上传对应任务下的文档
-export function uploadDocumentAPI() {
+export function uploadDocumentAPI(fileData) {
   return myAxios({
     url: '/document/uploadDocument',
-    method: 'POST'
+    method: 'POST',
+    data: fileData
   })
 }
 // 下载对应任务文档
@@ -132,9 +136,10 @@ export function downloadDocumentAPI() {
   })
 }
 // 删除文档信息
-export function deleteDocumentAPI() {
+export function deleteDocumentAPI(did) {
   return myAxios({
     url: '/document/deleteDocument',
-    method: 'POST'
+    method: 'POST',
+    data: did
   })
 }

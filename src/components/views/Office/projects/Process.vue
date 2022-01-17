@@ -27,9 +27,9 @@
     <el-table-column prop="targetDate" label="计划结束时间" align="center"></el-table-column>
     <el-table-column prop="headers[0].name" label="负责人" align="center"></el-table-column>
     <el-table-column label="文件" align="center">
-      <template #default>
-        <el-button size="mini" type="primary">上传</el-button>
-        <el-button size="mini" @click="fileDialogVisible = true">查看</el-button>
+      <template #default="scope">
+        <el-button size="mini" type="primary" @click="uploadFile(scope.row)">上传</el-button>
+        <el-button size="mini" @click="checkFiles(scope.row)">查看</el-button>
       </template>
     </el-table-column>
     <el-table-column align="right" fixed="right" width="150">
@@ -64,7 +64,11 @@
     </div>
   </el-drawer> -->
   <!-- 查看文件对话框 -->
-  <!-- <FileDialog :visible="fileDialogVisible" @setDialogVisible="fileDialogClose($event)"/> -->
+  <FileDialog 
+    :visible="fileDialogVisible"
+    :taskId="checkFileTaskId"
+    @setDialogVisible="fileDialogClose($event)"
+  />
 </template>
 
 <script>
@@ -76,7 +80,7 @@
   import UpdateSchemeDialog from '@/components/ui-components/scheme/UpdateScheme.vue'
   import AddTaskDialog from '@/components/ui-components/task/AddTaskDialog.vue'
   // import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
-  // import FileDialog from '@/components/ui-components/FileDialog.vue'
+  import FileDialog from '@/components/ui-components/FileDialog.vue'
   export default {
     name: "Process",
     components: {
@@ -84,7 +88,7 @@
       UpdateSchemeDialog,
       AddTaskDialog,
       // TaskModifyDrawer,
-      // FileDialog
+      FileDialog
     },
     setup() {
       // 当前展示的项目id
@@ -103,6 +107,7 @@
       const showingScheme = ref([]) // 当前显示的计划
       const currentSchemeIndex = ref(currentScheme.value.index) // 当前展示计划的index
       const optionListData = ref([]) // 计划选择下拉框数据
+      const checkFileTaskId = ref(Number) // 查看此id项目的文件
       const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
       const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
       const addTaskDialogVisible = ref(false) // 添加任务对话框是否显示
@@ -129,6 +134,15 @@
       const schemeChange = () => {
         updateSchemeIndex(currentSchemeIndex.value)
       }
+      // 查看文件按钮点击事件
+      const checkFiles = (row) => {
+        checkFileTaskId.value = row.taskId
+        fileDialogVisible.value = true
+      }
+      // 上传文件按钮点击事件
+      const uploadFile = (row) => {
+        console.log('upload file', row)
+      }
       // 添加计划对话框关闭emit函数
       const addSchemeDialogClose = (event) => {
         addSchemeDialogVisible.value = event
@@ -148,7 +162,6 @@
       const fileDialogClose = (event) => {
         fileDialogVisible.value = event
       }
-
       watch(currentProjectId, () => {
         getAllScheme()
       })
@@ -164,6 +177,7 @@
         showingScheme,
         currentSchemeIndex,
         optionListData,
+        checkFileTaskId,
         addSchemeDialogVisible,
         updateSchemeDialogVisible,
         addTaskDialogVisible,
@@ -173,6 +187,8 @@
         // function
         getAllScheme,
         schemeChange,
+        checkFiles,
+        uploadFile,
         addSchemeDialogClose,
         updateSchemeDialogClose,
         addTaskDialogClose,
@@ -204,7 +220,6 @@
       },
       // 弹出修改任务侧边抽屉
       modifyTask(row) {
-        this.$data.drawer = true
         console.log(row)
       },
       drawerClose() {

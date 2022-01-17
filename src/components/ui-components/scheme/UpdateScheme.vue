@@ -9,13 +9,26 @@
         <el-input v-model="scheme.schemeName"></el-input>
       </el-form-item>
       <el-form-item label="负责人工号">
-        <el-input v-model="headerid"></el-input>
+        <span style="margin-right:20px">{{ leaderText }}</span>
+        <el-button type="primary" size="mini" @click="leaderSelectDialogVisible = true">选择</el-button>
       </el-form-item>
       <el-form-item label="开始日期">
-        <el-input v-model="scheme.createDate"></el-input>
+        <el-date-picker
+          v-model="scheme.createDate"
+          type="datetime"
+          placeholder="选择开始时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        >
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="计划结束日期">
-        <el-input v-model="scheme.targetDate"></el-input>
+        <el-date-picker
+          v-model="scheme.targetDate"
+          type="datetime"
+          placeholder="选择计划结束时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        >
+        </el-date-picker>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -23,19 +36,30 @@
       <el-button size='mini' type='primary' @click="updateScheme">修改</el-button>
     </template>
   </el-dialog>
+  <LeaderSelectDialog 
+    :visible="leaderSelectDialogVisible"
+    @setDialogVisible="LeaderSelectDialogClose($event)"
+    @returnUserInfo="getLeaderInfo($event)"
+  />
 </template>
 
 <script>
-import { toRefs, reactive, computed, watch } from 'vue'
+import { ref, toRefs, reactive, computed, watch } from 'vue'
 import { currentSchemeInfo, updateSchemeIndex } from '@/store/store'
 import { deleteSchemeAPI } from '@/utils/api'
+import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
   name: 'UpdateSchemeDialog',
   props: {
     visible: Boolean,
   },
+  components: {
+    LeaderSelectDialog
+  },
   emits: ["setDialogVisible"],
   setup(props, context) {
+    const leaderSelectDialogVisible = ref(false)
+    const leaderText = ref('')
     const form = reactive({
       headerid: 0,
       scheme: {
@@ -63,6 +87,7 @@ export default {
     // 从store中更新form的数据
     const updateFormFromStore = () => {
       const schemeDataValue = currentSchemeData.value
+      leaderText.value = schemeDataValue.headers[0].name
       form.headerid = schemeDataValue.headers[0].id
       form.scheme.createDate = schemeDataValue.createDate
       form.scheme.isfinished = schemeDataValue.isfinished
@@ -73,6 +98,7 @@ export default {
     // 更新计划点击函数
     const updateScheme = () => {
       // 更新计划信息
+      console.log('update scheme')
     }
     // 删除计划点击函数
     const deleteScheme = () => {
@@ -89,22 +115,29 @@ export default {
         console.log(err.toString())
       })
     }
+    const LeaderSelectDialogClose = (event) => {
+      leaderSelectDialogVisible.value = event
+    }
+    const getLeaderInfo = (event) => {
+      leaderText.value = event.name
+      form.headerid = event.username
+    }
     // 监听store数据,更新form
     watch(currentSchemeData, () => {
       updateFormFromStore()
     })
     return {
+      leaderSelectDialogVisible,
+      leaderText,
       form,
       ...formAsRefs,
       currentSchemeData,
       dialogVisible,
       updateScheme,
-      deleteScheme
+      deleteScheme,
+      LeaderSelectDialogClose,
+      getLeaderInfo
     }
   }
 }
 </script>
-
-<style>
-
-</style>
