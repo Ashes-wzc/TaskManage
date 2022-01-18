@@ -28,7 +28,11 @@
     <el-table-column prop="headers[0].name" label="负责人" align="center"></el-table-column>
     <el-table-column label="文件" align="center">
       <template #default="scope">
-        <el-button size="mini" type="primary" @click="uploadFile(scope.row)">上传</el-button>
+        <!-- <el-upload
+          action=""
+          :http-request="fileUpload">
+          <el-button size="mini" type="primary" @click="uploadFile(scope.row)">上传</el-button>
+        </el-upload> -->
         <el-button size="mini" @click="checkFiles(scope.row)">查看</el-button>
       </template>
     </el-table-column>
@@ -139,10 +143,6 @@
         checkFileTaskId.value = row.taskId
         fileDialogVisible.value = true
       }
-      // 上传文件按钮点击事件
-      const uploadFile = (row) => {
-        console.log('upload file', row)
-      }
       // 添加计划对话框关闭emit函数
       const addSchemeDialogClose = (event) => {
         addSchemeDialogVisible.value = event
@@ -188,7 +188,6 @@
         getAllScheme,
         schemeChange,
         checkFiles,
-        uploadFile,
         addSchemeDialogClose,
         updateSchemeDialogClose,
         addTaskDialogClose,

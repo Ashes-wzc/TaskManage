@@ -121,18 +121,25 @@ export function getDocumentAPI(tid) {
   })
 }
 // 上传对应任务下的文档
-export function uploadDocumentAPI(fileData) {
+export function uploadDocumentAPI(file, tid) {
   return myAxios({
-    url: '/document/uploadDocument',
+    url: '/document/uploadDocuments',
     method: 'POST',
-    data: fileData
+    data: file,
+    params: {
+      tid: tid
+    }
   })
 }
 // 下载对应任务文档
-export function downloadDocumentAPI() {
+export function downloadDocumentAPI(did) {
   return myAxios({
     url: '/document/downloadDocument',
-    method: 'GET'
+    method: 'GET',
+    params: {
+      did: did
+    },
+    responseType: 'blob'
   })
 }
 // 删除文档信息
@@ -140,6 +147,8 @@ export function deleteDocumentAPI(did) {
   return myAxios({
     url: '/document/deleteDocument',
     method: 'POST',
-    data: did
+    data: {
+      did: did
+    }
   })
 }
