@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="任务添加" width="60%">
+  <el-dialog v-model="dialogVisible" title="任务管理" width="60%">
     <el-form ref="form" label-width="120px">
       <el-form-item label="任务名称">
         <el-input v-model="task.taskName"></el-input>
@@ -31,9 +31,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <span class="dialog-footer">
-        <el-button type="primary" @click="submitForm">提交</el-button>
-      </span>
+      <el-button size='mini' type='primary' @click="submitForm">修改</el-button>
     </template>
   </el-dialog>
   <LeaderSelectDialog 
@@ -44,14 +42,14 @@
 </template>
 
 <script>
-import { ref, computed, reactive, toRefs } from 'vue'
-import { addTaskAPI } from '@/utils/api'
-import { currentSchemeInfo } from '@/store/store'
+import { ref, computed, reactive, toRefs, watch } from 'vue'
+import { updateTaskAPI } from '@/utils/api'
 import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
-  name: 'AddTaskDialog',
+  name: 'UpdateTaskDialog',
   props: {
-    visible: Boolean
+    visible: Boolean,
+    data: Object
   },
   components: {
     LeaderSelectDialog
@@ -60,24 +58,20 @@ export default {
   setup(props, context) {
     const leaderSelectDialogVisible = ref(false)
     const leaderText = ref('请选择负责人')
-    // 添加任务表单
+    // 更新任务表单
     const form = reactive({
       headerid: new Number,
       participants: [],
-      sid: new Number,
       task: {
         createDate: '',
         isfinished: false,
         targetDate: '',
+        taskId: new Number,
         taskName: '',
         taskPricipal: '暂无备注'
       }
     })
     const formAsRefs = toRefs(form)
-    // 从store中读取当前计划sid
-    const schemeId = computed(() => {
-      return currentSchemeInfo.showingList.schemeId
-    })
     // 判断对话框是否显示,以及emit函数
     const dialogVisible = computed({
       get: () => {
@@ -94,19 +88,30 @@ export default {
       leaderText.value = event.name
       form.headerid = event.username
     }
-    // 提交添加任务表单
+    // 提交更新任务表单
     const submitForm = () => {
-      form.sid = schemeId
-      console.log(form.sid)
-      addTaskAPI(form)
+      updateTaskAPI(form)
       .then(res => {
-        console.log('添加任务:', res.data)
+        console.log('更新任务:', res.data)
         context.emit('setDialogVisible', false)
       })
       .catch(err => {
         console.log(err.toString())
       })
     }
+    // 监听dialogVisible,对话框打开时更新文件数据
+    watch(dialogVisible, () => {
+      if(dialogVisible.value == true) {
+        const currentTaskInfo = props.data
+        leaderText.value = currentTaskInfo.headers[0].name
+        form.headerid = currentTaskInfo.headers[0].id
+        form.task.createDate = currentTaskInfo.createDate
+        form.task.targetDate = currentTaskInfo.targetDate
+        form.task.taskId = currentTaskInfo.taskId
+        form.task.taskName = currentTaskInfo.taskName
+        form.task.taskPricipal = currentTaskInfo.taskPricipal
+      }
+    })
     return {
       leaderSelectDialogVisible,
       leaderText,

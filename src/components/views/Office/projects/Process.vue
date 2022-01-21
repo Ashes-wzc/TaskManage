@@ -28,11 +28,6 @@
     <el-table-column prop="headers[0].name" label="负责人" align="center"></el-table-column>
     <el-table-column label="文件" align="center">
       <template #default="scope">
-        <!-- <el-upload
-          action=""
-          :http-request="fileUpload">
-          <el-button size="mini" type="primary" @click="uploadFile(scope.row)">上传</el-button>
-        </el-upload> -->
         <el-button size="mini" @click="checkFiles(scope.row)">查看</el-button>
       </template>
     </el-table-column>
@@ -61,12 +56,12 @@
     :visible="addTaskDialogVisible"
     @setDialogVisible="addTaskDialogClose($event)"
   />
-  <!-- 任务详情侧边弹出抽屉 -->
-  <!-- <el-drawer v-model="drawer" title="任务详情" :before-close="drawerClose" :with-header="false">
-    <div class="taskDrawer">
-      <TaskModifyDrawer :drawerVisible=drawer @changeDrawerVisible=drawerVisible />
-    </div>
-  </el-drawer> -->
+  <!-- 更新任务对话框 -->
+  <UpdateTaskDialog 
+    :visible="updateTaskDialogVisible"
+    :data="updateTaskData"
+    @setDialogVisible="updateTaskDialogClose($event)"
+  />
   <!-- 查看文件对话框 -->
   <FileDialog 
     :visible="fileDialogVisible"
@@ -83,7 +78,7 @@
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
   import UpdateSchemeDialog from '@/components/ui-components/scheme/UpdateScheme.vue'
   import AddTaskDialog from '@/components/ui-components/task/AddTaskDialog.vue'
-  // import TaskModifyDrawer from '@/components/ui-components/TaskModifyDrawer.vue'
+  import UpdateTaskDialog from '@/components/ui-components/task/UpdateTaskDialog.vue'
   import FileDialog from '@/components/ui-components/FileDialog.vue'
   export default {
     name: "Process",
@@ -91,7 +86,7 @@
       AddSchemeDialog,
       UpdateSchemeDialog,
       AddTaskDialog,
-      // TaskModifyDrawer,
+      UpdateTaskDialog,
       FileDialog
     },
     setup() {
@@ -112,9 +107,11 @@
       const currentSchemeIndex = ref(currentScheme.value.index) // 当前展示计划的index
       const optionListData = ref([]) // 计划选择下拉框数据
       const checkFileTaskId = ref(Number) // 查看此id项目的文件
+      const updateTaskData = ref([]) // 当前修改计划的数据
       const addSchemeDialogVisible = ref(false) // 添加计划对话框是否显示
       const updateSchemeDialogVisible = ref(false) // 修改计划对话框是否显示
       const addTaskDialogVisible = ref(false) // 添加任务对话框是否显示
+      const updateTaskDialogVisible = ref(false) // 修改任务对话框是否显示
       const fileDialogVisible = ref(false) // 文件对话框是否显示
 
       // 访问API获取项目里的全部计划信息,并写入store
@@ -143,6 +140,12 @@
         checkFileTaskId.value = row.taskId
         fileDialogVisible.value = true
       }
+      // 任务修改按钮点击事件
+      const modifyTask = (row) => {
+        console.log(typeof(row), row)
+        updateTaskData.value = row
+        updateTaskDialogVisible.value = true
+      }
       // 添加计划对话框关闭emit函数
       const addSchemeDialogClose = (event) => {
         addSchemeDialogVisible.value = event
@@ -156,6 +159,11 @@
       // 添加任务对话框关闭emit函数
       const addTaskDialogClose = (event) => {
         addTaskDialogVisible.value = event
+        getAllScheme()
+      }
+      // 更新任务对话框关闭emit函数
+      const updateTaskDialogClose = (event) => {
+        updateTaskDialogVisible.value = event
         getAllScheme()
       }
       // 文件对话框关闭emit函数
@@ -178,9 +186,11 @@
         currentSchemeIndex,
         optionListData,
         checkFileTaskId,
+        updateTaskData,
         addSchemeDialogVisible,
         updateSchemeDialogVisible,
         addTaskDialogVisible,
+        updateTaskDialogVisible,
         fileDialogVisible,
         currentProjectId,
         currentScheme,
@@ -188,9 +198,11 @@
         getAllScheme,
         schemeChange,
         checkFiles,
+        modifyTask,
         addSchemeDialogClose,
         updateSchemeDialogClose,
         addTaskDialogClose,
+        updateTaskDialogClose,
         fileDialogClose
       }
     },
@@ -216,10 +228,6 @@
         .catch(err => {
           console.log(err.toString())
         })
-      },
-      // 弹出修改任务侧边抽屉
-      modifyTask(row) {
-        console.log(row)
       },
       drawerClose() {
         ElMessageBox.confirm(

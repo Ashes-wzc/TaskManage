@@ -33,7 +33,7 @@ export function updateSchemeIndex(index) {
 }
 
 /* 
-  当前处理的项目数据
+  当前处理的任务数据
 */
 const initCurrentTaskInfo = reactive({
   list: []
