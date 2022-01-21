@@ -6,7 +6,7 @@
         <el-menu-item index="/projects/detail">计划总览</el-menu-item>
         <el-menu-item index="/projects/schedule">日程</el-menu-item>
         <el-menu-item index="/projects/process">项目详情</el-menu-item>
-        <p style="color:red;margin-left:10px;">
+        <p style="color:red;margin-left:20px;">
           项目名:{{ projectName }}, 开始日期:{{ createDate }}, 预期结束日期:{{ targetDate }}
         </p>
       </el-menu>
@@ -18,47 +18,23 @@
     </el-main>
   </el-container>
   <!-- 项目管理右侧抽屉 -->
-  <el-drawer
-    v-model="projectSelectDrawer"
-    size="20%"
-    :with-header="false"
-  >
+  <el-drawer v-model="projectSelectDrawer" size="25%" :with-header="false">
     <h1 style="margin-top:0;">项目管理</h1>
     <el-table :data="projects" style="width:100%">
       <el-table-column prop="projectName" label="项目名"></el-table-column>
       <el-table-column align="right">
         <template #header>
-          <el-button
-            size="mini"
-            @click="this.$data.addProjectDialogVisible = true"
-          >
-            添加项目
-          </el-button>
+          <el-button size="mini" @click="this.addProjectDialogVisible = true">添加项目</el-button>
         </template>
         <template #default="scope">
-          <el-button 
-            size="mini"
-            @click="updateCurrentProjectInfo(scope.row, scope.$index)"
-          >
-            进入
-          </el-button>
-          <el-button
-            size="mini" 
-            type="danger" 
-            @click="projectDeleteBtn(scope.row, scope.$index)"
-          >
-            删除
-          </el-button>
+          <el-button size="mini" @click="updateCurrentProjectInfo(scope.row, scope.$index)">进入</el-button>
+          <el-button size="mini" type="danger" @click="projectDeleteBtn(scope.row, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
   </el-drawer>
   <!-- 添加项目对话框 -->
-  <el-dialog
-    v-model="addProjectDialogVisible"
-    title="添加项目"
-    width="50%"
-  >
+  <el-dialog v-model="addProjectDialogVisible" title="添加项目" width="50%">
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label="项目名称">
         <el-input v-model="form.project.projectName"></el-input>
@@ -84,11 +60,11 @@
         >
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="选择模版">
+      <!-- <el-form-item label="选择模版">
         <el-select v-model="templateValue">
           <el-option v-for="(item, key) in templateData" :key="key" :label="item.name" :value="item.name"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <template #footer>
       <el-button type="primary" @click="projectAddForm">提交</el-button>
@@ -108,6 +84,7 @@
       const projectName = ref('Null')
       const createDate = ref('Null')
       const targetDate = ref('Null')
+      const addProjectDialogVisible = ref(false) // 添加项目表单对话框是否显示
       const updateProjectInfoInPage = (index) => {
         projectName.value = projects.value[index].projectName
         createDate.value = projects.value[index].createDate
@@ -141,6 +118,7 @@
         projectName,
         createDate,
         targetDate,
+        addProjectDialogVisible,
         getAllProjects,
         updateCurrentProjectInfo
       }
@@ -148,7 +126,7 @@
     data() {
       return {
         projectSelectDrawer: false, // 项目选择抽屉是否显示
-        addProjectDialogVisible: false, // 添加项目表单对话框是否显示
+        // addProjectDialogVisible: false, // 添加项目表单对话框是否显示
         form: {
           headerid: new Number,
           project: {
@@ -157,16 +135,7 @@
             projectName: '',
             targetDate: ''
           }
-        },
-        templateValue: '',
-        templateData: [
-          {
-            name: '氛围灯'
-          },
-          {
-            name: '标定机'
-          }
-        ]
+        }
       }
     },
     methods: {

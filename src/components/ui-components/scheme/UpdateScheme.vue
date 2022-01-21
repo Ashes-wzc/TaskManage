@@ -46,7 +46,7 @@
 <script>
 import { ref, toRefs, reactive, computed, watch } from 'vue'
 import { currentSchemeInfo, updateSchemeIndex } from '@/store/store'
-import { deleteSchemeAPI } from '@/utils/api'
+import { updateSchemeAPI, deleteSchemeAPI } from '@/utils/api'
 import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
   name: 'UpdateSchemeDialog',
@@ -61,13 +61,14 @@ export default {
     const leaderSelectDialogVisible = ref(false)
     const leaderText = ref('')
     const form = reactive({
-      headerid: 0,
+      headerid: '',
       scheme: {
         createDate: '',
         isfinished: false,
         schemeId: 0,
         schemeName: '',
-        targetDate: ''
+        targetDate: '',
+        isrunning: true
       }
     })
     const formAsRefs = toRefs(form)
@@ -97,8 +98,14 @@ export default {
     }
     // 更新计划点击函数
     const updateScheme = () => {
-      // 更新计划信息
-      console.log('update scheme')
+      updateSchemeAPI(form)
+      .then(res => {
+        console.log('更新计划', res.data)
+        context.emit('setDialogVisible', false)
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
     }
     // 删除计划点击函数
     const deleteScheme = () => {

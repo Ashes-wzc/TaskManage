@@ -152,3 +152,47 @@ export function deleteDocumentAPI(did) {
     }
   })
 }
+
+/************************************ 模版管理API ************************************/
+
+// 获取全部模版
+export function getAllTemplateAPI() {
+  return myAxios({
+    url: '/model-type/getCorrespondModel',
+    method: 'GET'
+  })
+}
+// 添加模版
+export function addTemplateAPI(data) {
+  return myAxios({
+    url: '/model-type/addModelType',
+    method: 'POST',
+    data: data
+  })
+}
+// 更新模版
+export function updateTemplateAPI(data) {
+  return myAxios({
+    url: '/model-type/updateModel',
+    method: 'POST',
+    data: data
+  })
+}
+// 删除模版
+export function deleteTemplateAPI(mid) {
+  return myAxios({
+    url: '/model-type/deleteModel',
+    method: 'POST',
+    data: {
+      mid: mid
+    }
+  })
+}
+// 导入模版
+export function importTemplateAPI(data) {
+  return myAxios({
+    url: '/model-import/importCorrespondModel',
+    method: 'POST',
+    data: data
+  })
+}
