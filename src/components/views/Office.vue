@@ -7,15 +7,12 @@
         </el-row>
         <el-menu :default-active="$route.path" class="el-menu-vertical" @select="handleSelect" router>
           <el-menu-item index="/projects/process">
-            <i class="el-icon-document"></i>
             <template #title>项目管理</template>
           </el-menu-item>
           <el-menu-item index="/userinfo">
-            <i class="el-icon-user"></i>
             <template #title>个人信息</template>
           </el-menu-item>
           <el-menu-item index="/usermanage">
-            <i class="el-icon-loading"></i>
             <template #title>用户管理</template>
           </el-menu-item>
         </el-menu>
@@ -27,14 +24,12 @@
   </el-container>
 </template>
 <script>
-  // import { Aim } from '@element-plus/icons'
 	export default {
     name: 'DemupApp',
     props: {
       msg: String
     },
     components: {
-      // Aim,
     },
     methods: {
       handleSelect(key, keyPath) {
