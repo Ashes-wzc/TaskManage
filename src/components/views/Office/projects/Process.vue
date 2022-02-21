@@ -1,13 +1,17 @@
 <!-- 项目详情页面 -->
 <template>
   <!-- 计划选择下拉框、添加按钮、删除按钮 -->
-  <div style="display:flex;flex-direction:row;">
+  <!-- <div style="display:flex;flex-direction:row;">
     <el-select v-model="currentSchemeIndex" @change="schemeChange" style="margin-right: 10px;">
       <el-option v-for="(scheme, key) in optionListData" :key="key" :label="scheme.schemeName" :value="key" />
     </el-select>
     <el-button size="mini" type="primary" @click="addSchemeDialogVisible = true">添加</el-button>
     <el-button size="mini" @click="updateSchemeDialogVisible = true">查看</el-button>
-  </div>
+  </div> -->
+  <el-breadcrumb separator=">">
+    <el-breadcrumb-item :to="{ path: '/' }">标定机</el-breadcrumb-item>
+    <el-breadcrumb-item>立项</el-breadcrumb-item>
+  </el-breadcrumb>
   <!-- 数据展示表格 -->
   <el-table 
     :data="showingScheme"
@@ -41,6 +45,13 @@
       </template>
     </el-table-column>
   </el-table>
+  <div v-for="(log, index) in syslog" :key="index">
+    工号
+    <el-tag>{{ log.userId }}</el-tag>
+    在
+    <el-tag type="warning">{{ log.operationTime }}</el-tag>
+    <el-tag type="danger">{{ log.model }}</el-tag>
+  </div>
   <!-- 添加计划对话框 -->
   <AddSchemeDialog
     :visible="addSchemeDialogVisible"
@@ -72,7 +83,7 @@
 
 <script>
   import { ref, computed, onMounted, watch } from 'vue'
-  import { getSchemeAPI, deleteTaskAPI } from '@/utils/api'
+  import { getSchemeAPI, deleteTaskAPI, getSystemLogAPI} from '@/utils/api'
   import { currentProjectInfo, currentSchemeInfo, updateScheme, updateSchemeIndex } from '@/store/store'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import AddSchemeDialog from '@/components/ui-components/scheme/AddScheme.vue'
@@ -103,6 +114,7 @@
         }
       })
 
+      const syslog = ref([]) // 系统日志
       const showingScheme = ref([]) // 当前显示的计划
       const currentSchemeIndex = ref(currentScheme.value.index) // 当前展示计划的index
       const optionListData = ref([]) // 计划选择下拉框数据
@@ -128,6 +140,17 @@
           }
         })
         .catch((err) => {
+          console.log(err.toString())
+        })
+      }
+      // 访问API获取操作历史日志
+      const getSystemLog = () => {
+        getSystemLogAPI()
+        .then(res => {
+          console.log(res.data)
+          syslog.value = res.data
+        })
+        .catch(err => {
           console.log(err.toString())
         })
       }
@@ -179,9 +202,13 @@
       },{
         immediate: true
       })
-      onMounted(getAllScheme)
+      onMounted(() => {
+        getAllScheme()
+        getSystemLog()
+      })
       return {
         // variable
+        syslog,
         showingScheme,
         currentSchemeIndex,
         optionListData,

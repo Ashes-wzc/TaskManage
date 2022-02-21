@@ -5,16 +5,57 @@
         <el-row align="middle" justify="center" style="height:60px;background-color: #f7f7f7;border-right: 1px solid #e6e6e6;">
           <div class="logo">DEMUP</div>
         </el-row>
-        <el-menu :default-active="$route.path" class="el-menu-vertical" @select="handleSelect" router>
-          <el-menu-item index="/projects/process">
-            <template #title>项目管理</template>
+        <el-menu 
+          active-text-color="#ffd04b"
+          background-color="#545c64"
+          text-color="#fff"
+          :default-active="$route.path" 
+          class="el-menu-vertical" 
+          @select="handleSelect" 
+          router>
+          <el-sub-menu index="1">
+            <template #title>
+              <span>立项</span>
+            </template>
+            <el-menu-item index="/projects/process">
+              <template #title>立项</template>
+            </el-menu-item>
+            <el-menu-item index="/userinfo">
+              <template #title>软件设计</template>
+            </el-menu-item>
+            <el-menu-item index="/usermanage">
+              <template #title>硬件设计</template>
+            </el-menu-item>
+            <el-menu-item index="/usermanage">
+              <template #title>技术资料</template>
+            </el-menu-item>
+          </el-sub-menu>
+          <el-sub-menu index="2">
+            <template #title>
+              <span>B8L</span>
+            </template>
+            <el-menu-item index="/projects/process">
+              <template #title>立项</template>
+            </el-menu-item>
+            <el-menu-item index="/userinfo">
+              <template #title>软件设计</template>
+            </el-menu-item>
+            <el-menu-item index="/usermanage">
+              <template #title>硬件设计</template>
+            </el-menu-item>
+            <el-menu-item index="/usermanage">
+              <template #title>技术资料</template>
+            </el-menu-item>
+          </el-sub-menu>
+          <!-- <el-menu-item index="/projects/process">
+            <template #title>立项</template>
           </el-menu-item>
           <el-menu-item index="/userinfo">
-            <template #title>个人信息</template>
+            <template #title>软件设计</template>
           </el-menu-item>
           <el-menu-item index="/usermanage">
-            <template #title>用户管理</template>
-          </el-menu-item>
+            <template #title>硬件设计</template>
+          </el-menu-item> -->
         </el-menu>
       </div>
     </el-aside>

@@ -1,6 +1,6 @@
 import myAxios from "./myAxios"
 
-/************************************ 人员管理API ************************************/
+/****** 人员管理API ******/
 
 // 获取所有用户信息
 export function getAllUserAPI() {
@@ -10,7 +10,7 @@ export function getAllUserAPI() {
   })
 }
 
-/************************************ 项目管理API ************************************/
+/****** 项目管理API ******/
 
 // 获取全部的项目
 export function getAllProjectsAPI() {
@@ -44,7 +44,7 @@ export function deleteProjectAPI(pid) {
   })
 }
 
-/************************************ 计划管理API ************************************/
+/****** 计划管理API ******/
 
 // 获取对应项目的所有计划
 export function getSchemeAPI(schemePid) {
@@ -81,7 +81,7 @@ export function deleteSchemeAPI(sid) {
   })
 }
 
-/************************************ 任务管理API ************************************/
+/****** 任务管理API ******/
 
 // 添加对应计划下的任务
 export function addTaskAPI(addTaskInfo) {
@@ -108,7 +108,7 @@ export function deleteTaskAPI(tid) {
   })
 }
 
-/************************************ 文件管理API ************************************/
+/****** 文件管理API ******/
 
 // 获取对应任务下的文档
 export function getDocumentAPI(tid) {
@@ -153,7 +153,7 @@ export function deleteDocumentAPI(did) {
   })
 }
 
-/************************************ 模版管理API ************************************/
+/****** 模版管理API ******/
 
 // 获取全部模版
 export function getAllTemplateAPI() {
@@ -194,5 +194,13 @@ export function importTemplateAPI(data) {
     url: '/model-import/importCorrespondModel',
     method: 'POST',
     data: data
+  })
+}
+
+/****** 获取操作日志API ******/
+export function getSystemLogAPI() {
+  return myAxios({
+    url: '/syslog/',
+    method: 'GET'
   })
 }
