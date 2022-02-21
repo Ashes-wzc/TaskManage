@@ -5,14 +5,12 @@
         <el-row align="middle" justify="center" style="height:60px;background-color: #f7f7f7;border-right: 1px solid #e6e6e6;">
           <div class="logo">DEMUP</div>
         </el-row>
-        <el-menu 
-          active-text-color="#ffd04b"
-          background-color="#545c64"
-          text-color="#fff"
+        <el-menu
           :default-active="$route.path" 
           class="el-menu-vertical" 
           @select="handleSelect" 
-          router>
+          router
+        >
           <el-sub-menu index="1">
             <template #title>
               <span>立项</span>
