@@ -78,3 +78,13 @@ export const schemeData = readonly(initSchemeData)
 export function updateSchemeData(sd) {
   initSchemeData.list = sd
 }
+/* 
+  当前任务的文件数据
+*/
+const initDocumentsData = reactive({
+  list: []
+})
+export const documentsData = readonly(initDocumentsData)
+export function updateDocumentsData(document) {
+  initDocumentsData.list = document
+}
