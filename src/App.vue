@@ -16,7 +16,7 @@ export default {
   mounted() {
     if (localStorage.getItem('Bearer') != null || sessionStorage.getItem('Bearer') != null) {
       sessionStorage.setItem('Bearer', localStorage.getItem('Bearer'))
-      this.$router.push('/projects/process')
+      this.$router.push('/index')
     } else {
       this.$router.push('/login')
     }

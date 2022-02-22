@@ -24,8 +24,8 @@ const initCurrentSchemeInfo = reactive({
   showingList: []
 })
 export const currentSchemeInfo = readonly(initCurrentSchemeInfo)
-export function updateScheme(schemeData) {
-  initCurrentSchemeInfo.list = schemeData
+export function updateScheme(sd) {
+  initCurrentSchemeInfo.list = sd
 }
 export function updateSchemeIndex(index) {
   initCurrentSchemeInfo.index = index
@@ -49,7 +49,32 @@ export function updateCurrentTask(taskData) {
 const initUserList = reactive({
   list: []
 })
-export const userList = readonly(initUserList.list)
+export const userList = readonly(initUserList)
 export function updateUserList(userData) {
   initUserList.list = userData
+}
+
+
+/*** v2.0 storage ***/
+/* 
+  当前展示的任务的序号
+*/
+const initTaskPosition = reactive({
+  pos1: 0,
+  pos2: 0
+})
+export const taskPosition = readonly(initTaskPosition)
+export function updateTaskPosition(pos1, pos2) {
+  initTaskPosition.pos1 = pos1
+  initTaskPosition.pos2 = pos2
+}
+/* 
+  当前项目中的计划数据
+*/
+const initSchemeData = reactive({
+  list: []
+})
+export const schemeData = readonly(initSchemeData)
+export function updateSchemeData(sd) {
+  initSchemeData.list = sd
 }
