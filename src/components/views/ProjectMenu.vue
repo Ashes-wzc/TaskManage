@@ -127,7 +127,7 @@ export default {
     // 菜单选择任务
     const menuItemClick = (key) => {
       const keyArray = key.split("-")
-      updateTaskPosition(parseInt(keyArray[0]), parseInt(keyArray[1]))
+      updateTaskPosition(parseInt(keyArray[0]), parseInt(keyArray[1]), parseInt(keyArray[2]))
       getTaskDocuments(parseInt(keyArray[2]))
     }
     // 下拉菜单选择项目

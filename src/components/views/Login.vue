@@ -52,7 +52,7 @@
             if (this.isCache == true) {
               localStorage.setItem('Bearer', response.data.obj.token)
             }
-            this.$router.push('/projects/process')
+            this.$router.push('/index')
           }
           else if (response.data.code == 500) {
             ElMessage.error(response.data.message)

@@ -61,12 +61,14 @@ export function updateUserList(userData) {
 */
 const initTaskPosition = reactive({
   pos1: 0,
-  pos2: 0
+  pos2: 0,
+  taskId: 1,
 })
 export const taskPosition = readonly(initTaskPosition)
-export function updateTaskPosition(pos1, pos2) {
+export function updateTaskPosition(pos1, pos2, tid) {
   initTaskPosition.pos1 = pos1
   initTaskPosition.pos2 = pos2
+  initTaskPosition.taskId = tid
 }
 /* 
   当前项目中的计划数据
@@ -87,4 +89,5 @@ const initDocumentsData = reactive({
 export const documentsData = readonly(initDocumentsData)
 export function updateDocumentsData(document) {
   initDocumentsData.list = document
+  console.log(document)
 }
