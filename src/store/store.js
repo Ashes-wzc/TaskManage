@@ -89,5 +89,15 @@ const initDocumentsData = reactive({
 export const documentsData = readonly(initDocumentsData)
 export function updateDocumentsData(document) {
   initDocumentsData.list = document
-  console.log(document)
+  // console.log(document)
+}
+/* 
+  当前任务的历史纪录
+*/
+const initTaskHistory = reactive({
+  list: []
+})
+export const taskHistory = readonly(initTaskHistory)
+export function updateTaskHistory(history) {
+  initTaskHistory.list = history
 }

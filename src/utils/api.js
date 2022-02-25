@@ -198,9 +198,12 @@ export function importTemplateAPI(data) {
 }
 
 /****** 获取操作日志API ******/
-export function getSystemLogAPI() {
+export function getSystemLogAPI(tid) {
   return myAxios({
     url: '/syslog/',
-    method: 'GET'
+    method: 'GET',
+    params: {
+      tid: tid
+    }
   })
 }

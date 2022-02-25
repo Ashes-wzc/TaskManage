@@ -1,78 +1,83 @@
 <template>
   <el-container style="height: 100vh">
-    <el-aside width="180px">
-      <div class="logo">
-        DEMUP
-      </div>
-      <!-- 项目选择下拉菜单 -->
-      <el-dropdown @command="selectProject">
-        <span class="el-dropdown-link">
-          当前项目: {{ dropdownName }}
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item
-              v-for="(project, key) in projectList"
-              :key="key"
-              :command="project"
-            >
-              {{ project.projectName }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-      <!-- 任务选择菜单 -->
-      <el-menu
-        default-active="1"
-        class="project-menu"
-        @select="menuItemClick"
-      >
-        <el-menu-item-group 
-          v-for="(scheme, key1) in menuData"
-          :key="key1"
-          :title="scheme.schemeName"
+    <el-header height="40px" class="index_header">
+      <el-image style="width: 100px" :src="require('@/assets/demup.jpg')" :fit="fit"></el-image>
+      <el-icon size="20"><Avatar /></el-icon>
+    </el-header>
+    <el-container>
+      <el-aside width="180px" class="index-aside">
+        <!-- 项目选择下拉菜单 -->
+        <el-dropdown @command="selectProject" class="project_select_dropdown">
+          <span class="el-dropdown-link" >
+            当前项目: {{ dropdownName }}
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="(project, key) in projectList"
+                :key="key"
+                :command="project"
+              >
+                {{ project.projectName }}
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <!-- 任务选择菜单 -->
+        <el-menu
+          default-active="1"
+          class="project-menu"
+          @select="menuItemClick"
         >
-          <el-menu-item 
-            v-for="(task, key2) in scheme.tasks"
-            :key="key2"
-            :index="key1 + '-' + key2 + '-' + task.taskId"
+          <el-menu-item-group 
+            v-for="(scheme, key1) in menuData"
+            :key="key1"
+            :title="scheme.schemeName"
           >
-            {{ task.taskName }}
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-menu>
-    </el-aside>
-    <!-- 主展示区域:tabs -->
-    <el-main>
-      <el-tabs v-model="activeTab" @tab-click="tabClick" type="card">
-        <el-tab-pane label="总览" name="overview">
-          <Overview />
-        </el-tab-pane>
-        <el-tab-pane label="文件" name="file">
-          <File />
-        </el-tab-pane>
-        <el-tab-pane label="历史" name="history">
-          <History />
-        </el-tab-pane>
-      </el-tabs>
-    </el-main>
+            <el-menu-item 
+              v-for="(task, key2) in scheme.tasks"
+              :key="key2"
+              :index="key1 + '-' + key2 + '-' + task.taskId"
+            >
+              {{ task.taskName }}
+            </el-menu-item>
+          </el-menu-item-group>
+        </el-menu>
+      </el-aside>
+      <!-- 主展示区域:tabs -->
+      <el-main>
+        <el-tabs v-model="activeTab" @tab-click="tabClick" type="card">
+          <el-tab-pane label="总览" name="overview">
+            <Overview />
+          </el-tab-pane>
+          <el-tab-pane label="文件" name="file">
+            <File />
+          </el-tab-pane>
+          <el-tab-pane label="历史" name="history">
+            <History />
+          </el-tab-pane>
+        </el-tabs>
+      </el-main>
+    </el-container>
   </el-container>
 </template>
 
 <script>
 import { onMounted, ref } from 'vue'
-import { getAllProjectsAPI, getSchemeAPI, getDocumentAPI } from '@/utils/api'
-import { updateSchemeData, updateTaskPosition, updateDocumentsData } from '@/store/store'
+import { getAllProjectsAPI, getSchemeAPI, getDocumentAPI, getSystemLogAPI } from '@/utils/api'
+import { updateSchemeData, updateTaskPosition, updateDocumentsData, updateTaskHistory } from '@/store/store'
 import Overview from '@/components/views/Office/Overview.vue'
 import File from '@/components/views/Office/File.vue'
 import History from '@/components/views/Office/History.vue'
+import { Avatar } from '@element-plus/icons'
 export default {
   name: 'ProjectMenu',
   props: {},
   components: {
     Overview,
     File,
-    History
+    History,
+    Avatar
   },
   setup () {
     const dropdownName = ref('未选择')
@@ -88,6 +93,7 @@ export default {
           menuData.value = res.data
           updateSchemeData(res.data) // 更新计划数据到store
           getTaskDocuments(res.data[0].tasks[0].taskId)
+          getTaskHistory(res.data[0].tasks[0].taskId)
         }
         else {
           console.log('暂无数据')
@@ -102,6 +108,17 @@ export default {
       getDocumentAPI(tid)
       .then(res => {
         updateDocumentsData(res.data)
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
+    }
+    // 根据任务id获取任务中的历史
+    const getTaskHistory = (tid) => {
+      getSystemLogAPI(tid)
+      .then(res => {
+        // console.log(res.data)
+        updateTaskHistory(res.data)
       })
       .catch(err => {
         console.log(err.toString())
@@ -129,6 +146,7 @@ export default {
       const keyArray = key.split("-")
       updateTaskPosition(parseInt(keyArray[0]), parseInt(keyArray[1]), parseInt(keyArray[2]))
       getTaskDocuments(parseInt(keyArray[2]))
+      getTaskHistory(parseInt(keyArray[2]))
     }
     // 下拉菜单选择项目
     const selectProject = (command) => {
@@ -161,5 +179,21 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+.index_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee
+}
+.index-aside {
+  display: flex;
+  flex-direction: column;
+}
+.project_select_dropdown {
+  align-self: center;
+  font-size: 20px;
+  color: coral;
 }
 </style>
