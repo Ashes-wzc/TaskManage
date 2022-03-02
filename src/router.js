@@ -11,43 +11,43 @@ const router = createRouter({
     {
       path: '/index',
       component: () => import('./components/views/ProjectMenu.vue'),
-      children: [
-        {
-          path: 'projects',
-          name: 'Projects',
-          component: () => import('./components/views/Office/Projects.vue'),
-          children: [
-            {
-              path: 'detail',
-              name: 'Detail',
-              component: () => import('./components/views/Office/projects/Detail.vue')
-            },
-            {
-              path: 'schedule',
-              name: 'Schedule',
-              component: () => import('./components/views/Office/projects/Schedule.vue')
-            },
-            {
-              path: 'process',
-              name: 'Process',
-              component: () => import('./components/views/Office/projects/Process.vue')
-            }
-          ]
-        },
-        {
-          path: 'userinfo',
-          name: 'UserInfo',
-          component: () => import('./components/views/Office/UserInfo.vue')
-        },
-        {
-          path: 'usermanage',
-          name: 'UserManage',
-          component: () => import('./components/views/Office/UserManage.vue'),
-          // meta: {
-          //   requireAuth: true
-          // }
-        }
-      ]
+      // children: [
+      //   {
+      //     path: 'projects',
+      //     name: 'Projects',
+      //     component: () => import('./components/views/Office/Projects.vue'),
+      //     children: [
+      //       {
+      //         path: 'detail',
+      //         name: 'Detail',
+      //         component: () => import('./components/views/Office/projects/Detail.vue')
+      //       },
+      //       {
+      //         path: 'schedule',
+      //         name: 'Schedule',
+      //         component: () => import('./components/views/Office/projects/Schedule.vue')
+      //       },
+      //       {
+      //         path: 'process',
+      //         name: 'Process',
+      //         component: () => import('./components/views/Office/projects/Process.vue')
+      //       }
+      //     ]
+      //   }
+      // ]
+    },
+    {
+      path: '/userinfo',
+      name: 'UserInfo',
+      component: () => import('./components/views/Office/UserInfo.vue')
+    },
+    {
+      path: '/usermanage',
+      name: 'UserManage',
+      component: () => import('./components/views/Office/UserManage.vue'),
+      // meta: {
+      //   requireAuth: true
+      // }
     }
   ]
 })

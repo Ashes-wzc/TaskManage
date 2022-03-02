@@ -9,6 +9,60 @@ export function getAllUserAPI() {
     method: 'GET'
   })
 }
+// 获取当前登录用户的信息
+export function getUserInfoAPI() {
+  return myAxios({
+    url: '/admin/info',
+    method: 'GET'
+  })
+}
+// 添加用户
+export function AddUserAPI(data) {
+  return myAxios({
+    url: '/user/addUser',
+    method: 'POST',
+    data: data
+  })
+}
+// 更新用户
+export function updateUserAPI(data) {
+  return myAxios({
+    url: '/user/updateUser',
+    method: 'POST',
+    data: data
+  })
+}
+// 删除用户
+export function deleteUserAPI(data) {
+  return myAxios({
+    url: '/user/deleteUser',
+    method: 'POST',
+    data: data
+  })
+}
+// 登出当前账号
+export function logOutAPI() {
+  return myAxios({
+    url: '/logout',
+    method: 'POST'
+  })
+}
+// 获取全部工种
+export function getAllRoles() {
+  return myAxios({
+    url: '/user/getAllRoles',
+    method: 'GET'
+  })
+}
+
+// 个人更新密码
+export function updatePasswordAPI(data) {
+  return myAxios({
+    url: '/admin/password',
+    method: 'POST',
+    data: data
+  })
+}
 
 /****** 项目管理API ******/
 

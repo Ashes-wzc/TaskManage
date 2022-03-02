@@ -95,7 +95,7 @@ export default {
       form.headerid = event.username
     }
     watch([storeTaskData, storeTaskPos1, storeTaskPos2], () => {
-      console.log(storeTaskData.value[storeTaskPos1.value].tasks[storeTaskPos2.value])
+      // console.log(storeTaskData.value[storeTaskPos1.value].tasks[storeTaskPos2.value])
       const taskData = storeTaskData.value[storeTaskPos1.value].tasks[storeTaskPos2.value]
       form.headerid = taskData.headers[0].id
       form.task.createDate = taskData.createDate

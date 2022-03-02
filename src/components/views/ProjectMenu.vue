@@ -1,8 +1,19 @@
 <template>
   <el-container style="height: 100vh">
     <el-header height="40px" class="index_header">
-      <el-image style="width: 100px" :src="require('@/assets/demup.jpg')" :fit="fit"></el-image>
-      <el-icon size="20"><Avatar /></el-icon>
+      <el-image style="width: 100px" :src="require('@/assets/demup.jpg')"></el-image>
+      <el-popover placement="bottom" :width="100" trigger="hover">
+        <template #reference>
+          <el-icon size="20"><Avatar /></el-icon>
+        </template>
+        <template #default>
+          <div style="display: flex;flex-direction: column;">
+            <el-button type="text" @click="toUrl('UserInfo')">个人信息</el-button>
+            <el-button v-if="isUserAdmin" type="text" @click="toUrl('UserManage')">用户管理</el-button>
+            <el-button v-if="isUserAdmin" type="text">模板管理</el-button>
+          </div>
+        </template>
+      </el-popover>
     </el-header>
     <el-container>
       <el-aside width="180px" class="index-aside">
@@ -53,7 +64,7 @@
           <el-tab-pane label="文件" name="file">
             <File />
           </el-tab-pane>
-          <el-tab-pane label="历史" name="history">
+          <el-tab-pane label="历史" name="history" v-if="isUserAdmin">
             <History />
           </el-tab-pane>
         </el-tabs>
@@ -64,7 +75,8 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { getAllProjectsAPI, getSchemeAPI, getDocumentAPI, getSystemLogAPI } from '@/utils/api'
+import { useRoute, useRouter } from 'vue-router'
+import { getAllProjectsAPI, getSchemeAPI, getDocumentAPI, getSystemLogAPI, getUserInfoAPI } from '@/utils/api'
 import { updateSchemeData, updateTaskPosition, updateDocumentsData, updateTaskHistory } from '@/store/store'
 import Overview from '@/components/views/Office/Overview.vue'
 import File from '@/components/views/Office/File.vue'
@@ -85,6 +97,16 @@ export default {
     const projectList = ref([])
     const menuData = ref([])
     const activeTab = ref('overview')
+    const route = useRoute()
+    const router = useRouter()
+    const isUserAdmin = ref(false)
+    // 跳转到个人信息
+    const toUrl = (name) => {
+      console.log(route)
+      router.push({
+        name: name
+      })
+    }
     // 根据项目id获取项目中的计划数据
     const getSchemeData = (pid) => {
       getSchemeAPI(pid)
@@ -141,6 +163,17 @@ export default {
         console.log('全部项目:', err.toString())
       })
     }
+    // 获取当前登录人的信息
+    const getUserInfo = () => {
+      getUserInfoAPI()
+      .then(res => {
+        // console.log(res.data)
+        isUserAdmin.value = res.data.isAdmin
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
+    }
     // 菜单选择任务
     const menuItemClick = (key) => {
       const keyArray = key.split("-")
@@ -159,8 +192,11 @@ export default {
     }
     onMounted(() => {
       getAllProjects()
+      getUserInfo()
     })
     return {
+      isUserAdmin,
+      toUrl,
       dropdownName,
       projectIndex,
       projectList,
@@ -195,5 +231,11 @@ export default {
   align-self: center;
   font-size: 20px;
   color: coral;
+}
+.el-button+.el-button {
+  margin-left: 0px;
+}
+.el-popover.el-popper {
+  min-width: 10px;
 }
 </style>

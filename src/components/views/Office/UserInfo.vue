@@ -5,22 +5,27 @@
     </el-header>
     <el-row justify="center" class="margintop">
       <el-col :span="6">
-        <el-input placeholder="请输入姓名" v-model="form.name" clearable disabled></el-input>
+        <el-input placeholder="请输入姓名" v-model="form.name" clearable></el-input>
       </el-col>
     </el-row>
     <el-row justify="center" class="margintop">
       <el-col :span="6">
-        <el-input placeholder="请输入密码" v-model="form.password" show-password></el-input>
+        <el-input placeholder="请输入新密码" v-model="form.pass" show-password></el-input>
       </el-col>
     </el-row>
     <el-row justify="center" class="margintop">
       <el-col :span="6">
-        <el-input placeholder="请输入工号" v-model="form.username" disabled></el-input>
+        <el-input placeholder="请输入旧密码" v-model="form.oldPass" show-password></el-input>
       </el-col>
     </el-row>
     <el-row justify="center" class="margintop">
       <el-col :span="6">
-        <el-input placeholder="请输入职位" v-model="form.userType" disabled></el-input>
+        <el-input placeholder="请输入工号" v-model="userName" disabled></el-input>
+      </el-col>
+    </el-row>
+    <el-row justify="center" class="margintop">
+      <el-col :span="6">
+        <el-input placeholder="请输入职位" v-model="userType" disabled></el-input>
       </el-col>
     </el-row>
     <el-row justify="center" class="margintop">
@@ -31,8 +36,9 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  // import { ElMessage, ElMessageBox } from 'element-plus'
+  import { clearStorage } from '@/store/store'
+  import { getUserInfoAPI, logOutAPI, updatePasswordAPI } from '@/utils/api'
+  import { ElMessage } from 'element-plus'
   export default {
     name: "User",
     props: {
@@ -41,56 +47,65 @@
     data() {
       return {
         form: {
-          name: '',
-          userType: '',
-          password: '',
-          username: ''
-        }
+          pass: '',
+          oldPass: '',
+          name: ''
+        },
+        userType: '',
+        userName: ''
       }
     },
     mounted() {
-      this.addAxiosHeader()
       this.getUserInfo()
     },
     methods: {
-      // // 添加请求头，后续改为统一封装
-      addAxiosHeader() {
-        axios.interceptors.request.use(config => {
-          config.headers = {
-            'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
-          }
-          return config
-        })
-      },
+      // 获取当前用户信息
       getUserInfo() {
-        axios.get('apis/admin/info')
+        getUserInfoAPI()
         .then((res) => {
           this.form.name = res.data.name
-          this.form.userType = res.data.userType
-          this.form.username = res.data.username
+          this.userType = res.data.userType
+          this.userName = res.data.username
         })
         .catch((error) => {
           console.log(error.toString())
         })
       },
+      // 更新用户信息
       renewInfo() {
-        axios.post('apis/admin/pass')
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err.toString())
-        })
+        if (this.form.pass.length < 6) {
+          ElMessage.error('密码不能小于6位')
+        }
+        else {
+          updatePasswordAPI(this.form)
+          .then(res => {
+            console.log(res.data)
+            if (res.data.code == 200) {
+              ElMessage({
+                message: res.data.code + '修改成功',
+                type: 'success'
+              })
+            }
+            else if (res.data.code == 500) {
+              ElMessage.error(res.data.code + res.data.message)
+            }
+          })
+          .catch(err => {
+            ElMessage.error(err.toString())
+          })
+        }
       },
+      // 登出当前账号
       userLogOut() {
-        axios.post('apis/logout')
-        .then((res) => {
-          console.log(res)
+        logOutAPI()
+        .then(res => {
+          console.log('登出账号', res)
           localStorage.clear()
           sessionStorage.clear()
+          clearStorage()
           this.$router.push('/login')
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.toString())
         })
       }

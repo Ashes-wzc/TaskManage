@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getAllUserAPI, updateUserAPI, AddUserAPI, deleteUserAPI, getAllRoles } from '@/utils/api'
 import { ElMessage, ElMessageBox } from 'element-plus'
 export default {
   name: "UserManage",
@@ -129,25 +129,15 @@ export default {
     }
   },
   mounted() {
-    this.addAxiosHeader()
     this.getAllUserInfo()
     this.getAllJobs()
   },
   methods: {
-    // 添加请求头，后续改为统一封装
-    addAxiosHeader() {
-      axios.interceptors.request.use(config => {
-        config.headers = {
-          'Authorization': 'Bearer ' + sessionStorage.getItem('Bearer')
-        }
-        return config
-      })
-    },
     // 获取全部人员账号信息
     getAllUserInfo() {
-      axios.get('apis/user/getAllUserInfo')
+      getAllUserAPI()
       .then((res) => {
-        // console.log(res)
+        // console.log(res.data)
         let userData = res.data
         userData.shift()
         this.userList = userData
@@ -158,7 +148,7 @@ export default {
     },
     // 获取全部工种
     getAllJobs() {
-      axios.get('apis/user/getAllRoles')
+      getAllRoles()
       .then((res) => {
         this.jobs = res.data
       })
@@ -173,7 +163,7 @@ export default {
       const password = this.addForm.user.password
       const userType = this.addForm.user.userType
       if (name != null & username != null & password != null & userType != null) {
-        axios.post('apis/user/addUser', this.addForm)
+        AddUserAPI(this.addForm)
         .then((res) => {
           ElMessage({
             message: res.data.message,
@@ -187,7 +177,7 @@ export default {
         })
       }
       else {
-        ElMessage.error('输入值不能为空！')
+        ElMessage.error('输入值不能为空!')
       }
     },
     // 删除账号
@@ -204,7 +194,7 @@ export default {
         }
       )
       .then(() => {
-        axios.post('apis/user/deleteUser', this.deleteJson)
+        deleteUserAPI(this.deleteJson)
         .then((res) => {
           switch (res.data.code) {
             case 200:
@@ -233,7 +223,7 @@ export default {
     },
     // 修改账户信息
     modifyAccount() {
-      axios.post('apis/user/updateUser', this.editForm)
+      updateUserAPI(this.editForm)
       .then((res) => {
         ElMessage({
           message: '修改账号成功' + res.data.code,
