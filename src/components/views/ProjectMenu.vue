@@ -10,7 +10,7 @@
           <div style="display: flex;flex-direction: column;">
             <el-button type="text" @click="toUrl('UserInfo')">个人信息</el-button>
             <el-button v-if="isUserAdmin" type="text" @click="toUrl('UserManage')">用户管理</el-button>
-            <el-button v-if="isUserAdmin" type="text">模板管理</el-button>
+            <el-button v-if="isUserAdmin" type="text" @click="toUrl('Template')">模板管理</el-button>
           </div>
         </template>
       </el-popover>
@@ -75,7 +75,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { getAllProjectsAPI, getSchemeAPI, getDocumentAPI, getSystemLogAPI, getUserInfoAPI } from '@/utils/api'
 import { updateSchemeData, updateTaskPosition, updateDocumentsData, updateTaskHistory } from '@/store/store'
 import Overview from '@/components/views/Office/Overview.vue'
@@ -97,12 +97,10 @@ export default {
     const projectList = ref([])
     const menuData = ref([])
     const activeTab = ref('overview')
-    const route = useRoute()
     const router = useRouter()
     const isUserAdmin = ref(false)
     // 跳转到个人信息
     const toUrl = (name) => {
-      console.log(route)
       router.push({
         name: name
       })

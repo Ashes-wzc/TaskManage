@@ -10,31 +10,8 @@ const router = createRouter({
     },
     {
       path: '/index',
+      name: 'Index',
       component: () => import('./components/views/ProjectMenu.vue'),
-      // children: [
-      //   {
-      //     path: 'projects',
-      //     name: 'Projects',
-      //     component: () => import('./components/views/Office/Projects.vue'),
-      //     children: [
-      //       {
-      //         path: 'detail',
-      //         name: 'Detail',
-      //         component: () => import('./components/views/Office/projects/Detail.vue')
-      //       },
-      //       {
-      //         path: 'schedule',
-      //         name: 'Schedule',
-      //         component: () => import('./components/views/Office/projects/Schedule.vue')
-      //       },
-      //       {
-      //         path: 'process',
-      //         name: 'Process',
-      //         component: () => import('./components/views/Office/projects/Process.vue')
-      //       }
-      //     ]
-      //   }
-      // ]
     },
     {
       path: '/userinfo',
@@ -48,6 +25,11 @@ const router = createRouter({
       // meta: {
       //   requireAuth: true
       // }
+    },
+    {
+      path: '/template',
+      name: 'Template',
+      component: () => import('./components/views/Office/Template.vue')
     }
   ]
 })
