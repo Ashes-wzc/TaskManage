@@ -15,42 +15,54 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <el-button size="small" style="margin-left:10px;">
-        <el-icon><Plus /></el-icon>添加模板
-      </el-button>
+      <el-popover trigger="click" placement="right" @after-leave="addTemplate">
+        <template #reference>
+          <el-button size="small" style="margin-left:10px;">
+            <el-icon><Plus /></el-icon>添加模板
+          </el-button>
+        </template>
+        <el-input v-model="newTemplateName" placeholder="请输入模版名" />
+      </el-popover>
     </div>
     <div class="template_mainbody">
-      <div class="template_display">
-        <!-- 计划区域 -->
-        <div class="scheme_area" v-for="(scheme, index1) in currentTemplateData.modelSchemes" :key="index1">
-          <div class="scheme_header">
-            <el-input v-model="scheme.schemeName" placeholder="输入标题" />
-            <span style="font-size:20px;margin-left:10px;">2</span>
+      <el-scrollbar style="height: calc(100% - 40px);">
+        <div class="template_display">
+          <!-- 计划区域 -->
+          <div class="scheme_area" v-for="(scheme, index1) in currentTemplateData.modelSchemes" :key="index1">
+            <div class="scheme_header">
+              <el-input v-model="scheme.schemeName" placeholder="输入标题" />
+              <span style="font-size:20px;margin-left:10px;">2</span>
+            </div>
+            <!-- 任务区域 -->
+            <div class="task_area">
+              <div class="task_card" v-for="(task, index2) in scheme.modelTasks" :key="index2">
+                <el-input v-model="task.taskName" placeholder="输入任务" />
+              </div>
+              <div class="add_sth_btn">
+                <el-popover trigger="click" @after-leave="addTask(index1)">
+                  <template #reference>
+                    <el-button type="text">
+                      <el-icon size="20"><Plus /></el-icon>
+                    </el-button>
+                  </template>
+                  <el-input v-model="newTaskName" placeholder="请输入任务名" />
+                </el-popover>
+              </div>
+            </div>
           </div>
-          <!-- 任务区域 -->
-          <div class="task_area">
-            <div class="task_card" v-for="(task, index2) in scheme.modelTasks" :key="index2">
-              <el-input v-model="task.taskName" placeholder="输入任务" />
-            </div>
-            <div class="add_sth_btn">
-              <el-popover trigger="click">
-                <template #reference>
-                  <el-button type="text">
-                    <el-icon size="20"><Plus /></el-icon>
-                  </el-button>
-                </template>
-                <el-input placeholder="请输入任务名"></el-input>
-              </el-popover>
-            </div>
+          <!-- 计划添加框 -->
+          <div class="add_sth_btn">
+            <el-popover trigger="click" @after-leave="addScheme">
+              <template #reference>
+                <el-button type="text">
+                  <el-icon size="20"><Plus /></el-icon>
+                </el-button>
+              </template>
+              <el-input v-model="newSchemeName" placeholder="请输入计划名"/>
+            </el-popover>
           </div>
         </div>
-        <!-- 计划添加框 -->
-        <div class="add_sth_btn">
-          <el-button type="text">
-            <el-icon size="20"><Plus /></el-icon>
-          </el-button>
-        </div>
-      </div>
+      </el-scrollbar>
       <div class="template_operation">
         <el-button size="small" type="primary" @click="updateTemplate">保存</el-button>
         <el-button size="small" type="danger" style="margin-left:10px;">删除</el-button>
@@ -61,7 +73,7 @@
 
 <script>
 import { onMounted, reactive, ref } from 'vue'
-import { getAllTemplateAPI, updateTemplateAPI } from '@/utils/api'
+import { getAllTemplateAPI, updateTemplateAPI, addTemplateAPI } from '@/utils/api'
 import { Plus } from '@element-plus/icons'
 export default {
   name: 'Template',
@@ -71,6 +83,9 @@ export default {
   setup() {
     const templateList = ref([]) // 全部模板的列表
     const currentTemplateData = ref([]) // 当前展示的模版数据
+    const newTemplateName = ref('') // 新添加的模版名
+    const newTaskName = ref('') // 新添加的任务名
+    const newSchemeName = ref('') // 新添加的计划名
     const templateForm = reactive({
       "modelType": {
         'modelType': '',
@@ -109,6 +124,55 @@ export default {
     const templateSelected = (command) => {
       currentTemplateData.value = command
     }
+    // 添加模版
+    const addTemplate = () => {
+      if(newTemplateName.value != '') {
+        let newBlankTemplate = {}
+        newBlankTemplate.modelType = {
+          'modelType': newTemplateName.value,
+          'modelSchemes': []
+        }
+        // console.log(newBlankTemplate)
+        addTemplateAPI(newBlankTemplate)
+        .then(res => {
+          console.log(res.data)
+          getAllTemplate()
+        })
+        .catch(err => {
+          console.log(err.toString())
+        })
+      }
+      else {
+        console.log('模版名不能为空')
+      }
+    }
+    // 输入完新任务名后触发
+    const addTask = (id) => {
+      if (newTaskName.value != '') {
+        const newTask = {
+          'taskName': newTaskName.value
+        }
+        currentTemplateData.value.modelSchemes[id].modelTasks.push(newTask)
+        updateTemplate()
+      }
+      else {
+        console.log('任务名不能为空')
+      }
+    }
+    // 输入完新计划后触发
+    const addScheme = () => {
+      if(newSchemeName.value != '') {
+        const newScheme = {
+          'schemeName': newSchemeName.value,
+          'modelTasks': []
+        }
+        currentTemplateData.value.modelSchemes.push(newScheme)
+        updateTemplate()
+      }
+      else {
+        console.log('计划名不能为空')
+      }
+    }
     // 创建更新模版表单
     const createUpdateForm = () => {
       let form = {}
@@ -119,7 +183,7 @@ export default {
     const updateTemplate = () => {
       const form = createUpdateForm()
       console.log(form)
-      updateTemplateAPI(form)
+      updateTemplateAPI()
       .then(res => {
         console.log(res)
         getAllTemplate()
@@ -134,8 +198,14 @@ export default {
     return {
       templateList,
       currentTemplateData,
+      newTemplateName,
+      newTaskName,
+      newSchemeName,
       templateForm,
       templateSelected,
+      addTemplate,
+      addTask,
+      addScheme,
       updateTemplate
     }
   }
