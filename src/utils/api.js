@@ -233,13 +233,11 @@ export function updateTemplateAPI(data) {
   })
 }
 // 删除模版
-export function deleteTemplateAPI(mid) {
+export function deleteTemplateAPI(data) {
   return myAxios({
     url: '/model-type/deleteModel',
     method: 'POST',
-    data: {
-      mid: mid
-    }
+    data: data
   })
 }
 // 导入模版

@@ -31,12 +31,14 @@
           <div class="scheme_area" v-for="(scheme, index1) in currentTemplateData.modelSchemes" :key="index1">
             <div class="scheme_header">
               <el-input v-model="scheme.schemeName" placeholder="输入标题" />
-              <span style="font-size:20px;margin-left:10px;">2</span>
+              <el-icon size="20" style="cursor:pointer" @click="deleteScheme(index1)"><Remove /></el-icon>
+              <!-- <span style="font-size:20px;margin-left:10px;">2</span> -->
             </div>
             <!-- 任务区域 -->
             <div class="task_area">
               <div class="task_card" v-for="(task, index2) in scheme.modelTasks" :key="index2">
                 <el-input v-model="task.taskName" placeholder="输入任务" />
+                <el-icon size="20" style="cursor:pointer" @click="deleteTask(index1, index2)"><Remove /></el-icon>
               </div>
               <div class="add_sth_btn">
                 <el-popover trigger="click" @after-leave="addTask(index1)">
@@ -65,7 +67,7 @@
       </el-scrollbar>
       <div class="template_operation">
         <el-button size="small" type="primary" @click="updateTemplate">保存</el-button>
-        <el-button size="small" type="danger" style="margin-left:10px;">删除</el-button>
+        <el-button size="small" type="danger" style="margin-left:10px;" @click="deleteTemplate">删除</el-button>
       </div>
     </div>
   </div>
@@ -73,12 +75,13 @@
 
 <script>
 import { onMounted, reactive, ref } from 'vue'
-import { getAllTemplateAPI, updateTemplateAPI, addTemplateAPI } from '@/utils/api'
-import { Plus } from '@element-plus/icons'
+import { getAllTemplateAPI, updateTemplateAPI, addTemplateAPI, deleteTemplateAPI } from '@/utils/api'
+import { Plus, Remove } from '@element-plus/icons'
 export default {
   name: 'Template',
   components: {
-    Plus
+    Plus,
+    Remove
   },
   setup() {
     const templateList = ref([]) // 全部模板的列表
@@ -112,7 +115,7 @@ export default {
     const getAllTemplate = () => {
       getAllTemplateAPI()
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         templateList.value = res.data
         currentTemplateData.value = res.data[0]
       })
@@ -136,6 +139,7 @@ export default {
         addTemplateAPI(newBlankTemplate)
         .then(res => {
           console.log(res.data)
+          newTemplateName.value = ''
           getAllTemplate()
         })
         .catch(err => {
@@ -150,7 +154,8 @@ export default {
     const addTask = (id) => {
       if (newTaskName.value != '') {
         const newTask = {
-          'taskName': newTaskName.value
+          'taskName': newTaskName.value,
+          'id': 0
         }
         currentTemplateData.value.modelSchemes[id].modelTasks.push(newTask)
         updateTemplate()
@@ -159,11 +164,18 @@ export default {
         console.log('任务名不能为空')
       }
     }
+    // 删除任务
+    const deleteTask = (id1, id2) => {
+      currentTemplateData.value.modelSchemes[id1].modelTasks.splice(id2, 1)
+      // console.log(currentTemplateData.value.modelSchemes[id1].modelTasks)
+      updateTemplate()
+    }
     // 输入完新计划后触发
     const addScheme = () => {
       if(newSchemeName.value != '') {
         const newScheme = {
           'schemeName': newSchemeName.value,
+          'id': 0,
           'modelTasks': []
         }
         currentTemplateData.value.modelSchemes.push(newScheme)
@@ -172,6 +184,11 @@ export default {
       else {
         console.log('计划名不能为空')
       }
+    }
+    // 删除计划
+    const deleteScheme = (id) => {
+      currentTemplateData.value.modelSchemes.splice(id, 1)
+      updateTemplate()
     }
     // 创建更新模版表单
     const createUpdateForm = () => {
@@ -182,10 +199,23 @@ export default {
     // 更新模版数据到服务器
     const updateTemplate = () => {
       const form = createUpdateForm()
-      console.log(form)
-      updateTemplateAPI()
+      updateTemplateAPI(form)
       .then(res => {
         console.log(res)
+        getAllTemplate()
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
+    }
+    // 删除模板数据
+    const deleteTemplate = () => {
+      const deleteForm = {
+        'mid': currentTemplateData.value.id
+      }
+      deleteTemplateAPI(deleteForm)
+      .then(res => {
+        console.log(res.data)
         getAllTemplate()
       })
       .catch(err => {
@@ -205,8 +235,11 @@ export default {
       templateSelected,
       addTemplate,
       addTask,
+      deleteTask,
       addScheme,
-      updateTemplate
+      deleteScheme,
+      updateTemplate,
+      deleteTemplate
     }
   }
 }
@@ -249,6 +282,8 @@ export default {
   height: 40px;
 }
 .task_card {
+  display: flex;
+  align-items: center;
   margin-bottom: 5px;
 }
 .add_sth_btn {

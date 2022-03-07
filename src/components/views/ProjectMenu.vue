@@ -4,7 +4,10 @@
       <el-image style="width: 100px" :src="require('@/assets/demup.jpg')"></el-image>
       <el-popover placement="bottom" :width="100" trigger="hover">
         <template #reference>
-          <el-icon size="20"><Avatar /></el-icon>
+          <div style="display:flex;flex-direction:row">
+            <span style="margin-right:10px;">{{ currentUserName }}</span>
+            <el-icon size="20"><Avatar /></el-icon>
+          </div>
         </template>
         <template #default>
           <div style="display: flex;flex-direction: column;">
@@ -17,34 +20,40 @@
     </el-header>
     <el-container>
       <el-aside width="180px" class="index-aside">
-        <!-- 项目选择下拉菜单 -->
-        <el-dropdown @command="selectProject" class="project_select_dropdown">
-          <span class="el-dropdown-link" >
-            当前项目: {{ dropdownName }}
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(project, key) in projectList"
-                :key="key"
-                :command="project"
-              >
-                {{ project.projectName }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <div style="display:flex;justify-content:center;">
+          <!-- 项目选择下拉菜单 -->
+          <el-dropdown @command="selectProject" class="project_select_dropdown">
+            <span class="el-dropdown-link" >
+              <el-button size="mini">{{ dropdownName }}<el-icon><ArrowDown /></el-icon></el-button>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  v-for="(project, key) in projectList"
+                  :key="key"
+                  :command="project"
+                >
+                  {{ project.projectName }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <el-button size="mini" @click="deDialogVisible = true"><el-icon><Setting /></el-icon></el-button>
+        </div>
         <!-- 任务选择菜单 -->
         <el-menu
-          default-active="1"
+          default-active="2"
           class="project-menu"
           @select="menuItemClick"
         >
-          <el-menu-item-group 
+          <el-sub-menu
             v-for="(scheme, key1) in menuData"
             :key="key1"
-            :title="scheme.schemeName"
+            :index='key1.toString()'
           >
+            <template #title>
+              <span>{{ scheme.schemeName }}</span>
+            </template>
             <el-menu-item 
               v-for="(task, key2) in scheme.tasks"
               :key="key2"
@@ -52,7 +61,7 @@
             >
               {{ task.taskName }}
             </el-menu-item>
-          </el-menu-item-group>
+          </el-sub-menu>
         </el-menu>
       </el-aside>
       <!-- 主展示区域:tabs -->
@@ -71,6 +80,11 @@
       </el-main>
     </el-container>
   </el-container>
+  <DeDialog
+    :visible="deDialogVisible"
+    :pid="projectIndex"
+    @setDialogVisible="dialogClose($event)"
+  />
 </template>
 
 <script>
@@ -81,7 +95,8 @@ import { updateSchemeData, updateTaskPosition, updateDocumentsData, updateTaskHi
 import Overview from '@/components/views/Office/Overview.vue'
 import File from '@/components/views/Office/File.vue'
 import History from '@/components/views/Office/History.vue'
-import { Avatar } from '@element-plus/icons'
+import { Avatar, ArrowDown, Setting } from '@element-plus/icons'
+import DeDialog from '@/components/ui-components/de-dialog'
 export default {
   name: 'ProjectMenu',
   props: {},
@@ -89,7 +104,10 @@ export default {
     Overview,
     File,
     History,
-    Avatar
+    Avatar,
+    ArrowDown,
+    DeDialog,
+    Setting
   },
   setup () {
     const dropdownName = ref('未选择')
@@ -99,6 +117,8 @@ export default {
     const activeTab = ref('overview')
     const router = useRouter()
     const isUserAdmin = ref(false)
+    const currentUserName = ref('请登录')
+    const deDialogVisible = ref(false)
     // 跳转到个人信息
     const toUrl = (name) => {
       router.push({
@@ -151,6 +171,7 @@ export default {
         if (res.data.length > 0) {
           projectList.value = res.data
           dropdownName.value = res.data[0].projectName
+          projectIndex.value = res.data[0].projectId
           getSchemeData(res.data[0].projectId)
         }
         else {
@@ -165,8 +186,9 @@ export default {
     const getUserInfo = () => {
       getUserInfoAPI()
       .then(res => {
-        // console.log(res.data)
+        console.log(res.data)
         isUserAdmin.value = res.data.isAdmin
+        currentUserName.value = res.data.name
       })
       .catch(err => {
         console.log(err.toString())
@@ -178,6 +200,7 @@ export default {
       updateTaskPosition(parseInt(keyArray[0]), parseInt(keyArray[1]), parseInt(keyArray[2]))
       getTaskDocuments(parseInt(keyArray[2]))
       getTaskHistory(parseInt(keyArray[2]))
+      projectIndex.value = parseInt(keyArray[2])
     }
     // 下拉菜单选择项目
     const selectProject = (command) => {
@@ -188,12 +211,18 @@ export default {
     const tabClick = (tab, event) => {
       console.log(tab, event)
     }
+    const dialogClose = (event) => {
+      getAllProjects()
+      deDialogVisible.value = event
+    }
     onMounted(() => {
       getAllProjects()
       getUserInfo()
     })
     return {
+      currentUserName,
       isUserAdmin,
+      deDialogVisible,
       toUrl,
       dropdownName,
       projectIndex,
@@ -202,7 +231,8 @@ export default {
       activeTab,
       menuItemClick,
       selectProject,
-      tabClick
+      tabClick,
+      dialogClose
     }
   }
 }
