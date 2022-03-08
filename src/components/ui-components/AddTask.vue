@@ -1,9 +1,19 @@
-<!-- 添加计划 -->
+<!-- 添加任务 -->
 <template>
   <div style="display:flex;flex-direction:column;">
     <el-form ref="form" label-width="120px" style="border-bottom:1px solid #eeeeee">
-      <el-form-item label="计划名称">
-        <el-input v-model="scheme.schemeName"></el-input>
+      <el-form-item label="所属计划">
+        <el-select v-model="thisScheme" placeholder="Select" size="small" @change="schemeSelect">
+          <el-option
+            v-for="item in schemeInfo"
+            :key="item.schemeId"
+            :label="item.schemeName"
+            :value="item.schemeId"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="任务名称">
+        <el-input v-model="task.taskName"></el-input>
       </el-form-item>
       <el-form-item label="负责人">
         <span style="margin-right:20px">{{ leaderText }}</span>
@@ -11,7 +21,7 @@
       </el-form-item>
       <el-form-item label="开始日期">
         <el-date-picker
-          v-model="scheme.createDate"
+          v-model="task.createDate"
           type="datetime"
           placeholder="选择开始时间"
           value-format="YYYY-MM-DD HH:mm:ss"
@@ -20,17 +30,19 @@
       </el-form-item>
       <el-form-item label="计划结束日期">
         <el-date-picker
-          v-model="scheme.targetDate"
+          v-model="task.targetDate"
           type="datetime"
           placeholder="选择计划结束时间"
           value-format="YYYY-MM-DD HH:mm:ss"
         >
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="任务描述">
+        <el-input v-model="task.taskPricipal" type="textarea"></el-input>
+      </el-form-item>
     </el-form>
     <el-button size='mini' type='primary' @click="submitForm" style="align-self:flex-end;margin-top:5px;">添加</el-button>
   </div>
-  
   <LeaderSelectDialog 
     :visible="leaderSelectDialogVisible"
     @setDialogVisible="LeaderSelectDialogClose($event)"
@@ -39,11 +51,12 @@
 </template>
 
 <script>
-import { toRefs, reactive, ref } from 'vue'
-import { addSchemeAPI } from '@/utils/api'
+import { computed, onMounted, reactive, ref, toRefs } from 'vue'
+import { schemeData } from '@/store/store.js'
+import { addTaskAPI } from '@/utils/api.js'
 import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
-  name: 'AddScheme',
+  name: 'AddTask',
   props: {
     pid: String
   },
@@ -54,30 +67,39 @@ export default {
   setup(props, context) {
     const leaderSelectDialogVisible = ref(false)
     const leaderText = ref('请选择负责人')
-    // 添加计划表单
     const form = reactive({
-      headerid: '',
-      pid: '',
-      scheme: {
-        createDate: '',
-        isfinished: false,
-        schemeName: '',
-        targetDate: ''
+      'headerid': 0,
+      'participants': [],
+      'sid': 0,
+      'task': {
+        'createDate': '',
+        'finishDate': '',
+        'isfinished': false,
+        'targetDate': '',
+        'taskName': '',
+        'taskPricipal': ''
       }
     })
     const formAsRefs = toRefs(form)
-    // 提交添加计划表单
+    const thisScheme = ref('')
+    const schemeInfo = computed(() => {
+      return schemeData.list
+    })
+    // 添加任务
     const submitForm = () => {
-      form.pid = props.pid
-      console.log(form)
-      addSchemeAPI(form)
+      form.sid = thisScheme
+      addTaskAPI(form)
       .then(res => {
-        console.log('添加计划:', res.data)
+        console.log(res.data, props.pid)
         context.emit('setDialogVisible', false)
       })
       .catch(err => {
         console.log(err.toString())
       })
+    }
+    // 选择所属计划
+    const schemeSelect = () => {
+      console.log(schemeInfo.value)
     }
     // 关闭管理员选择对话框
     const LeaderSelectDialogClose = (event) => {
@@ -88,13 +110,21 @@ export default {
       leaderText.value = event.name
       form.headerid = event.username
     }
+    onMounted(() => {
+      thisScheme.value = schemeInfo.value[0].schemeId
+    })
     return {
+      // variable
       leaderSelectDialogVisible,
       leaderText,
       ...formAsRefs,
+      thisScheme,
+      schemeInfo,
+      // function
       submitForm,
+      schemeSelect,
       LeaderSelectDialogClose,
-      getLeaderInfo
+      getLeaderInfo,
     }
   }
 }

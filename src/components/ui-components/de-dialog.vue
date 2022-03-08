@@ -3,20 +3,20 @@
     <el-tabs
       v-model="tabsId"
     >
-      <el-tab-pane label="任务管理" name="manageProject">
-        项目管理
+      <el-tab-pane label="项目管理" name="manageProject">
+        <UpdateProject />
       </el-tab-pane>
       <el-tab-pane label="计划管理" name="manageScheme">
-        计划管理
+        <UpdateScheme :pid="projectId.toString()" @setDialogVisible="dialogClose($event)" />
       </el-tab-pane>
       <el-tab-pane label="新建项目" name="project">
-        新建项目
+        <AddProject />
       </el-tab-pane>
       <el-tab-pane label="新建计划" name="scheme">
-        <AddSchemeDialog :pid="projectId.toString()" @setDialogVisible="dialogClose($event)"/>
+        <AddScheme :pid="projectId.toString()" @setDialogVisible="dialogClose($event)" />
       </el-tab-pane>
       <el-tab-pane label="新建任务" name="task">
-        任务
+        <AddTask :pid="projectId.toString()" @setDialogVisible="dialogClose($event)" />
       </el-tab-pane>
     </el-tabs>
   </el-dialog>
@@ -24,7 +24,11 @@
 
 <script>
 import { computed, ref, watch } from 'vue'
-import AddSchemeDialog from '@/components/ui-components/AddScheme'
+import AddScheme from '@/components/ui-components/AddScheme'
+import AddTask from '@/components/ui-components/AddTask'
+import AddProject from '@/components/ui-components/AddProject'
+import UpdateProject from '@/components/ui-components/UpdateProject'
+import UpdateScheme from '@/components/ui-components/UpdateScheme'
 // import {  } from '@/utils/api'
 export default {
   name: 'DeDialog',
@@ -33,11 +37,15 @@ export default {
     pid: Number
   },
   components: {
-    AddSchemeDialog
+    AddScheme,
+    AddTask,
+    AddProject,
+    UpdateProject,
+    UpdateScheme
   },
   emits: ['setDialogVisible'],
   setup(props, context) {
-    const tabsId = ref('project')
+    const tabsId = ref('manageScheme')
     const projectId = computed(() => {
       return props.pid
     })

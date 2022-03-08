@@ -101,12 +101,12 @@ export function deleteProjectAPI(pid) {
 /************************ 计划管理API ************************/
 
 // 获取对应项目的所有计划
-export function getSchemeAPI(schemePid) {
+export function getSchemeAPI(pid) {
   return myAxios({
     url: '/scheme/getScheme',
     method: 'GET',
     params: {
-      pid: schemePid
+      pid: pid
     }
   })
 }
