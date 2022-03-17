@@ -41,7 +41,7 @@
       <el-switch v-model="task.isfinished" active-color="#13ce66" inactive-color="#ff4949" />
     </el-form-item>
   </el-form>
-  <el-button type="primary">更新任务信息</el-button>
+  <el-button type="primary" @click="updateTask">更新任务信息</el-button>
   <LeaderSelectDialog 
     :visible="leaderSelectDialogVisible"
     @setDialogVisible="LeaderSelectDialogClose($event)"
@@ -52,6 +52,7 @@
 <script>
 import { computed, reactive, watch, toRefs, ref } from 'vue'
 import { taskPosition, schemeData } from '@/store/store'
+import { updateTaskAPI } from '@/utils/api'
 import LeaderSelectDialog from '@/components/ui-components/LeaderSelectDialog.vue'
 export default {
   name: 'Overview',
@@ -67,6 +68,7 @@ export default {
     const form = reactive({
       headerid: new Number,
       participants: [],
+      sid: new Number,
       task: {
         createDate: '',
         isfinished: false,
@@ -94,9 +96,20 @@ export default {
       leaderText.value = event.name
       form.headerid = event.username
     }
+    const updateTask = () => {
+      updateTaskAPI(form)
+      .then(res => {
+        console.log(res.data)
+        location.reload()
+      })
+      .catch(err => {
+        console.log(err.toString())
+      })
+    }
     watch([storeTaskData, storeTaskPos1, storeTaskPos2], () => {
       // console.log(storeTaskData.value[storeTaskPos1.value].tasks[storeTaskPos2.value])
       const taskData = storeTaskData.value[storeTaskPos1.value].tasks[storeTaskPos2.value]
+      console.log(taskData)
       form.headerid = taskData.headers[0].id
       form.task.createDate = taskData.createDate
       form.task.targetDate = taskData.targetDate
@@ -118,7 +131,8 @@ export default {
       storeTaskPos1,
       storeTaskPos2,
       LeaderSelectDialogClose,
-      getLeaderInfo
+      getLeaderInfo,
+      updateTask
     }
   }
 }

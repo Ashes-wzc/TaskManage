@@ -1,11 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="项目管理" width="30%">
+  <el-dialog v-model="dialogVisible" title="项目管理" width="50%">
     <el-tabs
       v-model="tabsId"
     >
-      <el-tab-pane label="项目管理" name="manageProject">
+      <!-- <el-tab-pane label="项目管理" name="manageProject">
         <UpdateProject />
-      </el-tab-pane>
+      </el-tab-pane> -->
       <el-tab-pane label="计划管理" name="manageScheme">
         <UpdateScheme :pid="projectId.toString()" @setDialogVisible="dialogClose($event)" />
       </el-tab-pane>
@@ -27,7 +27,7 @@ import { computed, ref, watch } from 'vue'
 import AddScheme from '@/components/ui-components/AddScheme'
 import AddTask from '@/components/ui-components/AddTask'
 import AddProject from '@/components/ui-components/AddProject'
-import UpdateProject from '@/components/ui-components/UpdateProject'
+// import UpdateProject from '@/components/ui-components/UpdateProject'
 import UpdateScheme from '@/components/ui-components/UpdateScheme'
 // import {  } from '@/utils/api'
 export default {
@@ -40,7 +40,7 @@ export default {
     AddScheme,
     AddTask,
     AddProject,
-    UpdateProject,
+    // UpdateProject,
     UpdateScheme
   },
   emits: ['setDialogVisible'],
